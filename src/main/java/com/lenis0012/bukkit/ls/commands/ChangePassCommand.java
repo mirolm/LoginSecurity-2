@@ -25,23 +25,23 @@ public class ChangePassCommand implements CommandExecutor {
 		String uuid = player.getUniqueId().toString();
 
 		if (!plugin.data.isRegistered(uuid)) {
-			player.sendMessage(Lang.NOT_REG.toString());
+			player.sendMessage(ChatColor.RED + Lang.NOT_REG.toString());
 			return true;
 		}
 		if (args.length < 2) {
-			player.sendMessage(Lang.INVALID_ARGS.toString());
-			player.sendMessage(Lang.USAGE + cmd.getUsage());
+			player.sendMessage(ChatColor.RED + Lang.INVALID_ARGS.toString());
+			player.sendMessage(ChatColor.RED + Lang.USAGE + cmd.getUsage());
 			return true;
 		}
 		if (!PasswordManager.checkPass(uuid, args[0])) {
-			player.sendMessage(Lang.INVALID_PSW.toString());
+			player.sendMessage(ChatColor.RED + Lang.INVALID_PSW.toString());
 			LoginSecurity.log.log(Level.WARNING, "[LoginSecurity] {0} failed to change password", player.getName());
 			return true;
 		}
 
 		String newPass = plugin.hasher.hash(args[1]);
 		plugin.data.updatePassword(uuid, newPass, plugin.hasher.getTypeId());
-		player.sendMessage(Lang.PSW_CHANGED.toString());
+		player.sendMessage(ChatColor.GREEN + Lang.PSW_CHANGED.toString());
 		LoginSecurity.log.log(Level.INFO, "[LoginSecurity] {0} sucessfully changed password", player.getName());
 
 		return true;
