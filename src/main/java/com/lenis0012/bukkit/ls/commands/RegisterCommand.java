@@ -29,7 +29,7 @@ public class RegisterCommand implements CommandExecutor {
 		}
 		if (args.length < 1) {
 			player.sendMessage(ChatColor.RED + Lang.INVALID_ARGS.toString());
-			player.sendMessage(ChatColor.RED + Lang.USAGE + cmd.getUsage());
+			player.sendMessage(ChatColor.RED + Lang.USAGE.toString() + cmd.getUsage());
 			return true;
 		}
 
