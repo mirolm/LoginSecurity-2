@@ -6,6 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.lenis0012.bukkit.ls.Lang;
 import com.lenis0012.bukkit.ls.LoginSecurity;
 import com.lenis0012.bukkit.ls.encryption.PasswordManager;
 import java.util.logging.Level;
@@ -15,7 +16,7 @@ public class LoginCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		LoginSecurity plugin = LoginSecurity.instance;
 		if(!(sender instanceof Player)) {
-			sender.sendMessage("You must be a player");
+			sender.sendMessage(Lang.MUST_BE_PLAYER.toString());
 			return true;
 		}
 
@@ -23,26 +24,26 @@ public class LoginCommand implements CommandExecutor {
 		String uuid = player.getUniqueId().toString();
 
 		if(!plugin.authList.containsKey(uuid)) {
-			player.sendMessage(ChatColor.RED+"You are already logged in");
+			player.sendMessage(Lang.ALREADY_LOGIN.toString());
 			return true;
 		}
 		if(!plugin.data.isRegistered(uuid)) {
-			player.sendMessage(ChatColor.RED+"You do not have a password set");
+			player.sendMessage(Lang.NO_PSW_SET.toString());
 			return true;
 		}
 		if(args.length < 1) {
-			player.sendMessage(ChatColor.RED+"Not enough arguments");
-			player.sendMessage("Usage: "+cmd.getUsage());
+			player.sendMessage(Lang.INVALID_ARGS.toString());
+			player.sendMessage(Lang.USAGE + cmd.getUsage());
 			return true;
 		}
 		if(PasswordManager.checkPass(uuid, args[0])) {
 			plugin.authList.remove(uuid);
 			plugin.thread.timeout.remove(uuid);
 			plugin.rehabPlayer(player, uuid);
-			player.sendMessage(ChatColor.GREEN+"Succesfully logged in");
+			player.sendMessage(Lang.LOGIN.toString());
 			LoginSecurity.log.log(Level.INFO, "[LoginSecurity] {0} authenticated", player.getName());
 		} else {
-			player.sendMessage(ChatColor.RED+"Invalid password");
+			player.sendMessage(Lang.INVALID_PSW.toString());
 			LoginSecurity.log.log(Level.WARNING, "[LoginSecurity] {0} entered an incorrect password", player.getName());
 		}
 
