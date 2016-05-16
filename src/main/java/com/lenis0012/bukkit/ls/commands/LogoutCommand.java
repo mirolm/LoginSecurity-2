@@ -6,6 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.lenis0012.bukkit.ls.Lang;
 import com.lenis0012.bukkit.ls.LoginSecurity;
 import java.util.logging.Level;
 
@@ -15,7 +16,7 @@ public class LogoutCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		LoginSecurity plugin = LoginSecurity.instance;
 		if (!(sender instanceof Player)) {
-			sender.sendMessage("You must be a player");
+			sender.sendMessage(Lang.MUST_BE_PLAYER.toString());
 			return true;
 		}
 
@@ -23,11 +24,11 @@ public class LogoutCommand implements CommandExecutor {
 		String uuid = player.getUniqueId().toString();
 
 		if (plugin.authList.containsKey(uuid)) {
-			player.sendMessage(ChatColor.RED + "You must login first");
+			player.sendMessage(Lang.MUST_LGN_FIRST.toString());
 			return true;
 		}
 		if (!plugin.data.isRegistered(uuid)) {
-			player.sendMessage(ChatColor.RED + "You are not registered!");
+			player.sendMessage(Lang.NOT_REG.toString());
 		}
 
 		plugin.authList.put(uuid, false);
@@ -37,7 +38,7 @@ public class LogoutCommand implements CommandExecutor {
 			plugin.thread.getSession().remove(uuid);
 		}
 
-		player.sendMessage(ChatColor.GREEN + "Succesfully logged out");
+		player.sendMessage(Lang.LOGOUT.toString());
 		LoginSecurity.log.log(Level.INFO, "[LoginSecurity] {0} logged out", player.getName());
 		return true;
 	}
