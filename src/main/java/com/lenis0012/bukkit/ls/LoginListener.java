@@ -46,7 +46,7 @@ public class LoginListener implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 
-                //Do not remove or else...
+		//Do not remove or else...
 		plugin.playerJoinPrompt(player);
 	}
 
@@ -54,14 +54,14 @@ public class LoginListener implements Listener {
 	public void onPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
 		//Check conversion in progress
 		if(UUIDConverter.IS_CONVERTING) {
-			event.disallow(Result.KICK_OTHER, "Currently converting all login data, please check later.");
+			event.disallow(Result.KICK_OTHER, Lang.CONVERTING_ERROR.toString());
 			return;
 		}
 
 		String pname = event.getName();
 		//Check for valid user name
 		if (!pname.equals(StringUtil.cleanString(pname))) {
-			event.disallow(Result.KICK_OTHER, "Invalid characters in username!");
+			event.disallow(Result.KICK_OTHER, Lang.INVALID_USERNAME_CHARS.toString());
 			return;
  		}
 
@@ -74,7 +74,7 @@ public class LoginListener implements Listener {
 			}
 
 			if (puuid.equalsIgnoreCase(uuid)) {
-				event.disallow(Result.KICK_OTHER, "A player with this name is already online!");
+				event.disallow(Result.KICK_OTHER, Lang.ALREADY_ONLINE.toString());
 				return;
 			}
 		}
