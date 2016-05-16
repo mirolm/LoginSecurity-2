@@ -13,6 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -47,7 +48,7 @@ public class LoginSecurity extends JavaPlugin {
 	public DataManager data;
 	public static LoginSecurity instance;
 	public Map<String, Boolean> authList = Maps.newConcurrentMap();
-    public Map<String, Location> loginLocations = Maps.newConcurrentMap();
+	public Map<String, Location> loginLocations = Maps.newConcurrentMap();
 	public boolean required, blindness, sesUse, timeUse, spawntp;
 	public int sesDelay, timeDelay;
 	public static final Logger log = Logger.getLogger("Minecraft");
@@ -57,12 +58,15 @@ public class LoginSecurity extends JavaPlugin {
 	public Map<String, CommandExecutor> commandMap = Maps.newHashMap();
 	public static int PHP_VERSION;
 	public static String encoder;
+	public static YamlConfiguration LANG;
+	public static File LANG_FILE;
 
 	@Override
 	public void onEnable() {
 		//setup quickcalls
 		FileConfiguration config = this.getConfig();
 		PluginManager pm = this.getServer().getPluginManager();
+		loadLang();
 
 		//setup config
 		config.addDefault("settings.password-required", true);
@@ -165,7 +169,7 @@ public class LoginSecurity extends JavaPlugin {
 		}
 
 	}
-	
+
 	public void saveAuthList(Map<String, Boolean> map) throws IOException {
 		File file = new File(this.getDataFolder(), "authList");
 		FileOutputStream fout = new FileOutputStream(file);
@@ -256,24 +260,24 @@ public class LoginSecurity extends JavaPlugin {
 
 	public void playerJoinPrompt(final Player player) {
 		String uuid = player.getUniqueId().toString();
-		
+
 		//Quick security check
 		for(Player p : Bukkit.getOnlinePlayers()) {
 			if(player != p && uuid.equalsIgnoreCase(p.getUniqueId().toString())) {
-				player.kickPlayer("You are already logged in under the name: " + p.getName());
+				player.kickPlayer(Lang.ALREADY_LOGIN.toString());
 				return;
 			}
 		}
-		
+
 		if (sesUse && thread.getSession().containsKey(uuid) && checkLastIp(player)) {
-			player.sendMessage(ChatColor.GREEN + "Extended session from last login");
+			player.sendMessage(Lang.SESS_EXTENDED.toString());
 			return;
 		} else if (data.isRegistered(uuid)) {
 			authList.put(uuid, false);
-			player.sendMessage(ChatColor.RED + "Please login using /login <password>");
+			player.sendMessage(Lang.LOG_MSG.toString());
 		} else if (required) {
 			authList.put(uuid, true);
-			player.sendMessage(ChatColor.RED + "Please register using /register <password>");
+			player.sendMessage(Lang.REG_MSG.toString());
 		} else {
 			return;
 		}
@@ -306,5 +310,32 @@ public class LoginSecurity extends JavaPlugin {
 		}
 		// ensure that player does not drown after logging in
 		player.setRemainingAir(player.getMaximumAir());
+	}
+
+	public void loadLang() {
+		File lang = new File(getDataFolder(), "lang.yml");
+		YamlConfiguration conf = YamlConfiguration.loadConfiguration(lang);
+		for(Lang item:Lang.values()) {
+			if (conf.getString(item.getPath()) == null) {
+				conf.set(item.getPath(), item.getDefault());
+			}
+		}
+		Lang.setFile(conf);
+		LoginSecurity.LANG = conf;
+		LoginSecurity.LANG_FILE = lang;
+		try {
+			conf.save(getLangFile());
+		} catch(IOException e) {
+			log.log(Level.WARNING, "Failed to save lang.yml.");
+			e.printStackTrace();
+		}
+	}
+
+	public YamlConfiguration getLang() {
+		return LANG;
+	}
+
+	public File getLangFile() {
+		return LANG_FILE;
 	}
 }
