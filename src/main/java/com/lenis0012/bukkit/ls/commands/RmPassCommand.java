@@ -17,10 +17,10 @@ public class RmPassCommand implements CommandExecutor {
 			sender.sendMessage("You must be a player");
 			return true;
 		}
-		
+
 		Player player = (Player)sender;
-		String uuid = player.getUniqueId().toString().replaceAll("-", "");
-		
+		String uuid = player.getUniqueId().toString();
+
 		if(!plugin.data.isRegistered(uuid)) {
 			player.sendMessage(ChatColor.RED+"You are not registered on the server");
 			return true;
@@ -35,7 +35,7 @@ public class RmPassCommand implements CommandExecutor {
 			player.sendMessage(ChatColor.RED+"Passwords are required on this server!");
 			return true;
 		}
-		
+
 		plugin.data.removeUser(uuid);
 		player.sendMessage(ChatColor.GREEN+"Succesfully removed your password");
 		return true;
