@@ -24,11 +24,11 @@ public class LogoutCommand implements CommandExecutor {
 		String uuid = player.getUniqueId().toString();
 
 		if (plugin.authList.containsKey(uuid)) {
-			player.sendMessage(Lang.MUST_LGN_FIRST.toString());
+			player.sendMessage(ChatColor.RED + Lang.MUST_LGN_FIRST.toString());
 			return true;
 		}
 		if (!plugin.data.isRegistered(uuid)) {
-			player.sendMessage(Lang.NOT_REG.toString());
+			player.sendMessage(ChatColor.RED + Lang.NOT_REG.toString());
 		}
 
 		plugin.authList.put(uuid, false);
@@ -38,7 +38,7 @@ public class LogoutCommand implements CommandExecutor {
 			plugin.thread.getSession().remove(uuid);
 		}
 
-		player.sendMessage(Lang.LOGOUT.toString());
+		player.sendMessage(ChatColor.GREEN + Lang.LOGOUT.toString());
 		LoginSecurity.log.log(Level.INFO, "[LoginSecurity] {0} logged out", player.getName());
 		return true;
 	}
