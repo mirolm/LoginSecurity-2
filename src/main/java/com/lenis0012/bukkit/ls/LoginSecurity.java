@@ -270,14 +270,14 @@ public class LoginSecurity extends JavaPlugin {
 		}
 
 		if (sesUse && thread.getSession().containsKey(uuid) && checkLastIp(player)) {
-			player.sendMessage(Lang.SESS_EXTENDED.toString());
+			player.sendMessage(ChatColor.GREEN + Lang.SESS_EXTENDED.toString());
 			return;
 		} else if (data.isRegistered(uuid)) {
 			authList.put(uuid, false);
-			player.sendMessage(Lang.LOG_MSG.toString());
+			player.sendMessage(ChatColor.RED + Lang.LOG_MSG.toString());
 		} else if (required) {
 			authList.put(uuid, true);
-			player.sendMessage(Lang.REG_MSG.toString());
+			player.sendMessage(ChatColor.RED + Lang.REG_MSG.toString());
 		} else {
 			return;
 		}
