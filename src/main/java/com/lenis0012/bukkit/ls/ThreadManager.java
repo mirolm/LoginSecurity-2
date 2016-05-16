@@ -66,9 +66,9 @@ public class ThreadManager {
 					if (plugin.authList.containsKey(uuid)) {
 						boolean register = plugin.authList.get(uuid);
 						if (register) {
-							player.sendMessage(ChatColor.RED + "Please register using /register <password>");
+							player.sendMessage(Lang.REG_MSG.toString());
 						} else {
-							player.sendMessage(ChatColor.RED + "Please login using /login <password>");
+							player.sendMessage(Lang.LOG_MSG.toString());
 						}
 					}
 				}
@@ -80,7 +80,7 @@ public class ThreadManager {
 		if (msg != null) {
 			msg.cancel();
 		}
-		
+
 		msg = null;
 	}
 
@@ -106,7 +106,7 @@ public class ThreadManager {
 		if (ses != null) {
 			ses.cancel();
 		}
-		
+
 		ses = null;
 	}
 
@@ -133,7 +133,7 @@ public class ThreadManager {
 									player.teleport(fixedLocation);
 								}
 							}
-							player.kickPlayer("Login timed out");
+							player.kickPlayer(Lang.TIMED_OUT.toString());
 							LoginSecurity.log.log(Level.INFO, "{0} was kicked for login timeout", player.getName());
 						}
 					}
@@ -146,7 +146,7 @@ public class ThreadManager {
 		if (to != null) {
 			to.cancel();
 		}
-		
+
 		to = null;
 	}
 }
