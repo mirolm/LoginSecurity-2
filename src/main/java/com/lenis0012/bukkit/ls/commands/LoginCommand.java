@@ -24,26 +24,26 @@ public class LoginCommand implements CommandExecutor {
 		String uuid = player.getUniqueId().toString();
 
 		if(!plugin.authList.containsKey(uuid)) {
-			player.sendMessage(Lang.ALREADY_LOGIN.toString());
+			player.sendMessage(ChatColor.RED + Lang.ALREADY_LOGIN.toString());
 			return true;
 		}
 		if(!plugin.data.isRegistered(uuid)) {
-			player.sendMessage(Lang.NO_PSW_SET.toString());
+			player.sendMessage(ChatColor.RED + Lang.NO_PSW_SET.toString());
 			return true;
 		}
 		if(args.length < 1) {
-			player.sendMessage(Lang.INVALID_ARGS.toString());
-			player.sendMessage(Lang.USAGE + cmd.getUsage());
+			player.sendMessage(ChatColor.RED + Lang.INVALID_ARGS.toString());
+			player.sendMessage(ChatColor.RED + Lang.USAGE + cmd.getUsage());
 			return true;
 		}
 		if(PasswordManager.checkPass(uuid, args[0])) {
 			plugin.authList.remove(uuid);
 			plugin.thread.timeout.remove(uuid);
 			plugin.rehabPlayer(player, uuid);
-			player.sendMessage(Lang.LOGIN.toString());
+			player.sendMessage(ChatColor.GREEN + Lang.LOGIN.toString());
 			LoginSecurity.log.log(Level.INFO, "[LoginSecurity] {0} authenticated", player.getName());
 		} else {
-			player.sendMessage(Lang.INVALID_PSW.toString());
+			player.sendMessage(ChatColor.RED + Lang.INVALID_PSW.toString());
 			LoginSecurity.log.log(Level.WARNING, "[LoginSecurity] {0} entered an incorrect password", player.getName());
 		}
 
