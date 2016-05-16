@@ -18,12 +18,11 @@ public class LoginCommand implements CommandExecutor {
 			sender.sendMessage("You must be a player");
 			return true;
 		}
-		
+
 		Player player = (Player)sender;
-		String uuid = player.getUniqueId().toString().replaceAll("-", "");
-		String name = player.getName().toLowerCase();
-		
-		if(!plugin.authList.containsKey(name)) {
+		String uuid = player.getUniqueId().toString();
+
+		if(!plugin.authList.containsKey(uuid)) {
 			player.sendMessage(ChatColor.RED+"You are already logged in");
 			return true;
 		}
@@ -37,18 +36,16 @@ public class LoginCommand implements CommandExecutor {
 			return true;
 		}
 		if(PasswordManager.checkPass(uuid, args[0])) {
-			plugin.authList.remove(name);
-			plugin.thread.timeout.remove(name);
-			plugin.rehabPlayer(player, name);
+			plugin.authList.remove(uuid);
+			plugin.thread.timeout.remove(uuid);
+			plugin.rehabPlayer(player, uuid);
 			player.sendMessage(ChatColor.GREEN+"Succesfully logged in");
 			LoginSecurity.log.log(Level.INFO, "[LoginSecurity] {0} authenticated", player.getName());
 		} else {
 			player.sendMessage(ChatColor.RED+"Invalid password");
 			LoginSecurity.log.log(Level.WARNING, "[LoginSecurity] {0} entered an incorrect password", player.getName());
 		}
-		
-		
-		
+
 		return true;
 	}
 }
