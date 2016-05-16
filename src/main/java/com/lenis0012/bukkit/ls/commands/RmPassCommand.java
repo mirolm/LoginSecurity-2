@@ -23,22 +23,22 @@ public class RmPassCommand implements CommandExecutor {
 		String uuid = player.getUniqueId().toString();
 
 		if(!plugin.data.isRegistered(uuid)) {
-			player.sendMessage(Lang.NOT_REG.toString());
+			player.sendMessage(ChatColor.RED + Lang.NOT_REG.toString());
 			return true;
 		}if(args.length < 1) {
-			player.sendMessage(Lang.INVALID_ARGS.toString());
-			player.sendMessage(Lang.USAGE + cmd.getUsage());
+			player.sendMessage(ChatColor.RED + Lang.INVALID_ARGS.toString());
+			player.sendMessage(ChatColor.RED + Lang.USAGE + cmd.getUsage());
 			return true;
 		} if(!PasswordManager.checkPass(uuid, args[0])) {
-			player.sendMessage(Lang.INVALID_PSW.toString());
+			player.sendMessage(ChatColor.RED + Lang.INVALID_PSW.toString());
 			return true;
 		} if(plugin.required) {
-			player.sendMessage(Lang.REQUIRED_PSW.toString());
+			player.sendMessage(ChatColor.RED + Lang.REQUIRED_PSW.toString());
 			return true;
 		}
 
 		plugin.data.removeUser(uuid);
-		player.sendMessage(Lang.REMOVED_PSW.toString());
+		player.sendMessage(ChatColor.GREEN + Lang.REMOVED_PSW.toString());
 		return true;
 	}
 }
