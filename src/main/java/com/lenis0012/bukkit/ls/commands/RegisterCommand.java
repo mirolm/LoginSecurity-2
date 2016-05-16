@@ -24,12 +24,12 @@ public class RegisterCommand implements CommandExecutor {
 		String uuid = player.getUniqueId().toString();
 
 		if (plugin.data.isRegistered(uuid)) {
-			player.sendMessage(Lang.ALREADY_REG.toString());
+			player.sendMessage(ChatColor.RED + Lang.ALREADY_REG.toString());
 			return true;
 		}
 		if (args.length < 1) {
-			player.sendMessage(Lang.INVALID_ARGS.toString());
-			player.sendMessage(Lang.USAGE + cmd.getUsage());
+			player.sendMessage(ChatColor.RED + Lang.INVALID_ARGS.toString());
+			player.sendMessage(ChatColor.RED + Lang.USAGE + cmd.getUsage());
 			return true;
 		}
 
@@ -38,7 +38,7 @@ public class RegisterCommand implements CommandExecutor {
 		plugin.authList.remove(uuid);
 		plugin.thread.timeout.remove(uuid);
 		plugin.rehabPlayer(player, uuid);
-		player.sendMessage(Lang.REGISTERED.toString());
+		player.sendMessage(ChatColor.GREEN + Lang.REGISTERED.toString());
 		LoginSecurity.log.log(Level.INFO, "[LoginSecurity] {0} registered sucessfully", player.getName());
 		return true;
 	}
