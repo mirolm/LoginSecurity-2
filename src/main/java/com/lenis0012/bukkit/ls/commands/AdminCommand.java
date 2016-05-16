@@ -30,8 +30,7 @@ public class AdminCommand implements CommandExecutor {
 
 		try {
 			if(args.length == 0) {
-				sender.sendMessage("&7==========-{ &4&lL&aoginSecurity &4&lA&admin &4&lC&aommand &7}-==========".replaceAll("&", String.valueOf(ChatColor.COLOR_CHAR)));
-				sender.sendMessage(ChatColor.GREEN + "/lac rmpass <user>");
+				sender.sendMessage(ChatColor.GREEN + "/lac rmpass <uuid>");
 				sender.sendMessage(ChatColor.GREEN + "/lac reload");
 			} else if(args.length >= 2 && args[0].equalsIgnoreCase("rmpass")) {
 				String uuid = args[1];
