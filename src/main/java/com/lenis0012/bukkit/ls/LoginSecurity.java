@@ -7,9 +7,6 @@ import java.util.logging.Logger;
 
 import com.google.common.collect.Maps;
 import com.lenis0012.bukkit.ls.util.LoggingFilter;
-import com.lenis0012.updater.api.ReleaseType;
-import com.lenis0012.updater.api.Updater;
-import com.lenis0012.updater.api.UpdaterFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Filter;
 import org.bukkit.Bukkit;
@@ -33,7 +30,6 @@ import com.lenis0012.bukkit.ls.data.DataManager;
 import com.lenis0012.bukkit.ls.data.MySQL;
 import com.lenis0012.bukkit.ls.data.SQLite;
 import com.lenis0012.bukkit.ls.encryption.EncryptionType;
-import com.lenis0012.bukkit.ls.util.Metrics;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -61,7 +57,6 @@ public class LoginSecurity extends JavaPlugin {
 	public Map<String, CommandExecutor> commandMap = Maps.newHashMap();
 	public static int PHP_VERSION;
 	public static String encoder;
-	private Updater updater;
 
 	@Override
 	public void onEnable() {
@@ -70,7 +65,6 @@ public class LoginSecurity extends JavaPlugin {
 		PluginManager pm = this.getServer().getPluginManager();
 
 		//setup config
-        config.options().header("Available update channels: ALPHA, BETA, RELEASE");
 		config.addDefault("settings.password-required", true);
 		config.addDefault("settings.encryption", "BCRYPT");
 		config.addDefault("settings.encoder", "UTF-8");
@@ -83,8 +77,6 @@ public class LoginSecurity extends JavaPlugin {
 		config.addDefault("settings.timeout.use", true);
 		config.addDefault("settings.timeout.timeout (sec)", 60);
 		config.addDefault("settings.table prefix", "ls_");
-		config.addDefault("settings.update-checker", true);
-        config.addDefault("settings.update-channel", "BETA");
 		config.addDefault("MySQL.use", false);
 		config.addDefault("MySQL.host", "localhost");
 		config.addDefault("MySQL.port", 3306);
@@ -123,11 +115,6 @@ public class LoginSecurity extends JavaPlugin {
 			thread.startTimeoutTask();
 		}
 
-		// Updater
-		UpdaterFactory factory = new UpdaterFactory(this);
-		this.updater = factory.newUpdater(getFile(), config.getBoolean("settings.update-checker"));
-        updater.setChannel(ReleaseType.valueOf(config.getString("settings.update-channel", "BETA")));
-
 		// Threads
 		thread.startMainTask();
 		thread.startMsgTask();
@@ -145,14 +132,6 @@ public class LoginSecurity extends JavaPlugin {
 			this.saveConfig();
 		}
 
-		//metrics
-		try {
-			Metrics metrics = new Metrics(this);
-			metrics.start();
-		} catch (Exception e) {
-			log.info("[LoginSecurity] Failed sending stats to mcstats.org");
-		}
-		
 		// Filter logs
 		org.apache.logging.log4j.core.Logger consoleLogger = (org.apache.logging.log4j.core.Logger) LogManager.getRootLogger();
 		consoleLogger.addFilter(new LoggingFilter());
@@ -187,10 +166,6 @@ public class LoginSecurity extends JavaPlugin {
 
 	}
 	
-	public Updater getUpdater() {
-		return updater;
-	}
-
 	public void saveAuthList(Map<String, Boolean> map) throws IOException {
 		File file = new File(this.getDataFolder(), "authList");
 		FileOutputStream fout = new FileOutputStream(file);
@@ -269,7 +244,7 @@ public class LoginSecurity extends JavaPlugin {
 	}
 
 	public boolean checkLastIp(Player player) {
-		String uuid = player.getUniqueId().toString().replaceAll("-", "");
+		String uuid = player.getUniqueId().toString();
 		if (data.isRegistered(uuid)) {
 			String lastIp = data.getIp(uuid);
 			String currentIp = player.getAddress().getAddress().toString();
@@ -280,11 +255,11 @@ public class LoginSecurity extends JavaPlugin {
 	}
 
 	public void playerJoinPrompt(final Player player) {
-		String uuid = player.getUniqueId().toString().replaceAll("-", "");
+		String uuid = player.getUniqueId().toString();
 		
 		//Quick security check
 		for(Player p : Bukkit.getOnlinePlayers()) {
-			if(player != p && player.getName().equalsIgnoreCase(p.getName())) {
+			if(player != p && uuid.equalsIgnoreCase(p.getUniqueId().toString())) {
 				player.kickPlayer("You are already logged in under the name: " + p.getName());
 				return;
 			}
@@ -294,16 +269,16 @@ public class LoginSecurity extends JavaPlugin {
 			player.sendMessage(ChatColor.GREEN + "Extended session from last login");
 			return;
 		} else if (data.isRegistered(uuid)) {
-			authList.put(player.getName().toLowerCase(), false);
+			authList.put(uuid, false);
 			player.sendMessage(ChatColor.RED + "Please login using /login <password>");
 		} else if (required) {
-			authList.put(player.getName().toLowerCase(), true);
+			authList.put(uuid, true);
 			player.sendMessage(ChatColor.RED + "Please register using /register <password>");
 		} else {
 			return;
 		}
 
-		debilitatePlayer(player, player.getName().toLowerCase(), false);
+		debilitatePlayer(player, uuid, false);
 	}
 
 	public void debilitatePlayer(Player player, String name, boolean logout) {
