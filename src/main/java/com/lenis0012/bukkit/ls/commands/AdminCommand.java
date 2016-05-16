@@ -16,7 +16,7 @@ public class AdminCommand implements CommandExecutor {
 	public boolean onCommand(final CommandSender sender, Command cmd, String label, String[] args) {
 		final LoginSecurity plugin = LoginSecurity.instance;
 		if(!sender.hasPermission("ls.admin")) {
-			sender.sendMessage(Lang.NO_PERM.toString());
+			sender.sendMessage(ChatColor.RED + Lang.NO_PERM.toString());
 			return true;
 		}
 
@@ -24,7 +24,7 @@ public class AdminCommand implements CommandExecutor {
 			Player player = (Player) sender;
 			String uuid = player.getUniqueId().toString();
 			if(plugin.authList.containsKey(uuid)) {
-				sender.sendMessage(Lang.MUST_LGN_FIRST.toString());
+				sender.sendMessage(ChatColor.RED + Lang.MUST_LGN_FIRST.toString());
 			}
 		}
 
@@ -37,13 +37,13 @@ public class AdminCommand implements CommandExecutor {
 				String uuid = args[1];
 				if(uuid != null && !uuid.isEmpty() && plugin.data.isRegistered(uuid)) {
 					plugin.data.removeUser(uuid);
-					sender.sendMessage(Lang.REM_USER_FROM_DB.toString());
+					sender.sendMessage(ChatColor.GREEN + Lang.REM_USER_FROM_DB.toString());
 				} else {
-					sender.sendMessage(Lang.INVALID_USERNAME.toString());
+					sender.sendMessage(ChatColor.RED + Lang.INVALID_USERNAME.toString());
 				}
 			} else if(args.length >= 1 && args[0].equalsIgnoreCase("reload")) {
 				plugin.reloadConfig();
-				sender.sendMessage(Lang.RELOADED.toString());
+				sender.sendMessage(ChatColor.GREEN + Lang.RELOADED.toString());
 			}
 
 			return true;
