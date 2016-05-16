@@ -66,9 +66,9 @@ public class ThreadManager {
 					if (plugin.authList.containsKey(uuid)) {
 						boolean register = plugin.authList.get(uuid);
 						if (register) {
-							player.sendMessage(Lang.REG_MSG.toString());
+							player.sendMessage(ChatColor.RED + Lang.REG_MSG.toString());
 						} else {
-							player.sendMessage(Lang.LOG_MSG.toString());
+							player.sendMessage(ChatColor.RED + Lang.LOG_MSG.toString());
 						}
 					}
 				}
