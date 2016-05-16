@@ -6,6 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
+import com.lenis0012.bukkit.ls.Lang;
 import com.lenis0012.bukkit.ls.LoginSecurity;
 import org.bukkit.entity.Player;
 
@@ -15,7 +16,7 @@ public class AdminCommand implements CommandExecutor {
 	public boolean onCommand(final CommandSender sender, Command cmd, String label, String[] args) {
 		final LoginSecurity plugin = LoginSecurity.instance;
 		if(!sender.hasPermission("ls.admin")) {
-			sender.sendMessage(ChatColor.RED + "You do not have permission!");
+			sender.sendMessage(Lang.NO_PERM.toString());
 			return true;
 		}
 
@@ -23,7 +24,7 @@ public class AdminCommand implements CommandExecutor {
 			Player player = (Player) sender;
 			String uuid = player.getUniqueId().toString();
 			if(plugin.authList.containsKey(uuid)) {
-				sender.sendMessage(ChatColor.RED + "You have to log in before you can use this command!");
+				sender.sendMessage(Lang.MUST_LGN_FIRST.toString());
 			}
 		}
 
@@ -36,13 +37,13 @@ public class AdminCommand implements CommandExecutor {
 				String uuid = args[1];
 				if(uuid != null && !uuid.isEmpty() && plugin.data.isRegistered(uuid)) {
 					plugin.data.removeUser(uuid);
-					sender.sendMessage(ChatColor.GREEN + "Removed user from accounts database!");
+					sender.sendMessage(Lang.REM_USER_FROM_DB.toString());
 				} else {
-					sender.sendMessage(ChatColor.RED + "Invalid username");
+					sender.sendMessage(Lang.INVALID_USERNAME.toString());
 				}
 			} else if(args.length >= 1 && args[0].equalsIgnoreCase("reload")) {
 				plugin.reloadConfig();
-				sender.sendMessage(ChatColor.GREEN + "Plugin config reloaded!");
+				sender.sendMessage(Lang.RELOADED.toString());
 			}
 
 			return true;
