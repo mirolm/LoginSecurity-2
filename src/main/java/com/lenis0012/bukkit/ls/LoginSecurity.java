@@ -290,7 +290,7 @@ public class LoginSecurity extends JavaPlugin {
 			thread.timeout.put(name, timeDelay);
 		}
 		if (blindness) {
-			player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 1728000, 15));
+			player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 15), true);
 		}
 		if (spawntp && !logout) {
 			loginLocations.put(name, player.getLocation().clone());
