@@ -42,16 +42,30 @@ public class LoginListener implements Listener {
 		this.plugin = i;
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
+		String uuid = player.getUniqueId().toString();
 
-		//Do not remove or else...
-		plugin.playerJoinPrompt(player);
+		if (plugin.sesUse && plugin.thread.getSession().containsKey(uuid) && plugin.checkLastIp(player)) {
+			player.sendMessage(ChatColor.GREEN + Lang.SESS_EXTENDED.toString());
+			return;
+		} else if (plugin.data.isRegistered(uuid)) {
+			plugin.authList.put(uuid, false);
+			player.sendMessage(ChatColor.RED + Lang.LOG_MSG.toString());
+		} else if (plugin.required) {
+			plugin.authList.put(uuid, true);
+			player.sendMessage(ChatColor.RED + Lang.REG_MSG.toString());
+		} else {
+			return;
+		}
+
+		plugin.debilitatePlayer(player, uuid, false);
 	}
 
-	@EventHandler(priority = EventPriority.LOWEST)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
+
 		//Check conversion in progress
 		if(UUIDConverter.IS_CONVERTING) {
 			event.disallow(Result.KICK_OTHER, Lang.CONVERTING_ERROR.toString());
@@ -67,20 +81,15 @@ public class LoginListener implements Listener {
 
 		String uuid = event.getUniqueId().toString();
 		//Check if the player is already online
-		for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-			String puuid = player.getUniqueId().toString();
-			if (plugin.authList.containsKey(puuid)) {
-				continue;
-			}
-
-			if (puuid.equalsIgnoreCase(uuid)) {
+		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+			if (uuid.equalsIgnoreCase(p.getUniqueId().toString())) {
 				event.disallow(Result.KICK_OTHER, Lang.ALREADY_ONLINE.toString());
 				return;
 			}
 		}
 	}
 
-	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		if(UUIDConverter.IS_CONVERTING) {
 			return;
@@ -102,7 +111,7 @@ public class LoginListener implements Listener {
 		plugin.authList.remove(uuid);
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		Player player = event.getPlayer();
 		String uuid = player.getUniqueId().toString();
@@ -283,7 +292,7 @@ public class LoginListener implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onPlayerInteract(PlayerInteractEvent event) {
-                Player player = event.getPlayer();
+		Player player = event.getPlayer();
 		String uuid = player.getUniqueId().toString();
 
 		if (plugin.authList.containsKey(uuid)) {
@@ -300,7 +309,8 @@ public class LoginListener implements Listener {
 				//faction fix start
 				if (event.getMessage().startsWith("/f")) {
 					event.setMessage("/" + RandomStringUtils.randomAscii(uuid.length())); //this command does not exist :P
-				}		    	//faction fix end
+				}
+				//faction fix end
 				event.setCancelled(true);
 			}
 		}
