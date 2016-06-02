@@ -1,9 +1,11 @@
 package com.lenis0012.bukkit.ls;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
+import java.util.logging.Level;
 
 import com.google.common.collect.Maps;
 import com.lenis0012.bukkit.ls.util.LoggingFilter;
@@ -31,13 +33,6 @@ import com.lenis0012.bukkit.ls.data.DataManager;
 import com.lenis0012.bukkit.ls.data.MySQL;
 import com.lenis0012.bukkit.ls.data.SQLite;
 import com.lenis0012.bukkit.ls.encryption.EncryptionType;
-
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
 import org.bukkit.potion.PotionEffect;
@@ -139,16 +134,6 @@ public class LoginSecurity extends JavaPlugin {
 		// Filter logs
 		org.apache.logging.log4j.core.Logger consoleLogger = (org.apache.logging.log4j.core.Logger) LogManager.getRootLogger();
 		consoleLogger.addFilter(new LoggingFilter());
-
-		// Read from old auth list file
-		try {
-			authList = loadAuthList();
-		} catch (IOException ex) {
-			log.log(Level.SEVERE, "[LoginSecurity] Could not read from auth list!");
-		} catch (ClassNotFoundException ex) {
-			log.log(Level.SEVERE, "[LoginSecurity] Could not read from auth list (bad data)!");
-		}
-
 	}
 
 	@Override
@@ -160,36 +145,6 @@ public class LoginSecurity extends JavaPlugin {
 			thread.stopMsgTask();
 			thread.stopSessionTask();
 		}
-
-		// Save auth list to file so that it survives a reload
-		try {
-			saveAuthList(authList);
-		} catch (IOException ex) {
-			log.log(Level.SEVERE, "[LoginSecurity] Could not save to auth list (check permissions?)");
-		}
-
-	}
-
-	public void saveAuthList(Map<String, Boolean> map) throws IOException {
-		File file = new File(this.getDataFolder(), "authList");
-		FileOutputStream fout = new FileOutputStream(file);
-		ObjectOutputStream out = new ObjectOutputStream(fout);
-		out.writeObject(map);
-		out.close();
-		fout.close();
-	}
-
-	@SuppressWarnings("unchecked")
-	public Map<String, Boolean> loadAuthList() throws IOException, ClassNotFoundException {
-		File file = new File(this.getDataFolder(), "authList");
-		FileInputStream fin = new FileInputStream(file);
-		ObjectInputStream in = new ObjectInputStream(fin);
-		Map<String, Boolean> map = (Map<String, Boolean>) in.readObject();
-		in.close();
-
-		file.delete();
-		fin.close();
-		return map;
 	}
 
 	private DataManager getDataManager(FileConfiguration config, String fileName) {
@@ -256,33 +211,6 @@ public class LoginSecurity extends JavaPlugin {
 		}
 
 		return false;
-	}
-
-	public void playerJoinPrompt(final Player player) {
-		String uuid = player.getUniqueId().toString();
-
-		//Quick security check
-		for(Player p : Bukkit.getOnlinePlayers()) {
-			if(player != p && uuid.equalsIgnoreCase(p.getUniqueId().toString())) {
-				player.kickPlayer(Lang.ALREADY_LOGIN.toString());
-				return;
-			}
-		}
-
-		if (sesUse && thread.getSession().containsKey(uuid) && checkLastIp(player)) {
-			player.sendMessage(ChatColor.GREEN + Lang.SESS_EXTENDED.toString());
-			return;
-		} else if (data.isRegistered(uuid)) {
-			authList.put(uuid, false);
-			player.sendMessage(ChatColor.RED + Lang.LOG_MSG.toString());
-		} else if (required) {
-			authList.put(uuid, true);
-			player.sendMessage(ChatColor.RED + Lang.REG_MSG.toString());
-		} else {
-			return;
-		}
-
-		debilitatePlayer(player, uuid, false);
 	}
 
 	public void debilitatePlayer(Player player, String name, boolean logout) {
