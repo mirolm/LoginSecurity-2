@@ -14,7 +14,6 @@ import org.bukkit.plugin.PluginManager;
 
 import com.lenis0012.bukkit.ls.LoginSecurity;
 import com.lenis0012.bukkit.ls.util.EncryptionUtil;
-import com.lenis0012.bukkit.ls.util.ReflectionUtil;
 
 public class Converter {
 	public static enum FileType {
