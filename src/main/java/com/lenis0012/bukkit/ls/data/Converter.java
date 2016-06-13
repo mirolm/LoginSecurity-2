@@ -12,18 +12,15 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 
-import com.cypherx.xauth.xAuth;
 import com.lenis0012.bukkit.ls.LoginSecurity;
 import com.lenis0012.bukkit.ls.util.EncryptionUtil;
 import com.lenis0012.bukkit.ls.util.ReflectionUtil;
-import com.lenis0012.bukkit.ls.xAuth.xAuthConv;
 
 public class Converter {
 	public static enum FileType {
 		YAML,
 		SQLite,
-		OldToNewMySQL,
-		xAuth;
+		OldToNewMySQL;
 	}
 	
 	private FileType type;
@@ -89,19 +86,6 @@ public class Converter {
 			} catch(SQLException e) {
 				System.out.println("[LoginSecurity] FAILED CONVERTING FROM SQLITE TO MYSQL");
 				log.warning("[LoginSecurity] "+e.getMessage());
-			}
-		} else if(type == FileType.xAuth) {
-			PluginManager pm = Bukkit.getServer().getPluginManager();
-			xAuth xauth = (xAuth)pm.getPlugin("xAuth");
-			xAuthConv conv = new xAuthConv(xauth);
-			conv.convert();
-			try {
-				ReflectionUtil.unloadPlugin("xAuth");
-				plugin.registerCommands();
-			} catch (NoSuchFieldException e) {
-				log.warning("[LoginSecurity] Failed to unload xAuth: "+e.getMessage());
-			} catch (IllegalAccessException e) {
-				log.warning("[LoginSecurity] Failed to unload xAuth: "+e.getMessage());
 			}
 		}
 	}
