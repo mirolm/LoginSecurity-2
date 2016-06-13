@@ -1,10 +1,5 @@
 package com.lenis0012.bukkit.ls.encryption;
 
-import com.lenis0012.bukkit.ls.xAuth.CryptoDigest;
-import com.lenis0012.bukkit.ls.xAuth.SaltedWhirlpool;
-import com.lenis0012.bukkit.ls.xAuth.Sha256;
-import com.lenis0012.bukkit.ls.xAuth.Whirlpool;
-
 public enum EncryptionType {
 	MD5(1, new MD5()),
 	PHPBB3(2, new PHPBB3()),
@@ -12,13 +7,7 @@ public enum EncryptionType {
 	SHA(4, new SHA("SHA")),
 	SHA256(5, new SHA("SHA-256")),
 	SHA512(6, new SHA("SHA-512")),
-	BCRYPT(7, new BCrypt()),
-	xAuth_Authme_SHA256(10, new Sha256()),
-	xAuth_DEFAULT(11, new SaltedWhirlpool()),
-	xAuth_MD5(12, new CryptoDigest("MD5")),
-	xAuth_SHA1(13, new CryptoDigest("SHA1")),
-	xAuth_SHA256(14, new CryptoDigest("SHA-256")),
-	xAuth_WHIRLPOOL(15, new Whirlpool());
+	BCRYPT(7, new BCrypt());
 	
 	private Encryptor cryp;
 	private int type;
