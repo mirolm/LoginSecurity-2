@@ -175,14 +175,6 @@ public class LoginSecurity extends JavaPlugin {
 				conv.convert();
 			}
 		}
-		Plugin xAuth = pm.getPlugin("xAuth");
-		if (xAuth != null) {
-			if (xAuth.isEnabled()) {
-				Converter conv = new Converter(FileType.xAuth, null);
-				conv.convert();
-				log.info("[LoginSecurity] Converted data from xAuth to LoginSecurity");
-			}
-		}
 	}
 
 	public void registerCommands() {
