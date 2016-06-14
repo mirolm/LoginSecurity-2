@@ -1,0 +1,14 @@
+#!/bin/bash
+
+export M3_HOME=/opt/apache-maven-3.2.5
+export M3=$M3_HOME/bin
+export PATH=$M3:$PATH
+export JAVA_HOME=/opt/jdk_default
+export PATH=$JAVA_HOME/bin:$PATH
+export MAVEN_OPTS="-Xms256m -Xmx512m"
+
+rm -rf LoginSecurity-2
+
+git clone https://github.com/mirolm/LoginSecurity-2.git
+
+mvn clean install
