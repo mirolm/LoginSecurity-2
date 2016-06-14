@@ -7,6 +7,8 @@ export JAVA_HOME=/opt/jdk_default
 export PATH=$JAVA_HOME/bin:$PATH
 export MAVEN_OPTS="-Xms256m -Xmx512m"
 
+## lrwxrwxrwx 1 build build   20 Mar  8 11:57 src -> LoginSecurity-2/src/
+
 rm -rf LoginSecurity-2
 
 git clone https://github.com/mirolm/LoginSecurity-2.git
