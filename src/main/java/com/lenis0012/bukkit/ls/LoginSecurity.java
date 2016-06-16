@@ -18,6 +18,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.lenis0012.bukkit.ls.commands.AdminCommand;
@@ -59,6 +60,7 @@ public class LoginSecurity extends JavaPlugin {
 	public void onEnable() {
 		//setup quickcalls
 		FileConfiguration config = this.getConfig();
+		PluginManager pm = this.getServer().getPluginManager();
 		loadLang();
 
 		//setup config
