@@ -17,7 +17,6 @@ import com.lenis0012.bukkit.ls.util.EncryptionUtil;
 
 public class Converter {
 	public static enum FileType {
-		YAML,
 		SQLite;
 	}
 	
@@ -32,20 +31,7 @@ public class Converter {
 	
 	public void convert() {
 		LoginSecurity plugin = LoginSecurity.instance;
-		if(type == FileType.YAML) {
-			boolean md5 = plugin.getConfig().getBoolean("options.use-MD5 Enryption", true);
-			FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-			if(config.getConfigurationSection("password.password") != null) {
-				Set<String> set = config.getConfigurationSection("password.password").getKeys(false);
-				for(String user : set) {
-					String pass = config.getString("password.password." + user);
-					if(!md5)
-						pass = EncryptionUtil.getMD5(pass);
-					plugin.data.register(user, pass, 1, RandomStringUtils.randomAscii(25));
-				}
-			}
-			file.delete();
-		} else if(type == FileType.SQLite && !(plugin.data instanceof SQLite)) {
+		if(type == FileType.SQLite && !(plugin.data instanceof SQLite)) {
 			try {
 				SQLite manager = new SQLite(file);
 				manager.openConnection();
