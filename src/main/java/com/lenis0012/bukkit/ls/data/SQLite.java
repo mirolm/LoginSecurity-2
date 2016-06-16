@@ -39,8 +39,6 @@ public class SQLite implements DataManager {
 		}
 
 		this.openConnection();
-		UUIDConverter uuidConverter = new UUIDConverter(this, log, "users");
-		uuidConverter.convert();
 	}
 
 	@Override
