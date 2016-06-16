@@ -125,12 +125,6 @@ public class LoginSecurity extends JavaPlugin {
 		pm.registerEvents(new LoginListener(this), this);
 		this.registerCommands();
 
-		//clear old config
-		if (config.contains("options")) {
-			config.set("options", null);
-			this.saveConfig();
-		}
-
 		// Filter logs
 		org.apache.logging.log4j.core.Logger consoleLogger = (org.apache.logging.log4j.core.Logger) LogManager.getRootLogger();
 		consoleLogger.addFilter(new LoggingFilter());
