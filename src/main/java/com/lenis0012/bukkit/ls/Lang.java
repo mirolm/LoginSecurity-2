@@ -4,7 +4,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public enum Lang {
-    CONVERTING_ERROR("converting_error", "The server is currently converting all login data, please join back later."),
     INVALID_USERNAME_CHARS("invalid_username_chars", "Invalid characters in username!"),
     ALREADY_ONLINE("already_online", "A player with this name is already online!"),
     TIMED_OUT("timed_out", "Login timed out"),
