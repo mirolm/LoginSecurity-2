@@ -44,12 +44,12 @@ public class MySQL implements DataManager {
 		String pass = config.getString("MySQL.password", "");
 
 		try {
-			this.con = DriverManager.getConnection("jdbc:mysql://"+host+':'+port+
-					'/'+database+'?'+"user="+user+"&password="+pass);
+			this.con = DriverManager.getConnection("jdbc:mysql://" + host + ':' + port +
+					'/' + database + '?' + "user=" + user + "&password=" + pass);
 
 			Statement st = con.createStatement();
 			st.setQueryTimeout(30);
-			st.executeUpdate("CREATE TABLE IF NOT EXISTS " + table + " (unique_user_id VARCHAR(130) NOT NULL UNIQUE,password VARCHAR(300) NOT NULL,encryption INT,ip VARCHAR(130) NOT NULL);");
+			st.executeUpdate("CREATE TABLE IF NOT EXISTS " + table + " (unique_user_id VARCHAR(130) NOT NULL UNIQUE, password VARCHAR(300) NOT NULL, encryption INT, ip VARCHAR(130) NOT NULL);");
 		} catch(SQLException e) {
 			log.log(Level.SEVERE, "Failed to load MySQL", e);
 		}
@@ -68,7 +68,7 @@ public class MySQL implements DataManager {
 	@Override
 	public boolean isRegistered(String uuid) {
 		try {
-			PreparedStatement ps = con.prepareStatement("SELECT * FROM " + table + " WHERE unique_user_id=?;");
+			PreparedStatement ps = con.prepareStatement("SELECT 1 FROM " + table + " WHERE unique_user_id=?;");
 			ps.setString(1, uuid.replaceAll("-", ""));
 			ResultSet result = ps.executeQuery();
 			return result.next();
@@ -81,7 +81,7 @@ public class MySQL implements DataManager {
 	@Override
 	public void register(String uuid, String password, int encryption, String ip) {
 		try {
-			PreparedStatement ps = con.prepareStatement("INSERT INTO " + table + "(unique_user_id,password,encryption,ip) VALUES(?,?,?,?);");
+			PreparedStatement ps = con.prepareStatement("INSERT INTO " + table + "(unique_user_id, password, encryption,ip) VALUES(?, ?, ?, ?);");
 			ps.setString(1, uuid.replaceAll("-", ""));
 			ps.setString(2, password);
 			ps.setInt(3, encryption);
@@ -95,7 +95,7 @@ public class MySQL implements DataManager {
 	@Override
 	public void updatePassword(String uuid, String password, int encryption) {
 		try {
-			PreparedStatement ps = con.prepareStatement("UPDATE " + table + " SET password=?,encryption=? WHERE unique_user_id=?;");
+			PreparedStatement ps = con.prepareStatement("UPDATE " + table + " SET password=?, encryption=? WHERE unique_user_id=?;");
 			ps.setString(1, password);
 			ps.setInt(2, encryption);
 			ps.setString(3, uuid.replaceAll("-", ""));
@@ -120,7 +120,7 @@ public class MySQL implements DataManager {
 	@Override
 	public String getPassword(String uuid) {
 		try {
-			PreparedStatement ps = con.prepareStatement("SELECT * FROM " + table + " WHERE unique_user_id=?;");
+			PreparedStatement ps = con.prepareStatement("SELECT password FROM " + table + " WHERE unique_user_id=?;");
 			ps.setString(1, uuid.replaceAll("-", ""));
 			ResultSet result = ps.executeQuery();
 			if(result.next())
@@ -136,7 +136,7 @@ public class MySQL implements DataManager {
 	@Override
 	public int getEncryptionTypeId(String uuid) {
 		try {
-			PreparedStatement ps = con.prepareStatement("SELECT * FROM " + table + " WHERE unique_user_id=?;");
+			PreparedStatement ps = con.prepareStatement("SELECT encryption FROM " + table + " WHERE unique_user_id=?;");
 			ps.setString(1, uuid.replaceAll("-", ""));
 			ResultSet result = ps.executeQuery();
 			if(result.next())
@@ -152,7 +152,7 @@ public class MySQL implements DataManager {
 	@Override
 	public String getIp(String uuid) {
 		try {
-			PreparedStatement ps = con.prepareStatement("SELECT * FROM " + table + " WHERE unique_user_id=?;");
+			PreparedStatement ps = con.prepareStatement("SELECT ip FROM " + table + " WHERE unique_user_id=?;");
 			ps.setString(1, uuid.replaceAll("-", ""));
 			ResultSet result = ps.executeQuery();
 			if(result.next())
@@ -184,7 +184,7 @@ public class MySQL implements DataManager {
 	@Override
 	public ResultSet getAllUsers() {
 		try {
-			PreparedStatement ps = con.prepareStatement("SELECT * FROM " + table + "");
+			PreparedStatement ps = con.prepareStatement("SELECT username, password FROM " + table + ";");
 			return ps.executeQuery();
 		} catch (SQLException e) {
 			return null;
@@ -206,7 +206,7 @@ public class MySQL implements DataManager {
 		try {
 			Statement st = con.createStatement();
 			st.setQueryTimeout(30);
-			st.executeUpdate("DROP TABLE " + name);
+			st.executeUpdate("DROP TABLE " + name + ";");
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, "Failed to drop table", e);
 		}
