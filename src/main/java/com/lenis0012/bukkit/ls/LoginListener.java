@@ -23,7 +23,6 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
-import com.lenis0012.bukkit.ls.data.UUIDConverter;
 import com.lenis0012.bukkit.ls.util.StringUtil;
 
 import org.bukkit.entity.LivingEntity;
@@ -65,13 +64,6 @@ public class LoginListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
-
-		//Check conversion in progress
-		if(UUIDConverter.IS_CONVERTING) {
-			event.disallow(Result.KICK_OTHER, Lang.CONVERTING_ERROR.toString());
-			return;
-		}
-
 		String pname = event.getName();
 		//Check for valid user name
 		if (!pname.equals(StringUtil.cleanString(pname))) {
@@ -91,10 +83,6 @@ public class LoginListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onPlayerQuit(PlayerQuitEvent event) {
-		if(UUIDConverter.IS_CONVERTING) {
-			return;
-		}
-
 		Player player = event.getPlayer();
 		String uuid = player.getUniqueId().toString();
 		String ip = player.getAddress().getAddress().toString();
