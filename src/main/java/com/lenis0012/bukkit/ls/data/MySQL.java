@@ -31,8 +31,6 @@ public class MySQL implements DataManager {
 		}
 
 		this.openConnection();
-		UUIDConverter uuidConverter = new UUIDConverter(this, log, table);
-		uuidConverter.convert();
 	}
 
 	@Override
