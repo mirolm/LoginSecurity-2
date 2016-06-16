@@ -50,7 +50,7 @@ public class SQLite implements DataManager {
 			Statement st = con.createStatement();
 
 			st.setQueryTimeout(30);
-			st.executeUpdate("CREATE TABLE IF NOT EXISTS users (unique_user_id VARCHAR(130) NOT NULL UNIQUE,password VARCHAR(300) NOT NULL,encryption INT,ip VARCHAR(130) NOT NULL);");
+			st.executeUpdate("CREATE TABLE IF NOT EXISTS users (unique_user_id VARCHAR(130) NOT NULL UNIQUE, password VARCHAR(300) NOT NULL, encryption INT, ip VARCHAR(130) NOT NULL);");
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, "Failed to open SQLite connection", e);
 		}
@@ -69,7 +69,7 @@ public class SQLite implements DataManager {
 	@Override
 	public boolean isRegistered(String uuid) {
 		try {
-			PreparedStatement ps = con.prepareStatement("SELECT * FROM users WHERE unique_user_id=?;");
+			PreparedStatement ps = con.prepareStatement("SELECT 1 FROM users WHERE unique_user_id=?;");
 			ps.setString(1, uuid.replaceAll("-", ""));
 			ResultSet result = ps.executeQuery();
 			return result.next();
@@ -82,7 +82,7 @@ public class SQLite implements DataManager {
 	@Override
 	public void register(String uuid, String password, int encryption, String ip) {
 		try {
-			PreparedStatement ps = con.prepareStatement("INSERT INTO users(unique_user_id,password,encryption,ip) VALUES(?,?,?,?);");
+			PreparedStatement ps = con.prepareStatement("INSERT INTO users(unique_user_id, password, encryption, ip) VALUES(?, ?, ?, ?);");
 			ps.setString(1, uuid.replaceAll("-", ""));
 			ps.setString(2, password);
 			ps.setInt(3, encryption);
@@ -96,7 +96,7 @@ public class SQLite implements DataManager {
 	@Override
 	public void updatePassword(String uuid, String password, int encryption) {
 		try {
-			PreparedStatement ps = con.prepareStatement("UPDATE users SET password=?,encryption=? WHERE unique_user_id=?;");
+			PreparedStatement ps = con.prepareStatement("UPDATE users SET password=?, encryption=? WHERE unique_user_id=?;");
 			ps.setString(1, password);
 			ps.setInt(2, encryption);
 			ps.setString(3, uuid.replaceAll("-", ""));
@@ -121,7 +121,7 @@ public class SQLite implements DataManager {
 	@Override
 	public String getPassword(String uuid) {
 		try {
-			PreparedStatement ps = con.prepareStatement("SELECT * FROM users WHERE unique_user_id=?;");
+			PreparedStatement ps = con.prepareStatement("SELECT password FROM users WHERE unique_user_id=?;");
 			ps.setString(1, uuid.replaceAll("-", ""));
 			ResultSet result = ps.executeQuery();
 			if(result.next())
@@ -137,7 +137,7 @@ public class SQLite implements DataManager {
 	@Override
 	public int getEncryptionTypeId(String uuid) {
 		try {
-			PreparedStatement ps = con.prepareStatement("SELECT * FROM users WHERE unique_user_id=?;");
+			PreparedStatement ps = con.prepareStatement("SELECT encryption FROM users WHERE unique_user_id=?;");
 			ps.setString(1, uuid.replaceAll("-", ""));
 			ResultSet result = ps.executeQuery();
 			if(result.next())
@@ -153,7 +153,7 @@ public class SQLite implements DataManager {
 	@Override
 	public String getIp(String uuid) {
 		try {
-			PreparedStatement ps = con.prepareStatement("SELECT * FROM users WHERE unique_user_id=?;");
+			PreparedStatement ps = con.prepareStatement("SELECT ip FROM users WHERE unique_user_id=?;");
 			ps.setString(1, uuid.replaceAll("-", ""));
 			ResultSet result = ps.executeQuery();
 			if(result.next())
@@ -185,7 +185,7 @@ public class SQLite implements DataManager {
 	@Override
 	public ResultSet getAllUsers() {
 		try {
-			PreparedStatement ps = con.prepareStatement("SELECT * FROM users");
+			PreparedStatement ps = con.prepareStatement("SELECT username, password FROM users;");
 			return ps.executeQuery();
 		} catch (SQLException e) {
 			return null;
