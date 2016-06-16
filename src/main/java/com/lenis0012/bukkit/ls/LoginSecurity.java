@@ -152,11 +152,6 @@ public class LoginSecurity extends JavaPlugin {
 	private void checkConverter() {
 		PluginManager pm = this.getServer().getPluginManager();
 		File file;
-		file = new File(this.getDataFolder(), "data.yml");
-		if (file.exists()) {
-			Converter conv = new Converter(FileType.YAML, file);
-			conv.convert();
-		}
 		file = new File(this.getDataFolder(), "data.db");
 		if (file.exists() && data instanceof MySQL) {
 			Converter conv = new Converter(FileType.SQLite, file);
