@@ -168,13 +168,6 @@ public class LoginSecurity extends JavaPlugin {
 			Converter conv = new Converter(FileType.SQLite, file);
 			conv.convert();
 		}
-		if (data instanceof MySQL) {
-			MySQL mysql = (MySQL) data;
-			if (mysql.tableExists("passwords")) {
-				Converter conv = new Converter(FileType.OldToNewMySQL, null);
-				conv.convert();
-			}
-		}
 	}
 
 	public void registerCommands() {
