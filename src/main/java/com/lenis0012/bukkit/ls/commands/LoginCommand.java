@@ -22,7 +22,6 @@ public class LoginCommand implements CommandExecutor {
 
 		Player player = (Player)sender;
 		String uuid = player.getUniqueId().toString();
-		int fcnt = plugin.failLogins.get(uuid);
 
 		if(!plugin.authList.containsKey(uuid)) {
 			player.sendMessage(ChatColor.RED + Lang.ALREADY_LOGIN.toString());
@@ -46,13 +45,6 @@ public class LoginCommand implements CommandExecutor {
 		} else {
 			player.sendMessage(ChatColor.RED + Lang.INVALID_PSW.toString());
 			LoginSecurity.log.log(Level.WARNING, "[LoginSecurity] {0} entered an incorrect password", player.getName());
-			
-			if (fcnt > plugin.numLogin) {
-				player.kickPlayer(Lang.FAILED_LOGINS.toString());
-				LoginSecurity.log.log(Level.WARNING, "[LoginSecurity] {0} reached kicked for login fails", player.getName());
-			}
-			
-			plugin.failLogins.put(uuid, fcnt++);
 		}
 
 		return true;
