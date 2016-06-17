@@ -23,8 +23,6 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
-import com.lenis0012.bukkit.ls.util.StringUtil;
-
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -66,7 +64,7 @@ public class LoginListener implements Listener {
 	public void onPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
 		String pname = event.getName();
 		//Check for valid user name
-		if (!pname.equals(StringUtil.cleanString(pname))) {
+		if (!pname.equals(pname.replaceAll("[^a-zA-Z_0-9]", ""))) {
 			event.disallow(Result.KICK_OTHER, Lang.INVALID_USERNAME_CHARS.toString());
 			return;
  		}
