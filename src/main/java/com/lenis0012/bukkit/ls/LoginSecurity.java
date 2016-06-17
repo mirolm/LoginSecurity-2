@@ -44,8 +44,9 @@ public class LoginSecurity extends JavaPlugin {
 	public static LoginSecurity instance;
 	public Map<String, Boolean> authList = Maps.newConcurrentMap();
 	public Map<String, Location> loginLocations = Maps.newConcurrentMap();
+	public Map<String, int> failLogins = Maps.newConcurrentMap();
 	public boolean required, blindness, sesUse, timeUse, spawntp;
-	public int sesDelay, timeDelay;
+	public int sesDelay, timeDelay, numLogin;
 	public static final Logger log = Logger.getLogger("Minecraft");
 	public ThreadManager thread;
 	public String prefix;
@@ -70,6 +71,7 @@ public class LoginSecurity extends JavaPlugin {
 		config.addDefault("settings.PHP_VERSION", 4);
 		config.addDefault("settings.messager-api", true);
 		config.addDefault("settings.blindness", true);
+		config.addDefault("settings.failed-logins", 3);
 		config.addDefault("settings.fake-location", false);
 		config.addDefault("settings.session.use", true);
 		config.addDefault("settings.session.timeout (sec)", 60);
@@ -93,6 +95,7 @@ public class LoginSecurity extends JavaPlugin {
 		thread = new ThreadManager(this);
 		required = config.getBoolean("settings.password-required");
 		blindness = config.getBoolean("settings.blindness");
+		numLogin = config.getBoolean("settings.failed-logins");
 		spawntp = config.getBoolean("settings.fake-location");
 		sesUse = config.getBoolean("settings.session.use", true);
 		sesDelay = config.getInt("settings.session.timeout (sec)", 60);
@@ -197,7 +200,9 @@ public class LoginSecurity extends JavaPlugin {
 			loginLocations.put(name, player.getLocation().clone());
 			player.teleport(player.getWorld().getSpawnLocation());
 		}
-
+		
+		// init failed counter
+		failLogins.put(name, 0);
 	}
 
 	public void rehabPlayer(Player player, String name) {
@@ -211,6 +216,9 @@ public class LoginSecurity extends JavaPlugin {
 		}
 		// ensure that player does not drown after logging in
 		player.setRemainingAir(player.getMaximumAir());
+		
+		// clear failed counter
+		failLogins.remove(name);
 	}
 
 	public void loadLang() {
