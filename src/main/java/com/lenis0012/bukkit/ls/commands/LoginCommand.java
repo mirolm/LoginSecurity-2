@@ -22,7 +22,7 @@ public class LoginCommand implements CommandExecutor {
 
 		Player player = (Player)sender;
 		String uuid = player.getUniqueId().toString();
-		int fcnt = failLogins.get(uuid);
+		int fcnt = plugin.failLogins.get(uuid);
 
 		if(!plugin.authList.containsKey(uuid)) {
 			player.sendMessage(ChatColor.RED + Lang.ALREADY_LOGIN.toString());
@@ -52,7 +52,7 @@ public class LoginCommand implements CommandExecutor {
 				LoginSecurity.log.log(Level.WARNING, "[LoginSecurity] {0} reached kicked for login fails", player.getName());
 			}
 			
-			failLogins.put(uuid, fcnt++);
+			plugin.failLogins.put(uuid, fcnt++);
 		}
 
 		return true;
