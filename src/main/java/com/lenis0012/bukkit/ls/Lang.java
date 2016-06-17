@@ -28,8 +28,7 @@ public enum Lang {
     REM_USER_FROM_DB("rem_user_from_db", "Removed user from accounts database!"),
     NO_PERM("no_perm", "You do not have permission"),
     PSW_CHANGED("psw_changed", "Sucessfully changed password"),
-    SESS_EXTENDED("sess_extended", "Extended session from last login"),
-    FAILED_LOGINS("failed_logins", "Too many failed login attempts!");
+    SESS_EXTENDED("sess_extended", "Extended session from last login");
 
     private String path;
     private String def;
