@@ -95,7 +95,7 @@ public class LoginSecurity extends JavaPlugin {
 		thread = new ThreadManager(this);
 		required = config.getBoolean("settings.password-required");
 		blindness = config.getBoolean("settings.blindness");
-		numLogin = config.getBoolean("settings.failed-logins");
+		numLogin = config.getInt("settings.failed-logins");
 		spawntp = config.getBoolean("settings.fake-location");
 		sesUse = config.getBoolean("settings.session.use", true);
 		sesDelay = config.getInt("settings.session.timeout (sec)", 60);
