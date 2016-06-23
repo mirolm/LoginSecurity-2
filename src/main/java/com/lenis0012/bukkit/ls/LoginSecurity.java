@@ -143,7 +143,7 @@ public class LoginSecurity extends JavaPlugin {
 
 	private DataManager getDataManager(FileConfiguration config, String fileName) {
 		if (config.getBoolean("MySQL.use")) {
-			return new MySQL(config, this.getConfig().getString("MySQL.prefix", "") + "users");
+			return new MySQL(config);
 		} else {
 			return new SQLite(new File(this.getDataFolder(), fileName));
 		}
