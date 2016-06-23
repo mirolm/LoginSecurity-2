@@ -1,6 +1,5 @@
 package com.lenis0012.bukkit.ls.data;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 
 public interface DataManager {
@@ -89,9 +88,8 @@ public interface DataManager {
 	public ResultSet getAllUsers();
 	
 	/**
-	 * Get the database connection
+	 * Close stuff
 	 * 
-	 * @return Connection
 	 */
-	public Connection getConnection();
+	public void closeQuietly(AutoCloseable closeable);
 }
