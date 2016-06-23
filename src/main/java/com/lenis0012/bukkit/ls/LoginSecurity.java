@@ -145,13 +145,13 @@ public class LoginSecurity extends JavaPlugin {
 		if (config.getBoolean("MySQL.use")) {
 			return new MySQL(config);
 		} else {
-			return new SQLite(new File(this.getDataFolder(), fileName));
+			File file = new File(this.getDataFolder(), fileName);
+			return new SQLite(file);
 		}
 	}
 
 	private void checkConverter() {
-		File file;
-		file = new File(this.getDataFolder(), "users.db");
+		File file = new File(this.getDataFolder(), "users.db");
 		if (file.exists() && data instanceof MySQL) {
 			Converter conv = new Converter(FileType.SQLite, file);
 			conv.convert();
