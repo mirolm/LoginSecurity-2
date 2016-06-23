@@ -20,7 +20,7 @@ public interface DataManager {
 	 * @param user Username
 	 * @return User registered?
 	 */
-	public synchronized boolean isRegistered(String user);
+	public boolean isRegistered(String user);
 	
 	/**
 	 * Register a user
@@ -30,7 +30,7 @@ public interface DataManager {
 	 * @param encryption Encryption type id
 	 * @param ip User address
 	 */
-	public synchronized void register(String user, String password, int encryption, String ip);
+	public void register(String user, String password, int encryption, String ip);
 	
 	/**
 	 * Update a player's password
@@ -39,7 +39,7 @@ public interface DataManager {
 	 * @param password New password
 	 * @param encryption Encryption type id
 	 */
-	public synchronized void updatePassword(String user, String password, int encryption);
+	public void updatePassword(String user, String password, int encryption);
 	
 	/**
 	 * Update a user ip
@@ -47,7 +47,7 @@ public interface DataManager {
 	 * @param user Username
 	 * @param ip New address
 	 */
-	public synchronized void updateIp(String user, String ip);
+	public void updateIp(String user, String ip);
 	
 	/**
 	 * Get a user password
@@ -55,7 +55,7 @@ public interface DataManager {
 	 * @param user Username
 	 * @return Password
 	 */
-	public synchronized String getPassword(String user);
+	public String getPassword(String user);
 	
 	/**
 	 * Get a user encryption type
@@ -63,7 +63,7 @@ public interface DataManager {
 	 * @param user Username
 	 * @return Encryption type id
 	 */
-	public synchronized int getEncryptionTypeId(String user);
+	public int getEncryptionTypeId(String user);
 	
 	/**
 	 * Get a user ip address
@@ -71,14 +71,14 @@ public interface DataManager {
 	 * @param user Username
 	 * @return Encryption type id
 	 */
-	public synchronized String getIp(String user);
+	public String getIp(String user);
 	
 	/**
 	 * Remove a user from the database
 	 * 
 	 * @param user Username
 	 */
-	public synchronized void removeUser(String user);
+	public void removeUser(String user);
 	
 	/**
 	 * Get all registered users
