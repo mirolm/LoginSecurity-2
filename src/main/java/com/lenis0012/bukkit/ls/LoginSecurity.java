@@ -151,7 +151,7 @@ public class LoginSecurity extends JavaPlugin {
 
 	private void checkConverter() {
 		File file;
-		file = new File(this.getDataFolder(), "data.db");
+		file = new File(this.getDataFolder(), "users.db");
 		if (file.exists() && data instanceof MySQL) {
 			Converter conv = new Converter(FileType.SQLite, file);
 			conv.convert();
