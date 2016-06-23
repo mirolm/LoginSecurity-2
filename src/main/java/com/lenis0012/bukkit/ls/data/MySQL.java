@@ -85,7 +85,7 @@ public class MySQL implements DataManager {
 	}
 
 	@Override
-	public boolean isRegistered(String uuid) {
+	public synchronized boolean isRegistered(String uuid) {
 		ResultSet result = null;
 
 		try {
@@ -101,7 +101,7 @@ public class MySQL implements DataManager {
 	}
 
 	@Override
-	public void register(String uuid, String password, int encryption, String ip) {
+	public synchronized void register(String uuid, String password, int encryption, String ip) {
 		try {
 			psInsertLogin.setString(1, uuid.replaceAll("-", ""));
 			psInsertLogin.setString(2, password);
@@ -114,7 +114,7 @@ public class MySQL implements DataManager {
 	}
 
 	@Override
-	public void updatePassword(String uuid, String password, int encryption) {
+	public synchronized void updatePassword(String uuid, String password, int encryption) {
 		try {
 			psUpdatePassword.setString(1, password);
 			psUpdatePassword.setInt(2, encryption);
@@ -126,7 +126,7 @@ public class MySQL implements DataManager {
 	}
 
 	@Override
-	public void updateIp(String uuid, String ip) {
+	public synchronized void updateIp(String uuid, String ip) {
 		try {
 			psUpdateIp.setString(1, ip);
 			psUpdateIp.setString(2, uuid.replaceAll("-", ""));
@@ -137,7 +137,7 @@ public class MySQL implements DataManager {
 	}
 
 	@Override
-	public String getPassword(String uuid) {
+	public synchronized String getPassword(String uuid) {
 		ResultSet result = null;
 
 		try {
@@ -156,7 +156,7 @@ public class MySQL implements DataManager {
 	}
 
 	@Override
-	public int getEncryptionTypeId(String uuid) {
+	public synchronized int getEncryptionTypeId(String uuid) {
 		ResultSet result = null;
 
 		try {
@@ -175,7 +175,7 @@ public class MySQL implements DataManager {
 	}
 
 	@Override
-	public String getIp(String uuid) {
+	public synchronized String getIp(String uuid) {
 		ResultSet result = null;
 
 		try {
@@ -194,7 +194,7 @@ public class MySQL implements DataManager {
 	}
 
 	@Override
-	public void removeUser(String uuid) {
+	public synchronized void removeUser(String uuid) {
 		try {
 			psDeleteLogin.setString(1, uuid.replaceAll("-", ""));
 			psDeleteLogin.executeUpdate();
