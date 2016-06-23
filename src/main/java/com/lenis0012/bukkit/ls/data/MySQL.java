@@ -1,7 +1,6 @@
 package com.lenis0012.bukkit.ls.data;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,11 +17,17 @@ public class MySQL implements DataManager {
 	private Logger log = Logger.getLogger("Minecraft.LoginSecruity");
 	private FileConfiguration config;
 	private Connection con;
-	private String table;
 
-	public MySQL(FileConfiguration config, final String table) {
+        private PreparedStatement psSelectRegistered;
+        private PreparedStatement psSelectLogin;
+        private PreparedStatement psInsertLogin;
+        private PreparedStatement psUpdatePassword;
+        private PreparedStatement psUpdateIp;
+        private PreparedStatement psDeleteLogin;
+        private PreparedStatement psGetAllUsers;
+
+	public MySQL(FileConfiguration config) {
 		this.config = config;
-		this.table = table;
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -40,51 +45,69 @@ public class MySQL implements DataManager {
 		String database = config.getString("MySQL.database", "bukkit");
 		String user = config.getString("MySQL.username", "root");
 		String pass = config.getString("MySQL.password", "");
+		String table = config.getString("MySQL.prefix", "") + "users";
+		Statement stCreateTable = null;
 
 		try {
-			this.con = DriverManager.getConnection("jdbc:mysql://" + host + ':' + port +
-					'/' + database + '?' + "user=" + user + "&password=" + pass);
+			this.con = DriverManager.getConnection("jdbc:mysql://" + host + ':' + port + '/' + database, user, pass);
 
-			Statement st = con.createStatement();
-			st.setQueryTimeout(30);
-			st.executeUpdate("CREATE TABLE IF NOT EXISTS " + table + " (unique_user_id VARCHAR(130) NOT NULL UNIQUE, password VARCHAR(300) NOT NULL, encryption INT, ip VARCHAR(130) NOT NULL);");
+			stCreateTable = con.createStatement();
+			stCreateTable.setQueryTimeout(30);
+			stCreateTable.executeUpdate("CREATE TABLE IF NOT EXISTS " + table + " (unique_user_id VARCHAR(130) NOT NULL UNIQUE, password VARCHAR(300) NOT NULL, encryption INT, ip VARCHAR(130) NOT NULL);");
+
+			// Prepare statements
+			psSelectRegistered = con.prepareStatement("SELECT 1 FROM " + table + " WHERE unique_user_id = ?;");
+			psSelectLogin = con.prepareStatement("SELECT ip, password, encryption FROM " + table + " WHERE unique_user_id = ?;");
+			psInsertLogin = con.prepareStatement("INSERT INTO " + table + "(unique_user_id, password, encryption,ip) VALUES(?, ?, ?, ?);");
+			psUpdatePassword = con.prepareStatement("UPDATE " + table + " SET password = ?, encryption = ? WHERE unique_user_id = ?;");
+			psUpdateIp = con.prepareStatement("UPDATE " + table + " SET ip = ? WHERE unique_user_id = ?;");
+			psDeleteLogin = con.prepareStatement("DELETE FROM " + table + " WHERE unique_user_id = ?;");
+			psGetAllUsers = con.prepareStatement("SELECT unique_user_id, password FROM " + table + ";");
 		} catch(SQLException e) {
 			log.log(Level.SEVERE, "Failed to load MySQL", e);
+		} finally {
+			closeQuietly(stCreateTable);			
 		}
 	}
 
 	@Override
 	public void closeConnection() {
-		try {
-			if(con != null)
-				con.close();
-		} catch(SQLException e) {
-			log.log(Level.SEVERE, "Failed to close MySQL connection", e);
-		}
+		// Release prepared
+		closeQuietly(psSelectRegistered);
+		closeQuietly(psSelectLogin);
+		closeQuietly(psInsertLogin);
+		closeQuietly(psUpdatePassword);
+		closeQuietly(psUpdateIp);
+		closeQuietly(psDeleteLogin);
+		closeQuietly(psGetAllUsers);
+
+		closeQuietly(con);
 	}
 
 	@Override
 	public boolean isRegistered(String uuid) {
+		ResultSet result = null;
+
 		try {
-			PreparedStatement ps = con.prepareStatement("SELECT 1 FROM " + table + " WHERE unique_user_id=?;");
-			ps.setString(1, uuid.replaceAll("-", ""));
-			ResultSet result = ps.executeQuery();
+			psSelectRegistered.setString(1, uuid.replaceAll("-", ""));
+			result = psSelectRegistered.executeQuery();
 			return result.next();
 		} catch(SQLException e) {
 			log.log(Level.SEVERE, "Failed to get data from MySQL db", e);
 			return false;
+		} finally {
+			closeQuietly(result);
 		}
 	}
 
 	@Override
 	public void register(String uuid, String password, int encryption, String ip) {
 		try {
-			PreparedStatement ps = con.prepareStatement("INSERT INTO " + table + "(unique_user_id, password, encryption,ip) VALUES(?, ?, ?, ?);");
-			ps.setString(1, uuid.replaceAll("-", ""));
-			ps.setString(2, password);
-			ps.setInt(3, encryption);
-			ps.setString(4, ip);
-			ps.executeUpdate();
+			psInsertLogin.setString(1, uuid.replaceAll("-", ""));
+			psInsertLogin.setString(2, password);
+			psInsertLogin.setInt(3, encryption);
+			psInsertLogin.setString(4, ip);
+			psInsertLogin.executeUpdate();
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, "Failed to create user", e);
 		}
@@ -93,11 +116,10 @@ public class MySQL implements DataManager {
 	@Override
 	public void updatePassword(String uuid, String password, int encryption) {
 		try {
-			PreparedStatement ps = con.prepareStatement("UPDATE " + table + " SET password=?, encryption=? WHERE unique_user_id=?;");
-			ps.setString(1, password);
-			ps.setInt(2, encryption);
-			ps.setString(3, uuid.replaceAll("-", ""));
-			ps.executeUpdate();
+			psUpdatePassword.setString(1, password);
+			psUpdatePassword.setInt(2, encryption);
+			psUpdatePassword.setString(3, uuid.replaceAll("-", ""));
+			psUpdatePassword.executeUpdate();
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, "Failed to update user password", e);
 		}
@@ -106,10 +128,9 @@ public class MySQL implements DataManager {
 	@Override
 	public void updateIp(String uuid, String ip) {
 		try {
-			PreparedStatement ps = con.prepareStatement("UPDATE " + table + " SET ip=? WHERE unique_user_id=?;");
-			ps.setString(1, ip);
-			ps.setString(2, uuid.replaceAll("-", ""));
-			ps.executeUpdate();
+			psUpdateIp.setString(1, ip);
+			psUpdateIp.setString(2, uuid.replaceAll("-", ""));
+			psUpdateIp.executeUpdate();
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, "Failed to update user ip", e);
 		}
@@ -117,10 +138,11 @@ public class MySQL implements DataManager {
 
 	@Override
 	public String getPassword(String uuid) {
+		ResultSet result = null;
+
 		try {
-			PreparedStatement ps = con.prepareStatement("SELECT password FROM " + table + " WHERE unique_user_id=?;");
-			ps.setString(1, uuid.replaceAll("-", ""));
-			ResultSet result = ps.executeQuery();
+			psSelectLogin.setString(1, uuid.replaceAll("-", ""));
+			result = psSelectLogin.executeQuery();
 			if(result.next())
 				return result.getString("password");
 			else
@@ -128,15 +150,18 @@ public class MySQL implements DataManager {
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, "Failed to get user password", e);
 			return null;
+		} finally {
+			closeQuietly(result);
 		}
 	}
 
 	@Override
 	public int getEncryptionTypeId(String uuid) {
+		ResultSet result = null;
+
 		try {
-			PreparedStatement ps = con.prepareStatement("SELECT encryption FROM " + table + " WHERE unique_user_id=?;");
-			ps.setString(1, uuid.replaceAll("-", ""));
-			ResultSet result = ps.executeQuery();
+			psSelectLogin.setString(1, uuid.replaceAll("-", ""));
+			result = psSelectLogin.executeQuery();
 			if(result.next())
 				return result.getInt("encryption");
 			else
@@ -144,15 +169,18 @@ public class MySQL implements DataManager {
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, "Failed to get user encryption type", e);
 			return EncryptionType.MD5.getTypeId();
+		} finally {
+			closeQuietly(result);
 		}
 	}
 
 	@Override
 	public String getIp(String uuid) {
+		ResultSet result = null;
+
 		try {
-			PreparedStatement ps = con.prepareStatement("SELECT ip FROM " + table + " WHERE unique_user_id=?;");
-			ps.setString(1, uuid.replaceAll("-", ""));
-			ResultSet result = ps.executeQuery();
+			psSelectLogin.setString(1, uuid.replaceAll("-", ""));
+			result = psSelectLogin.executeQuery();
 			if(result.next())
 				return result.getString("ip");
 			else
@@ -160,53 +188,38 @@ public class MySQL implements DataManager {
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, "Failed to get user ip", e);
 			return null;
+		} finally {
+			closeQuietly(result);
 		}
 	}
 
 	@Override
 	public void removeUser(String uuid) {
 		try {
-			PreparedStatement ps = con.prepareStatement("DELETE FROM " + table + " WHERE unique_user_id=?;");
-			ps.setString(1, uuid.replaceAll("-", ""));
-			ps.executeUpdate();
+			psDeleteLogin.setString(1, uuid.replaceAll("-", ""));
+			psDeleteLogin.executeUpdate();
 		} catch(SQLException e) {
 			log.log(Level.SEVERE, "Failed to remove user", e);
 		}
 	}
 
 	@Override
-	public Connection getConnection() {
-		return this.con;
-	}
-
-	@Override
 	public ResultSet getAllUsers() {
 		try {
-			PreparedStatement ps = con.prepareStatement("SELECT username, password FROM " + table + ";");
-			return ps.executeQuery();
+			return psGetAllUsers.executeQuery();
 		} catch (SQLException e) {
 			return null;
 		}
 	}
 
-	public boolean tableExists(String name) {
-		try {
-			DatabaseMetaData dbm = con.getMetaData();
-			ResultSet tables = dbm.getTables(null, null, name, null);
-			return tables.next();
-		} catch (SQLException e) {
-			log.log(Level.SEVERE, "Failed to check if table exists", e);
-			return false;
-		}
-	}
-
-	public void dropTable(String name) {
-		try {
-			Statement st = con.createStatement();
-			st.setQueryTimeout(30);
-			st.executeUpdate("DROP TABLE " + name + ";");
-		} catch (SQLException e) {
-			log.log(Level.SEVERE, "Failed to drop table", e);
+	@Override
+	public void closeQuietly(AutoCloseable closeable) {
+		if (closeable != null) {
+			try {
+				closeable.close();
+			} catch (Exception e) {
+				log.log(Level.SEVERE, "Failed to close connection", e);
+			}
 		}
 	}
 }
