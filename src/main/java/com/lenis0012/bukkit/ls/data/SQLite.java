@@ -14,11 +14,17 @@ import java.util.logging.Logger;
 import com.lenis0012.bukkit.ls.encryption.EncryptionType;
 
 public class SQLite implements DataManager {
-	public static boolean IS_CONVERTING = false;
-
 	private final Logger log = Logger.getLogger("Minecraft.LoginSecurity");
 	private File file;
 	private Connection con;
+
+        private PreparedStatement psSelectRegistered;
+        private PreparedStatement psSelectLogin;
+        private PreparedStatement psInsertLogin;
+        private PreparedStatement psUpdatePassword;
+        private PreparedStatement psUpdateIp;
+        private PreparedStatement psDeleteLogin;
+        private PreparedStatement psGetAllUsers;
 
 	public SQLite(File file) {
 		this.file = file;
@@ -43,49 +49,68 @@ public class SQLite implements DataManager {
 
 	@Override
 	public void openConnection() {
+		Statement stCreateTable = null;
+
 		try {
 			this.con = DriverManager.getConnection("jdbc:sqlite:" + file.getPath());
-			Statement st = con.createStatement();
+			
+			stCreateTable = con.createStatement();
+			stCreateTable.setQueryTimeout(30);
+			stCreateTable.executeUpdate("CREATE TABLE IF NOT EXISTS users (unique_user_id VARCHAR(130) NOT NULL UNIQUE, password VARCHAR(300) NOT NULL, encryption INT, ip VARCHAR(130) NOT NULL);");
 
-			st.setQueryTimeout(30);
-			st.executeUpdate("CREATE TABLE IF NOT EXISTS users (unique_user_id VARCHAR(130) NOT NULL UNIQUE, password VARCHAR(300) NOT NULL, encryption INT, ip VARCHAR(130) NOT NULL);");
+			// Prepare statements
+			psSelectRegistered = con.prepareStatement("SELECT 1 FROM users WHERE unique_user_id = ?;");
+			psSelectLogin = con.prepareStatement("SELECT ip, password, encryption FROM users WHERE unique_user_id = ?;");
+			psInsertLogin = con.prepareStatement("INSERT INTO users(unique_user_id, password, encryption, ip) VALUES(?, ?, ?, ?);");
+			psUpdatePassword = con.prepareStatement("UPDATE users SET password = ?, encryption = ? WHERE unique_user_id = ?;");
+			psUpdateIp = con.prepareStatement("UPDATE users SET ip = ? WHERE unique_user_id = ?;");
+			psDeleteLogin = con.prepareStatement("DELETE FROM users WHERE unique_user_id = ?;");
+			psGetAllUsers = con.prepareStatement("SELECT unique_user_id, password FROM users;");
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, "Failed to open SQLite connection", e);
+		} finally {
+			closeQuietly(stCreateTable);			
 		}
 	}
 
 	@Override
 	public void closeConnection() {
-		try {
-			if(con != null)
-				con.close();
-		} catch(SQLException e) {
-			log.log(Level.SEVERE, "Failed to close SQLite connection", e);
-		}
+		// Release prepared
+		closeQuietly(psSelectRegistered);
+		closeQuietly(psSelectLogin);
+		closeQuietly(psInsertLogin);
+		closeQuietly(psUpdatePassword);
+		closeQuietly(psUpdateIp);
+		closeQuietly(psDeleteLogin);
+		closeQuietly(psGetAllUsers);
+
+		closeQuietly(con);
 	}
 
 	@Override
 	public boolean isRegistered(String uuid) {
+		ResultSet result = null;
+
 		try {
-			PreparedStatement ps = con.prepareStatement("SELECT 1 FROM users WHERE unique_user_id=?;");
-			ps.setString(1, uuid.replaceAll("-", ""));
-			ResultSet result = ps.executeQuery();
+			psSelectRegistered.setString(1, uuid.replaceAll("-", ""));
+			result = psSelectRegistered.executeQuery();
 			return result.next();
 		} catch(SQLException e) {
 			log.log(Level.SEVERE, "Failed to get data from SQLite db", e);
 			return false;
+		} finally {
+			closeQuietly(result);
 		}
 	}
 
 	@Override
 	public void register(String uuid, String password, int encryption, String ip) {
 		try {
-			PreparedStatement ps = con.prepareStatement("INSERT INTO users(unique_user_id, password, encryption, ip) VALUES(?, ?, ?, ?);");
-			ps.setString(1, uuid.replaceAll("-", ""));
-			ps.setString(2, password);
-			ps.setInt(3, encryption);
-			ps.setString(4, ip);
-			ps.executeUpdate();
+			psInsertLogin.setString(1, uuid.replaceAll("-", ""));
+			psInsertLogin.setString(2, password);
+			psInsertLogin.setInt(3, encryption);
+			psInsertLogin.setString(4, ip);
+			psInsertLogin.executeUpdate();
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, "Failed to create user", e);
 		}
@@ -94,11 +119,10 @@ public class SQLite implements DataManager {
 	@Override
 	public void updatePassword(String uuid, String password, int encryption) {
 		try {
-			PreparedStatement ps = con.prepareStatement("UPDATE users SET password=?, encryption=? WHERE unique_user_id=?;");
-			ps.setString(1, password);
-			ps.setInt(2, encryption);
-			ps.setString(3, uuid.replaceAll("-", ""));
-			ps.executeUpdate();
+			psUpdatePassword.setString(1, password);
+			psUpdatePassword.setInt(2, encryption);
+			psUpdatePassword.setString(3, uuid.replaceAll("-", ""));
+			psUpdatePassword.executeUpdate();
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, "Failed to update user password", e);
 		}
@@ -107,10 +131,9 @@ public class SQLite implements DataManager {
 	@Override
 	public void updateIp(String uuid, String ip) {
 		try {
-			PreparedStatement ps = con.prepareStatement("UPDATE users SET ip=? WHERE unique_user_id=?;");
-			ps.setString(1, ip);
-			ps.setString(2, uuid.replaceAll("-", ""));
-			ps.executeUpdate();
+			psUpdateIp.setString(1, ip);
+			psUpdateIp.setString(2, uuid.replaceAll("-", ""));
+			psUpdateIp.executeUpdate();
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, "Failed to update user ip", e);
 		}
@@ -118,10 +141,11 @@ public class SQLite implements DataManager {
 
 	@Override
 	public String getPassword(String uuid) {
+		ResultSet result = null;
+
 		try {
-			PreparedStatement ps = con.prepareStatement("SELECT password FROM users WHERE unique_user_id=?;");
-			ps.setString(1, uuid.replaceAll("-", ""));
-			ResultSet result = ps.executeQuery();
+			psSelectLogin.setString(1, uuid.replaceAll("-", ""));
+			result = psSelectLogin.executeQuery();
 			if(result.next())
 				return result.getString("password");
 			else
@@ -129,15 +153,18 @@ public class SQLite implements DataManager {
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, "Failed to get user password", e);
 			return null;
+		} finally {
+			closeQuietly(result);
 		}
 	}
 
 	@Override
 	public int getEncryptionTypeId(String uuid) {
+		ResultSet result = null;
+
 		try {
-			PreparedStatement ps = con.prepareStatement("SELECT encryption FROM users WHERE unique_user_id=?;");
-			ps.setString(1, uuid.replaceAll("-", ""));
-			ResultSet result = ps.executeQuery();
+			psSelectLogin.setString(1, uuid.replaceAll("-", ""));
+			result = psSelectLogin.executeQuery();
 			if(result.next())
 				return result.getInt("encryption");
 			else
@@ -145,15 +172,18 @@ public class SQLite implements DataManager {
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, "Failed to get user encryption type", e);
 			return EncryptionType.MD5.getTypeId();
+		} finally {
+			closeQuietly(result);
 		}
 	}
 
 	@Override
 	public String getIp(String uuid) {
+		ResultSet result = null;
+
 		try {
-			PreparedStatement ps = con.prepareStatement("SELECT ip FROM users WHERE unique_user_id=?;");
-			ps.setString(1, uuid.replaceAll("-", ""));
-			ResultSet result = ps.executeQuery();
+			psSelectLogin.setString(1, uuid.replaceAll("-", ""));
+			result = psSelectLogin.executeQuery();
 			if(result.next())
 				return result.getString("ip");
 			else
@@ -161,32 +191,38 @@ public class SQLite implements DataManager {
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, "Failed to get user ip", e);
 			return null;
+		} finally {
+			closeQuietly(result);
 		}
 	}
 
 	@Override
 	public void removeUser(String uuid) {
 		try {
-			PreparedStatement ps = con.prepareStatement("DELETE FROM users WHERE unique_user_id=?;");
-			ps.setString(1, uuid.replaceAll("-", ""));
-			ps.executeUpdate();
+			psDeleteLogin.setString(1, uuid.replaceAll("-", ""));
+			psDeleteLogin.executeUpdate();
 		} catch(SQLException e) {
 			log.log(Level.SEVERE, "Failed to remove user", e);
 		}
 	}
 
 	@Override
-	public Connection getConnection() {
-		return this.con;
+	public ResultSet getAllUsers() {
+		try {
+			return psGetAllUsers.executeQuery();
+		} catch (SQLException e) {
+			return null;
+		}
 	}
 
 	@Override
-	public ResultSet getAllUsers() {
-		try {
-			PreparedStatement ps = con.prepareStatement("SELECT username, password FROM users;");
-			return ps.executeQuery();
-		} catch (SQLException e) {
-			return null;
+	public void closeQuietly(AutoCloseable closeable) {
+		if (closeable != null) {
+			try {
+				closeable.close();
+			} catch (Exception e) {
+				log.log(Level.SEVERE, "Failed to close connection", e);
+			}
 		}
 	}
 }
