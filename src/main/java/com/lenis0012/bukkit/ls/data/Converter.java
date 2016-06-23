@@ -37,7 +37,7 @@ public class Converter {
 				manager.openConnection();
 				ResultSet result = manager.getAllUsers();
 				while(result.next()) {
-					String user = result.getString("username");
+					String user = result.getString("unique_user_id");
 					if(!plugin.data.isRegistered(user)) {
 						String pass = result.getString("password");
 						plugin.data.register(user, pass, 1, RandomStringUtils.randomAscii(25));
