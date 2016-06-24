@@ -45,7 +45,6 @@ public class Converter {
 				}
 				
 				manager.closeConnection();
-				file.delete();
 			} catch(SQLException e) {
 				System.out.println("[LoginSecurity] FAILED CONVERTING FROM SQLITE TO MYSQL");
 				log.warning("[LoginSecurity] " + e.getMessage());
