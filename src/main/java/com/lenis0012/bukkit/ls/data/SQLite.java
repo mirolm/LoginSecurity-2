@@ -81,7 +81,7 @@ public class SQLite implements DataManager {
 			result = stmt.executeQuery();
 			return result.next();
 		} catch(SQLException e) {
-			log.log(Level.SEVERE, "Failed to get data from SQLite db", e);
+			log.log(Level.SEVERE, "Failed to check user exists", e);
 			return false;
 		} finally {
 			closeQuietly(result);
@@ -237,7 +237,7 @@ public class SQLite implements DataManager {
 			try {
 				closeable.close();
 			} catch (Exception e) {
-				log.log(Level.SEVERE, "Failed to close connection", e);
+				log.log(Level.SEVERE, "Failed to close", e);
 			}
 		}
 	}
