@@ -6,23 +6,16 @@ import java.sql.SQLException;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import org.apache.commons.lang.RandomStringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.PluginManager;
-
 import com.lenis0012.bukkit.ls.LoginSecurity;
-import com.lenis0012.bukkit.ls.util.EncryptionUtil;
 
 public class Converter {
 	public static enum FileType {
 		SQLite;
 	}
 	
-	private FileType type;
-	private File file;
-	private Logger log = Logger.getLogger("Minecraft");
+	private final FileType type;
+	private final File file;
+	private final Logger log = Logger.getLogger("Minecraft");
 	
 	public Converter(FileType type, File file) {
 		this.type = type;
@@ -38,16 +31,18 @@ public class Converter {
 				ResultSet result = manager.getAllUsers();
 				while(result.next()) {
 					String user = result.getString("unique_user_id");
+					String pass = result.getString("password");
+					int enc = result.getInt("encryption");
+					String ip = result.getString("ip")
+					
 					if(!plugin.data.isRegistered(user)) {
-						String pass = result.getString("password");
-						plugin.data.register(user, pass, 1, RandomStringUtils.randomAscii(25));
+						plugin.data.register(user, pass, enc, ip);
 					}
 				}
 				
 				manager.closeConnection();
 			} catch(SQLException e) {
-				System.out.println("[LoginSecurity] FAILED CONVERTING FROM SQLITE TO MYSQL");
-				log.warning("[LoginSecurity] " + e.getMessage());
+				log.warning("[LoginSecurity] Failed to convert from SQLite to MySQL");
 			}
 		}
 	}
