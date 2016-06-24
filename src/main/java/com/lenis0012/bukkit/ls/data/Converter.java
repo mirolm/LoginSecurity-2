@@ -33,7 +33,7 @@ public class Converter {
 					String user = result.getString("unique_user_id");
 					String pass = result.getString("password");
 					int enc = result.getInt("encryption");
-					String ip = result.getString("ip")
+					String ip = result.getString("ip");
 					
 					if(!plugin.data.isRegistered(user)) {
 						plugin.data.register(user, pass, enc, ip);
