@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,20 +13,37 @@ import org.bukkit.configuration.file.FileConfiguration;
 import com.lenis0012.bukkit.ls.encryption.EncryptionType;
 
 public class MySQL implements DataManager {
-	private Logger log = Logger.getLogger("Minecraft.LoginSecruity");
-	private FileConfiguration config;
+	private final Logger log = Logger.getLogger("Minecraft.LoginSecruity");
 	private Connection con;
+	private final String jdbcUrl;	
 
-        private PreparedStatement psSelectRegistered;
-        private PreparedStatement psSelectLogin;
-        private PreparedStatement psInsertLogin;
-        private PreparedStatement psUpdatePassword;
-        private PreparedStatement psUpdateIp;
-        private PreparedStatement psDeleteLogin;
-        private PreparedStatement psGetAllUsers;
+	private final String CREATE_TABLE;
+        private final String SELECT_REGISTERED;
+        private final String SELECT_LOGIN;
+        private final String INSERT_LOGIN;
+        private final String UPDATE_PASSWORD;
+        private final String UPDATE_IP;
+        private final String DELETE_LOGIN;
+        private final String GET_USERS;
 
 	public MySQL(FileConfiguration config) {
-		this.config = config;
+		String host = config.getString("MySQL.host", "localhost");
+		String port = String.valueOf(config.getInt("MySQL.port", 3306));
+		String database = config.getString("MySQL.database", "bukkit");
+		String user = config.getString("MySQL.username", "root");
+		String pass = config.getString("MySQL.password", "");
+		String table = config.getString("MySQL.prefix", "") + "users";
+
+		CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + table + " (unique_user_id VARCHAR(130) NOT NULL UNIQUE, password VARCHAR(300) NOT NULL, encryption INT, ip VARCHAR(130) NOT NULL);";
+		SELECT_REGISTERED = "SELECT 1 FROM " + table + " WHERE unique_user_id = ?;";
+		SELECT_LOGIN = "SELECT ip, password, encryption FROM " + table + " WHERE unique_user_id = ?;";
+		INSERT_LOGIN = "INSERT INTO " + table + "(unique_user_id, password, encryption,ip) VALUES(?, ?, ?, ?);";
+		UPDATE_PASSWORD = "UPDATE " + table + " SET password = ?, encryption = ? WHERE unique_user_id = ?;";
+		UPDATE_IP = "UPDATE " + table + " SET ip = ? WHERE unique_user_id = ?;";
+		DELETE_LOGIN = "DELETE FROM " + table + " WHERE unique_user_id = ?;";
+		GET_USERS = "SELECT unique_user_id, password FROM " + table + ";";
+
+		jdbcUrl = "jdbc:mysql://" + host + ':' + port + '/' + database + '?' + "user=" + user + "&password=" + pass;
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -40,109 +56,105 @@ public class MySQL implements DataManager {
 
 	@Override
 	public void openConnection() {
-		String host = config.getString("MySQL.host", "localhost");
-		String port = String.valueOf(config.getInt("MySQL.port", 3306));
-		String database = config.getString("MySQL.database", "bukkit");
-		String user = config.getString("MySQL.username", "root");
-		String pass = config.getString("MySQL.password", "");
-		String table = config.getString("MySQL.prefix", "") + "users";
-		Statement stCreateTable = null;
+		PreparedStatement stmt = null;
 
 		try {
-			this.con = DriverManager.getConnection("jdbc:mysql://" + host + ':' + port + '/' + database, user, pass);
+			this.con = DriverManager.getConnection(jdbcUrl);
 
-			stCreateTable = con.createStatement();
-			stCreateTable.setQueryTimeout(30);
-			stCreateTable.executeUpdate("CREATE TABLE IF NOT EXISTS " + table + " (unique_user_id VARCHAR(130) NOT NULL UNIQUE, password VARCHAR(300) NOT NULL, encryption INT, ip VARCHAR(130) NOT NULL);");
-
-			// Prepare statements
-			psSelectRegistered = con.prepareStatement("SELECT 1 FROM " + table + " WHERE unique_user_id = ?;");
-			psSelectLogin = con.prepareStatement("SELECT ip, password, encryption FROM " + table + " WHERE unique_user_id = ?;");
-			psInsertLogin = con.prepareStatement("INSERT INTO " + table + "(unique_user_id, password, encryption,ip) VALUES(?, ?, ?, ?);");
-			psUpdatePassword = con.prepareStatement("UPDATE " + table + " SET password = ?, encryption = ? WHERE unique_user_id = ?;");
-			psUpdateIp = con.prepareStatement("UPDATE " + table + " SET ip = ? WHERE unique_user_id = ?;");
-			psDeleteLogin = con.prepareStatement("DELETE FROM " + table + " WHERE unique_user_id = ?;");
-			psGetAllUsers = con.prepareStatement("SELECT unique_user_id, password FROM " + table + ";");
+			stmt = con.prepareStatement(CREATE_TABLE);
+			stmt.setQueryTimeout(30);
+			stmt.executeUpdate();
 		} catch(SQLException e) {
 			log.log(Level.SEVERE, "Failed to load MySQL", e);
 		} finally {
-			closeQuietly(stCreateTable);			
+			closeQuietly(stmt);			
 		}
 	}
 
 	@Override
 	public void closeConnection() {
-		// Release prepared
-		closeQuietly(psSelectRegistered);
-		closeQuietly(psSelectLogin);
-		closeQuietly(psInsertLogin);
-		closeQuietly(psUpdatePassword);
-		closeQuietly(psUpdateIp);
-		closeQuietly(psDeleteLogin);
-		closeQuietly(psGetAllUsers);
-
 		closeQuietly(con);
 	}
 
 	@Override
-	public synchronized boolean isRegistered(String uuid) {
+	public boolean isRegistered(String uuid) {
+		PreparedStatement stmt = null;
 		ResultSet result = null;
 
 		try {
-			psSelectRegistered.setString(1, uuid.replaceAll("-", ""));
-			result = psSelectRegistered.executeQuery();
+			stmt = con.prepareStatement(SELECT_REGISTERED);
+			stmt.setString(1, uuid.replaceAll("-", ""));
+			result = stmt.executeQuery();
 			return result.next();
 		} catch(SQLException e) {
 			log.log(Level.SEVERE, "Failed to get data from MySQL db", e);
 			return false;
 		} finally {
 			closeQuietly(result);
+			closeQuietly(stmt);
 		}
 	}
 
 	@Override
-	public synchronized void register(String uuid, String password, int encryption, String ip) {
+	public void register(String uuid, String password, int encryption, String ip) {
+		PreparedStatement stmt = null;
+
 		try {
-			psInsertLogin.setString(1, uuid.replaceAll("-", ""));
-			psInsertLogin.setString(2, password);
-			psInsertLogin.setInt(3, encryption);
-			psInsertLogin.setString(4, ip);
-			psInsertLogin.executeUpdate();
+			stmt = con.prepareStatement(INSERT_LOGIN);
+			stmt.setString(1, uuid.replaceAll("-", ""));
+			stmt.setString(2, password);
+			stmt.setInt(3, encryption);
+			stmt.setString(4, ip);
+			stmt.executeUpdate();
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, "Failed to create user", e);
+		} finally {
+			closeQuietly(stmt);			
 		}
 	}
 
 	@Override
-	public synchronized void updatePassword(String uuid, String password, int encryption) {
+	public void updatePassword(String uuid, String password, int encryption) {
+		PreparedStatement stmt = null;
+
 		try {
-			psUpdatePassword.setString(1, password);
-			psUpdatePassword.setInt(2, encryption);
-			psUpdatePassword.setString(3, uuid.replaceAll("-", ""));
-			psUpdatePassword.executeUpdate();
+			stmt = con.prepareStatement(UPDATE_PASSWORD);
+			stmt.setString(1, password);
+			stmt.setInt(2, encryption);
+			stmt.setString(3, uuid.replaceAll("-", ""));
+			stmt.executeUpdate();
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, "Failed to update user password", e);
+		} finally {
+			closeQuietly(stmt);			
 		}
 	}
 
 	@Override
-	public synchronized void updateIp(String uuid, String ip) {
+	public void updateIp(String uuid, String ip) {
+		PreparedStatement stmt = null;
+
 		try {
-			psUpdateIp.setString(1, ip);
-			psUpdateIp.setString(2, uuid.replaceAll("-", ""));
-			psUpdateIp.executeUpdate();
+			stmt = con.prepareStatement(UPDATE_IP);
+			stmt.setString(1, ip);
+			stmt.setString(2, uuid.replaceAll("-", ""));
+			stmt.executeUpdate();
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, "Failed to update user ip", e);
+		} finally {
+			closeQuietly(stmt);			
 		}
 	}
 
 	@Override
-	public synchronized String getPassword(String uuid) {
+	public String getPassword(String uuid) {
+		PreparedStatement stmt = null;
 		ResultSet result = null;
 
 		try {
-			psSelectLogin.setString(1, uuid.replaceAll("-", ""));
-			result = psSelectLogin.executeQuery();
+			stmt = con.prepareStatement(SELECT_LOGIN);
+			stmt.setString(1, uuid.replaceAll("-", ""));
+			result = stmt.executeQuery();
 			if(result.next())
 				return result.getString("password");
 			else
@@ -152,16 +164,19 @@ public class MySQL implements DataManager {
 			return null;
 		} finally {
 			closeQuietly(result);
+			closeQuietly(stmt);
 		}
 	}
 
 	@Override
-	public synchronized int getEncryptionTypeId(String uuid) {
+	public int getEncryptionTypeId(String uuid) {
+		PreparedStatement stmt = null;
 		ResultSet result = null;
 
 		try {
-			psSelectLogin.setString(1, uuid.replaceAll("-", ""));
-			result = psSelectLogin.executeQuery();
+			stmt = con.prepareStatement(SELECT_LOGIN);
+			stmt.setString(1, uuid.replaceAll("-", ""));
+			result = stmt.executeQuery();
 			if(result.next())
 				return result.getInt("encryption");
 			else
@@ -171,16 +186,19 @@ public class MySQL implements DataManager {
 			return EncryptionType.MD5.getTypeId();
 		} finally {
 			closeQuietly(result);
+			closeQuietly(stmt);
 		}
 	}
 
 	@Override
-	public synchronized String getIp(String uuid) {
+	public String getIp(String uuid) {
+		PreparedStatement stmt = null;
 		ResultSet result = null;
 
 		try {
-			psSelectLogin.setString(1, uuid.replaceAll("-", ""));
-			result = psSelectLogin.executeQuery();
+			stmt = con.prepareStatement(SELECT_LOGIN);
+			stmt.setString(1, uuid.replaceAll("-", ""));
+			result = stmt.executeQuery();
 			if(result.next())
 				return result.getString("ip");
 			else
@@ -190,23 +208,30 @@ public class MySQL implements DataManager {
 			return null;
 		} finally {
 			closeQuietly(result);
+			closeQuietly(stmt);
 		}
 	}
 
 	@Override
-	public synchronized void removeUser(String uuid) {
+	public void removeUser(String uuid) {
+		PreparedStatement stmt = null;
+
 		try {
-			psDeleteLogin.setString(1, uuid.replaceAll("-", ""));
-			psDeleteLogin.executeUpdate();
+			stmt = con.prepareStatement(DELETE_LOGIN);
+			stmt.setString(1, uuid.replaceAll("-", ""));
+			stmt.executeUpdate();
 		} catch(SQLException e) {
 			log.log(Level.SEVERE, "Failed to remove user", e);
+		} finally {
+			closeQuietly(stmt);			
 		}
 	}
 
 	@Override
 	public ResultSet getAllUsers() {
 		try {
-			return psGetAllUsers.executeQuery();
+			stmt = con.prepareStatement(GET_USERS);
+			return stmt.executeQuery();
 		} catch (SQLException e) {
 			return null;
 		}
