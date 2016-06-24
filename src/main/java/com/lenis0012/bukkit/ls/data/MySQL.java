@@ -65,7 +65,7 @@ public class MySQL implements DataManager {
 			stmt.setQueryTimeout(30);
 			stmt.executeUpdate();
 		} catch(SQLException e) {
-			log.log(Level.SEVERE, "Failed to load MySQL", e);
+			log.log(Level.SEVERE, "Failed to open MySQL connection", e);
 		} finally {
 			closeQuietly(stmt);			
 		}
@@ -87,7 +87,7 @@ public class MySQL implements DataManager {
 			result = stmt.executeQuery();
 			return result.next();
 		} catch(SQLException e) {
-			log.log(Level.SEVERE, "Failed to get data from MySQL db", e);
+			log.log(Level.SEVERE, "Failed to check user exists", e);
 			return false;
 		} finally {
 			closeQuietly(result);
@@ -243,7 +243,7 @@ public class MySQL implements DataManager {
 			try {
 				closeable.close();
 			} catch (Exception e) {
-				log.log(Level.SEVERE, "Failed to close connection", e);
+				log.log(Level.SEVERE, "Failed to close", e);
 			}
 		}
 	}
