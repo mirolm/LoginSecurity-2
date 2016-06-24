@@ -41,7 +41,7 @@ public class MySQL implements DataManager {
 		UPDATE_PASSWORD = "UPDATE " + table + " SET password = ?, encryption = ? WHERE unique_user_id = ?;";
 		UPDATE_IP = "UPDATE " + table + " SET ip = ? WHERE unique_user_id = ?;";
 		DELETE_LOGIN = "DELETE FROM " + table + " WHERE unique_user_id = ?;";
-		GET_USERS = "SELECT unique_user_id, password FROM " + table + ";";
+		GET_USERS = "SELECT unique_user_id, password, encryption, ip FROM " + table + ";";
 
 		jdbcUrl = "jdbc:mysql://" + host + ':' + port + '/' + database + '?' + "user=" + user + "&password=" + pass;
 
