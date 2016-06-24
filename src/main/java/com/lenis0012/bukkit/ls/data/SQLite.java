@@ -224,7 +224,7 @@ public class SQLite implements DataManager {
 	@Override
 	public ResultSet getAllUsers() {
 		try {
-			stmt = con.prepareStatement(GET_USERS);
+			PreparedStatement stmt = con.prepareStatement(GET_USERS);
 			return stmt.executeQuery();
 		} catch (SQLException e) {
 			return null;
