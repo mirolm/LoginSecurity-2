@@ -89,7 +89,6 @@ public interface DataManager {
 	
 	/**
 	 * Close stuff
-	 * 
 	 */
 	public void closeQuietly(AutoCloseable closeable);
 }
