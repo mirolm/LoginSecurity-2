@@ -12,16 +12,16 @@ public class Converter {
 	public static enum FileType {
 		SQLite;
 	}
-	
+
 	private final FileType type;
 	private final File file;
 	private final Logger log = Logger.getLogger("Minecraft");
-	
+
 	public Converter(FileType type, File file) {
 		this.type = type;
 		this.file = file;
 	}
-	
+
 	public void convert() {
 		LoginSecurity plugin = LoginSecurity.instance;
 		if(type == FileType.SQLite && !(plugin.data instanceof SQLite)) {
@@ -37,7 +37,7 @@ public class Converter {
 					String pass = result.getString("password");
 					int enc = result.getInt("encryption");
 					String ip = result.getString("ip");
-					
+
 					if(!plugin.data.isRegistered(user)) {
 						plugin.data.register(user, pass, enc, ip);
 					}
@@ -45,8 +45,7 @@ public class Converter {
 			} catch(SQLException e) {
 				log.warning("[LoginSecurity] Failed to convert from SQLite to MySQL");
 			} finally {
-				manager.closeQuietly(result);
-				manager.closeConnection();	
+				manager.closeConnection();
 			}
 		}
 	}
