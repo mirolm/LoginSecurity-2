@@ -86,9 +86,4 @@ public interface DataManager {
 	 * @return All registered users
 	 */
 	public ResultSet getAllUsers();
-	
-	/**
-	 * Close stuff
-	 */
-	public void closeQuietly(AutoCloseable closeable);
 }
