@@ -30,7 +30,6 @@ public class Converter {
 
 			try {
 				manager = new SQLite(file);
-				manager.openConnection();
 				result = manager.getAllUsers();
 
 				while(result.next()) {
