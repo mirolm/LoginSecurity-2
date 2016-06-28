@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 import com.lenis0012.bukkit.ls.encryption.EncryptionType;
 
-public class SQL implements DataManager {
+public abstract class SQL implements DataManager {
 	private final Logger log = Logger.getLogger("Minecraft.LoginSecruity");
 	private Connection con;
 	
