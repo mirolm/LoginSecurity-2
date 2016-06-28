@@ -53,6 +53,8 @@ public class SQL implements DataManager {
 		GET_USERS = "SELECT unique_user_id, password, encryption, ip FROM " + table + ";";
 
 		jdbcUrl = url;
+
+		openConnection();
 	}
 
 	@Override
