@@ -25,10 +25,14 @@ public class Converter {
 	public void convert() {
 		LoginSecurity plugin = LoginSecurity.instance;
 		if(type == FileType.SQLite && !(plugin.data instanceof SQLite)) {
+			SQLite manager = null;
+			ResultSet result = null;
+
 			try {
-				SQLite manager = new SQLite(file);
+				manager = new SQLite(file);
 				manager.openConnection();
-				ResultSet result = manager.getAllUsers();
+				result = manager.getAllUsers();
+
 				while(result.next()) {
 					String user = result.getString("unique_user_id");
 					String pass = result.getString("password");
@@ -39,10 +43,11 @@ public class Converter {
 						plugin.data.register(user, pass, enc, ip);
 					}
 				}
-				
-				manager.closeConnection();
 			} catch(SQLException e) {
 				log.warning("[LoginSecurity] Failed to convert from SQLite to MySQL");
+			} finally {
+				manager.closeQuietly(result);
+				manager.closeConnection();	
 			}
 		}
 	}
