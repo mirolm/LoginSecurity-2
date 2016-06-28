@@ -89,7 +89,7 @@ public class LoginSecurity extends JavaPlugin {
 		//intalize fields
 		instance = (LoginSecurity) pm.getPlugin("LoginSecurity");
 		prefix = config.getString("settings.table prefix");
-		data = this.getDataManager(config, "users.db");
+		data = this.getDataManager(config);
 		thread = new ThreadManager(this);
 		required = config.getBoolean("settings.password-required");
 		blindness = config.getBoolean("settings.blindness");
@@ -141,11 +141,11 @@ public class LoginSecurity extends JavaPlugin {
 		}
 	}
 
-	private DataManager getDataManager(FileConfiguration config, String fileName) {
+	private DataManager getDataManager(FileConfiguration config) {
 		if (config.getBoolean("MySQL.use")) {
 			return new MySQL(config);
 		} else {
-			File file = new File(this.getDataFolder(), fileName);
+			File file = new File(this.getDataFolder(), "users.db");
 			return new SQLite(file);
 		}
 	}
