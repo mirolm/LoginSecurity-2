@@ -15,6 +15,5 @@ public class MySQL extends SQL {
 		String url = "jdbc:mysql://" + host + ':' + port + '/' + database + '?' + "user=" + user + "&password=" + pass;
 
 		initConnection(table, url);
-		openConnection();
 	}
 }
