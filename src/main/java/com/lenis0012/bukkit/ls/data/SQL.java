@@ -13,8 +13,8 @@ import com.lenis0012.bukkit.ls.encryption.EncryptionType;
 public class SQL implements DataManager {
 	private final Logger log = Logger.getLogger("Minecraft.LoginSecruity");
 	private Connection con;
-	private String jdbcUrl;
-
+	
+	private String JDBC_URL;
 	private String CREATE_TABLE;
         private String SELECT_REGISTERED;
         private String SELECT_LOGIN;
@@ -52,7 +52,7 @@ public class SQL implements DataManager {
 		DELETE_LOGIN = "DELETE FROM " + table + " WHERE unique_user_id = ?;";
 		GET_USERS = "SELECT unique_user_id, password, encryption, ip FROM " + table + ";";
 
-		jdbcUrl = url;
+		JDBC_URL = url;
 
 		openConnection();
 	}
@@ -62,7 +62,7 @@ public class SQL implements DataManager {
 		PreparedStatement stmt = null;
 
 		try {
-			this.con = DriverManager.getConnection(jdbcUrl);
+			this.con = DriverManager.getConnection(JDBC_URL);
 
 			stmt = con.prepareStatement(CREATE_TABLE);
 			stmt.setQueryTimeout(30);
