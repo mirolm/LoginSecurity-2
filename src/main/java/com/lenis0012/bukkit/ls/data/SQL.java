@@ -32,16 +32,6 @@ public class SQL implements DataManager {
 		}
 	}
 
-        private void closeQuietly(AutoCloseable closeable) {
-                if (closeable != null) {
-                        try {
-                                closeable.close();
-                        } catch (Exception e) {
-                                log.log(Level.SEVERE, "Failed to close", e);
-                        }
-                }
-        }
-
 	public void initConnection(String table, String url) {
 		CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + table + " (unique_user_id VARCHAR(130) NOT NULL UNIQUE, password VARCHAR(300) NOT NULL, encryption INT, ip VARCHAR(130) NOT NULL);";
 		SELECT_REGISTERED = "SELECT 1 FROM " + table + " WHERE unique_user_id = ?;";
@@ -239,4 +229,14 @@ public class SQL implements DataManager {
 			return null;
 		}
 	}
+
+        private void closeQuietly(AutoCloseable closeable) {
+                if (closeable != null) {
+                        try {
+                                closeable.close();
+                        } catch (Exception e) {
+                                log.log(Level.SEVERE, "Failed to close", e);
+                        }
+                }
+        }
 }
