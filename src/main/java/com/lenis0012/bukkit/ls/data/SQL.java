@@ -12,7 +12,7 @@ import com.lenis0012.bukkit.ls.encryption.EncryptionType;
 
 public abstract class SQL implements DataManager {
 	private final Logger log = Logger.getLogger("Minecraft.LoginSecruity");
-	private Connection con;
+	private Connection con = null;
 
 	private String JDBC_URL;
 	private String CREATE_TABLE;
@@ -54,6 +54,8 @@ public abstract class SQL implements DataManager {
 		PreparedStatement stmt = null;
 
 		try {
+			closeConnection();
+
 			this.con = DriverManager.getConnection(JDBC_URL);
 
 			stmt = con.prepareStatement(CREATE_TABLE);
@@ -278,7 +280,6 @@ public abstract class SQL implements DataManager {
 		}
 
 		if (!isOpen) {
-			closeConnection();
 			openConnection();
 		}
 	}
