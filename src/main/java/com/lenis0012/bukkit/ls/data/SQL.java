@@ -56,7 +56,7 @@ public abstract class SQL implements DataManager {
 		try {
 			closeConnection();
 
-			this.con = DriverManager.getConnection(JDBC_URL);
+			con = DriverManager.getConnection(JDBC_URL);
 
 			stmt = con.prepareStatement(CREATE_TABLE);
 			stmt.setQueryTimeout(30);
@@ -243,8 +243,6 @@ public abstract class SQL implements DataManager {
 	@Override
 	public ResultSet getAllUsers() {
 		try {
-			checkConnection();
-
 			PreparedStatement stmt = con.prepareStatement(GET_USERS);
 			return stmt.executeQuery();
 		} catch (SQLException e) {
