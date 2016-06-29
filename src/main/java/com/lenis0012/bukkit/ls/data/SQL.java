@@ -23,7 +23,6 @@ public abstract class SQL implements DataManager {
         private String UPDATE_IP;
         private String DELETE_LOGIN;
         private String GET_USERS;
-	private String CHECK_CONN;
 
 	public SQL(String driver) {
 		try {
@@ -42,7 +41,6 @@ public abstract class SQL implements DataManager {
 		UPDATE_IP = "UPDATE " + table + " SET ip = ? WHERE unique_user_id = ?;";
 		DELETE_LOGIN = "DELETE FROM " + table + " WHERE unique_user_id = ?;";
 		GET_USERS = "SELECT unique_user_id, password, encryption, ip FROM " + table + ";";
-		CHECK_CONN = "SELECT 1;";
 
 		JDBC_URL = url;
 
@@ -79,8 +77,6 @@ public abstract class SQL implements DataManager {
 		ResultSet result = null;
 
 		try {
-			checkConnection();
-
 			stmt = con.prepareStatement(SELECT_REGISTERED);
 			stmt.setString(1, uuid.replaceAll("-", ""));
 			result = stmt.executeQuery();
@@ -99,8 +95,6 @@ public abstract class SQL implements DataManager {
 		PreparedStatement stmt = null;
 
 		try {
-			checkConnection();
-
 			stmt = con.prepareStatement(INSERT_LOGIN);
 			stmt.setString(1, uuid.replaceAll("-", ""));
 			stmt.setString(2, password);
@@ -119,8 +113,6 @@ public abstract class SQL implements DataManager {
 		PreparedStatement stmt = null;
 
 		try {
-			checkConnection();
-
 			stmt = con.prepareStatement(UPDATE_PASSWORD);
 			stmt.setString(1, password);
 			stmt.setInt(2, encryption);
@@ -138,8 +130,6 @@ public abstract class SQL implements DataManager {
 		PreparedStatement stmt = null;
 
 		try {
-			checkConnection();
-
 			stmt = con.prepareStatement(UPDATE_IP);
 			stmt.setString(1, ip);
 			stmt.setString(2, uuid.replaceAll("-", ""));
@@ -157,8 +147,6 @@ public abstract class SQL implements DataManager {
 		ResultSet result = null;
 
 		try {
-			checkConnection();
-
 			stmt = con.prepareStatement(SELECT_LOGIN);
 			stmt.setString(1, uuid.replaceAll("-", ""));
 			result = stmt.executeQuery();
@@ -181,8 +169,6 @@ public abstract class SQL implements DataManager {
 		ResultSet result = null;
 
 		try {
-			checkConnection();
-
 			stmt = con.prepareStatement(SELECT_LOGIN);
 			stmt.setString(1, uuid.replaceAll("-", ""));
 			result = stmt.executeQuery();
@@ -205,8 +191,6 @@ public abstract class SQL implements DataManager {
 		ResultSet result = null;
 
 		try {
-			checkConnection();
-
 			stmt = con.prepareStatement(SELECT_LOGIN);
 			stmt.setString(1, uuid.replaceAll("-", ""));
 			result = stmt.executeQuery();
@@ -228,8 +212,6 @@ public abstract class SQL implements DataManager {
 		PreparedStatement stmt = null;
 
 		try {
-			checkConnection();
-
 			stmt = con.prepareStatement(DELETE_LOGIN);
 			stmt.setString(1, uuid.replaceAll("-", ""));
 			stmt.executeUpdate();
@@ -259,26 +241,4 @@ public abstract class SQL implements DataManager {
                         }
                 }
         }
-
-	private synchronized void checkConnection() {
-		PreparedStatement stmt = null;
-		ResultSet result = null;
-		boolean isOpen = false;
-
-		try {
-			stmt = con.prepareStatement(CHECK_CONN);
-			stmt.setQueryTimeout(5);
-			result = stmt.executeQuery();
-			isOpen = result.next();
-		} catch(SQLException e) {
-			log.log(Level.SEVERE, "Failed to check connection", e);
-		} finally {
-			closeQuietly(result);
-			closeQuietly(stmt);
-		}
-
-		if (!isOpen) {
-			openConnection();
-		}
-	}
 }
