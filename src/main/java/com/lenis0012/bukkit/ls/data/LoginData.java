@@ -7,7 +7,7 @@ public class LoginData {
 	public final String ipaddr;
 	
 	public LoginData(String uuid, String password, int encryption, String ipaddr) {
-		this.uuid = uuid;
+		this.uuid = uuid.replaceAll("-", "");
 		this.password = password;
 		this.encryption = encryption;
 		this.ipaddr = ipaddr;
