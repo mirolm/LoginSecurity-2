@@ -83,12 +83,11 @@ public class LoginListener implements Listener {
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
 		String uuid = player.getUniqueId().toString();
-		String ip = player.getAddress().getAddress().toString();
 
 		if(plugin.authList.containsKey(uuid) && plugin.spawntp && plugin.loginLocations.containsKey(uuid)) {
 			player.teleport(plugin.loginLocations.remove(uuid));
 		} if (plugin.data.isRegistered(uuid)) {
-			plugin.data.updateIp(uuid, ip);
+			plugin.updateLastIp(player);
 			if (plugin.sesUse && !plugin.authList.containsKey(uuid)) {
 				plugin.thread.getSession().put(uuid, plugin.sesDelay);
 			}
