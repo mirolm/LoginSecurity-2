@@ -30,6 +30,7 @@ import com.lenis0012.bukkit.ls.commands.RmPassCommand;
 import com.lenis0012.bukkit.ls.data.Converter;
 import com.lenis0012.bukkit.ls.data.Converter.FileType;
 import com.lenis0012.bukkit.ls.data.DataManager;
+import com.lenis0012.bukkit.ls.data.LoginData;
 import com.lenis0012.bukkit.ls.data.MySQL;
 import com.lenis0012.bukkit.ls.data.SQLite;
 import com.lenis0012.bukkit.ls.encryption.EncryptionType;
@@ -175,16 +176,24 @@ public class LoginSecurity extends JavaPlugin {
 		}
 	}
 
-	public boolean checkLastIp(Player player) {
-		String uuid = player.getUniqueId().toString();
-		if (data.isRegistered(uuid)) {
-			String lastIp = data.getIp(uuid);
-			String currentIp = player.getAddress().getAddress().toString();
-			return lastIp.equalsIgnoreCase(currentIp);
-		}
+        public boolean checkLastIp(Player player) {
+                String uuid = player.getUniqueId().toString();
+                if (data.isRegistered(uuid)) {
+                        LoginData login = data.getData(uuid);
+                        String currentIp = player.getAddress().getAddress().toString();
+                        return currentIp.equalsIgnoreCase(login.ipaddr);
+                }
 
-		return false;
-	}
+                return false;
+        }
+
+        public void updateLastIp(Player player) {
+                String uuid = player.getUniqueId().toString();
+                String ip = player.getAddress().getAddress().toString();
+
+		LoginData login = new LoginData(uuid, null, 0, ip);
+		data.updateIp(login);
+        }
 
 	public void debilitatePlayer(Player player, String name, boolean logout) {
 		if (timeUse) {
