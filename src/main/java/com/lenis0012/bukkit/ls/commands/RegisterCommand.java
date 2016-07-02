@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import com.lenis0012.bukkit.ls.Lang;
 import com.lenis0012.bukkit.ls.LoginSecurity;
+import com.lenis0012.bukkit.ls.data.LoginData;
 import java.util.logging.Level;
 
 public class RegisterCommand implements CommandExecutor {
@@ -33,8 +34,9 @@ public class RegisterCommand implements CommandExecutor {
 			return true;
 		}
 
-		String password = plugin.hasher.hash(args[0]);
-		plugin.data.register(uuid, password, plugin.hasher.getTypeId(), player.getAddress().getAddress().toString());
+		LoginData login = new LoginData(uuid, plugin.hasher.hash(args[0]), plugin.hasher.getTypeId(), player.getAddress().getAddress().toString());
+		plugin.data.register(login);
+
 		plugin.authList.remove(uuid);
 		plugin.thread.timeout.remove(uuid);
 		plugin.rehabPlayer(player, uuid);
