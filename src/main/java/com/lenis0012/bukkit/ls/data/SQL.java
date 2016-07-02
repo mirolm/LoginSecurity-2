@@ -35,8 +35,8 @@ public abstract class SQL implements DataManager {
 	public void initConnection(String table, String url) {
 		CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + table + " (unique_user_id VARCHAR(130) NOT NULL UNIQUE, password VARCHAR(300) NOT NULL, encryption INT, ip VARCHAR(130) NOT NULL);";
 		SELECT_REGISTERED = "SELECT 1 FROM " + table + " WHERE unique_user_id = ?;";
-		SELECT_LOGIN = "SELECT ip, password, encryption FROM " + table + " WHERE unique_user_id = ?;";
-		INSERT_LOGIN = "INSERT INTO " + table + "(unique_user_id, password, encryption,ip) VALUES(?, ?, ?, ?);";
+		SELECT_LOGIN = "SELECT unique_user_id, password, encryption, ip FROM " + table + " WHERE unique_user_id = ?;";
+		INSERT_LOGIN = "INSERT INTO " + table + "(unique_user_id, password, encryption, ip) VALUES(?, ?, ?, ?);";
 		UPDATE_PASSWORD = "UPDATE " + table + " SET password = ?, encryption = ? WHERE unique_user_id = ?;";
 		UPDATE_IP = "UPDATE " + table + " SET ip = ? WHERE unique_user_id = ?;";
 		DELETE_LOGIN = "DELETE FROM " + table + " WHERE unique_user_id = ?;";
@@ -91,15 +91,15 @@ public abstract class SQL implements DataManager {
 	}
 
 	@Override
-	public void register(String uuid, String password, int encryption, String ip) {
+	public void register(LoginData login) {
 		PreparedStatement stmt = null;
 
 		try {
 			stmt = con.prepareStatement(INSERT_LOGIN);
-			stmt.setString(1, uuid.replaceAll("-", ""));
-			stmt.setString(2, password);
-			stmt.setInt(3, encryption);
-			stmt.setString(4, ip);
+			stmt.setString(1, login.uuid.replaceAll("-", ""));
+			stmt.setString(2, login.password);
+			stmt.setInt(3, login.encryption);
+			stmt.setString(4, login.ipaddr);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, "Failed to create user", e);
@@ -109,14 +109,14 @@ public abstract class SQL implements DataManager {
 	}
 
 	@Override
-	public void updatePassword(String uuid, String password, int encryption) {
+	public void updatePassword(LoginData login) {
 		PreparedStatement stmt = null;
 
 		try {
 			stmt = con.prepareStatement(UPDATE_PASSWORD);
-			stmt.setString(1, password);
-			stmt.setInt(2, encryption);
-			stmt.setString(3, uuid.replaceAll("-", ""));
+			stmt.setString(1, login.password);
+			stmt.setInt(2, login.encryption);
+			stmt.setString(3, login.uuid.replaceAll("-", ""));
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, "Failed to update user password", e);
@@ -126,23 +126,23 @@ public abstract class SQL implements DataManager {
 	}
 
 	@Override
-	public void updateIp(String uuid, String ip) {
+	public void updateIp(LoginData login) {
 		PreparedStatement stmt = null;
 
 		try {
 			stmt = con.prepareStatement(UPDATE_IP);
-			stmt.setString(1, ip);
-			stmt.setString(2, uuid.replaceAll("-", ""));
+			stmt.setString(1, login.ipaddr);
+			stmt.setString(2, login.uuid.replaceAll("-", ""));
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			log.log(Level.SEVERE, "Failed to update user ip", e);
+			log.log(Level.SEVERE, "Failed to update user ipaddr", e);
 		} finally {
 			closeQuietly(stmt);
 		}
 	}
 
 	@Override
-	public String getPassword(String uuid) {
+	public LoginData getData(String uuid) {
 		PreparedStatement stmt = null;
 		ResultSet result = null;
 
@@ -151,55 +151,11 @@ public abstract class SQL implements DataManager {
 			stmt.setString(1, uuid.replaceAll("-", ""));
 			result = stmt.executeQuery();
 			if(result.next())
-				return result.getString("password");
+				return parseData(result);
 			else
 				return null;
 		} catch (SQLException e) {
-			log.log(Level.SEVERE, "Failed to get user password", e);
-			return null;
-		} finally {
-			closeQuietly(result);
-			closeQuietly(stmt);
-		}
-	}
-
-	@Override
-	public int getEncryptionTypeId(String uuid) {
-		PreparedStatement stmt = null;
-		ResultSet result = null;
-
-		try {
-			stmt = con.prepareStatement(SELECT_LOGIN);
-			stmt.setString(1, uuid.replaceAll("-", ""));
-			result = stmt.executeQuery();
-			if(result.next())
-				return result.getInt("encryption");
-			else
-				return EncryptionType.MD5.getTypeId();
-		} catch (SQLException e) {
-			log.log(Level.SEVERE, "Failed to get user encryption type", e);
-			return EncryptionType.MD5.getTypeId();
-		} finally {
-			closeQuietly(result);
-			closeQuietly(stmt);
-		}
-	}
-
-	@Override
-	public String getIp(String uuid) {
-		PreparedStatement stmt = null;
-		ResultSet result = null;
-
-		try {
-			stmt = con.prepareStatement(SELECT_LOGIN);
-			stmt.setString(1, uuid.replaceAll("-", ""));
-			result = stmt.executeQuery();
-			if(result.next())
-				return result.getString("ip");
-			else
-				return null;
-		} catch (SQLException e) {
-			log.log(Level.SEVERE, "Failed to get user ip", e);
+			log.log(Level.SEVERE, "Failed to get user data", e);
 			return null;
 		} finally {
 			closeQuietly(result);
@@ -227,6 +183,20 @@ public abstract class SQL implements DataManager {
 		try {
 			PreparedStatement stmt = con.prepareStatement(GET_USERS);
 			return stmt.executeQuery();
+		} catch (SQLException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public LoginData parseData(ResultSet data) {
+		try {
+			String uuid = data.getString("unique_user_id");
+			String password = data.getString("password");
+			int encryption = data.getInt("encryption");
+			String ipaddr = data.getString("ip");
+
+			return new LoginData(uuid, password, encryption, ipaddr);
 		} catch (SQLException e) {
 			return null;
 		}
