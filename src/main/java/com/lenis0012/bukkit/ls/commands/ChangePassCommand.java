@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import com.lenis0012.bukkit.ls.Lang;
 import com.lenis0012.bukkit.ls.LoginSecurity;
 import com.lenis0012.bukkit.ls.encryption.PasswordManager;
+import com.lenis0012.bukkit.ls.data.LoginData;
 import java.util.logging.Level;
 
 public class ChangePassCommand implements CommandExecutor {
@@ -39,8 +40,9 @@ public class ChangePassCommand implements CommandExecutor {
 			return true;
 		}
 
-		String newPass = plugin.hasher.hash(args[1]);
-		plugin.data.updatePassword(uuid, newPass, plugin.hasher.getTypeId());
+		LoginData login = new LoginData(uuid, plugin.hasher.hash(args[1]), plugin.hasher.getTypeId(), null);
+		plugin.data.updatePassword(login);
+
 		player.sendMessage(ChatColor.GREEN + Lang.PSW_CHANGED.toString());
 		LoginSecurity.log.log(Level.INFO, "[LoginSecurity] {0} sucessfully changed password", player.getName());
 
