@@ -33,13 +33,10 @@ public class Converter {
 				result = manager.getAllUsers();
 
 				while(result.next()) {
-					String user = result.getString("unique_user_id");
-					String pass = result.getString("password");
-					int enc = result.getInt("encryption");
-					String ip = result.getString("ip");
+					LoginData login = manager.parseData(result);
 
-					if(!plugin.data.isRegistered(user)) {
-						plugin.data.register(user, pass, enc, ip);
+					if(!plugin.data.isRegistered(login.uuid)) {
+						plugin.data.register(login);
 					}
 				}
 			} catch(SQLException e) {
