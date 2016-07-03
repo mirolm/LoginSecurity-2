@@ -32,7 +32,7 @@ public class ThreadManager {
 	}
 
 	public void startMainTask() {
-		this.nextRefresh = System.currentTimeMillis() + 1800000;
+		this.nextRefresh = System.currentTimeMillis() + 300000;
 		main = plugin.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
 			@Override
 			public void run() {
@@ -40,11 +40,13 @@ public class ThreadManager {
 				if (time >= nextRefresh) {
 					if (plugin != null) {
 						if (plugin.data != null) {
-							plugin.data.openConnection();
+							if (!plugin.data.pingConnection()) {
+								plugin.data.openConnection();
+							}
 						}
 					}
 
-					nextRefresh = System.currentTimeMillis() + 1800000;
+					nextRefresh = System.currentTimeMillis() + 300000;
 				}
 			}
 		}, 20, 20);
