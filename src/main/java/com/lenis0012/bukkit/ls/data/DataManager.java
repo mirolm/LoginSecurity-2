@@ -15,6 +15,13 @@ public interface DataManager {
 	public void closeConnection();
 
 	/**
+	 * Check if connection alive
+	 *
+	 * @return Connection alive?
+	 */
+	public boolean pingConnection();
+
+	/**
 	 * Check if a player is registered
 	 *
 	 * @param user Username
