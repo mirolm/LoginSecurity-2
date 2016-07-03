@@ -81,7 +81,6 @@ public abstract class SQL implements DataManager {
 			result = stmt.executeQuery();
 			return result.next();
 		} catch(SQLException e) {
-			log.log(Level.SEVERE, "Failed to check connection", e);
 			return false;
 		} finally {
 			closeQuietly(result);
