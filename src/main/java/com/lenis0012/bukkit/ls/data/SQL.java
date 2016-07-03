@@ -21,6 +21,7 @@ public abstract class SQL implements DataManager {
         private String UPDATE_IP;
         private String DELETE_LOGIN;
         private String GET_USERS;
+        private String PING_CONN;
 
 	public SQL(String driver) {
 		try {
@@ -39,6 +40,7 @@ public abstract class SQL implements DataManager {
 		UPDATE_IP = "UPDATE " + table + " SET ip = ? WHERE unique_user_id = ?;";
 		DELETE_LOGIN = "DELETE FROM " + table + " WHERE unique_user_id = ?;";
 		GET_USERS = "SELECT unique_user_id, password, encryption, ip FROM " + table + ";";
+		PING_CONN = "SELECT 1;";
 
 		JDBC_URL = url;
 
@@ -67,6 +69,24 @@ public abstract class SQL implements DataManager {
 	@Override
 	public void closeConnection() {
 		closeQuietly(con);
+	}
+
+	@Override
+	public boolean pingConnection() {
+		PreparedStatement stmt = null;
+		ResultSet result = null;
+
+		try {
+			stmt = con.prepareStatement(PING_CONN);
+			result = stmt.executeQuery();
+			return result.next();
+		} catch(SQLException e) {
+			log.log(Level.SEVERE, "Failed to check connection", e);
+			return false;
+		} finally {
+			closeQuietly(result);
+			closeQuietly(stmt);
+		}
 	}
 
 	@Override
