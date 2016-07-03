@@ -78,6 +78,7 @@ public abstract class SQL implements DataManager {
 
 		try {
 			stmt = con.prepareStatement(PING_CONN);
+			stmt.setQueryTimeout(5);
 			result = stmt.executeQuery();
 			return result.next();
 		} catch(SQLException e) {
