@@ -15,7 +15,7 @@ public interface DataManager {
 	public void closeConnection();
 
 	/**
-	 * Check if connection alive
+	 * Keep SQL connection
 	 *
 	 * @return Connection alive?
 	 */
