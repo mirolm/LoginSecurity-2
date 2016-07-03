@@ -26,11 +26,10 @@ public class Converter {
 		LoginSecurity plugin = LoginSecurity.instance;
 		if(type == FileType.SQLite && !(plugin.data instanceof SQLite)) {
 			SQLite manager = null;
-			ResultSet result = null;
 
 			try {
 				manager = new SQLite(file);
-				result = manager.getAllUsers();
+				ResultSet result = manager.getAllUsers();
 
 				while(result.next()) {
 					LoginData login = manager.parseData(result);
