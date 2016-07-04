@@ -12,4 +12,13 @@ public class LoginData {
 		this.encryption = encryption;
 		this.ipaddr = ipaddr;
 	}
+	public LoginData(String uuid, String password, int encryption) {
+		this.uuid = uuid;
+		this.password = password;
+		this.encryption = encryption;
+	}
+	public LoginData(String uuid, String ipaddr) {
+		this.uuid = uuid;
+		this.ipaddr = ipaddr;
+	}
 }
