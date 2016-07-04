@@ -15,19 +15,19 @@ public interface DataManager {
 	public void closeConnection();
 
 	/**
-	 * Keepalive SQL connection
+	 * Check SQL connection
 	 *
-	 * @return Connection alive?
+	 * @return connection alive
 	 */
 	public boolean pingConnection();
 
 	/**
-	 * Check if a player is registered
+	 * Check if player is registered
 	 *
-	 * @param user Username
-	 * @return User registered?
+	 * @param uuid PlayerUUID
+	 * @return user registered
 	 */
-	public boolean isRegistered(String user);
+	public boolean isRegistered(String uuid);
 
 	/**
 	 * Register a user
@@ -37,36 +37,36 @@ public interface DataManager {
 	public void registerUser(LoginData login);
 
 	/**
-	 * Update a player's password
+	 * Update player data
 	 *
 	 * @param login LoginData
 	 */
 	public void updateUser(LoginData login);
 
 	/**
-	 * Remove a user from the database
+	 * Remove user from database
 	 *
-	 * @param user Username
+	 * @param uuid PlayerUUID
 	 */
-	public void removeUser(String user);
+	public void removeUser(String uuid);
 
 	/**
 	 * Get user stored data
 	 *
-	 * @param uuid Player UUID
+	 * @param uuid PlayerUUID
 	 * @return LoginData
 	 */
 	public LoginData getUser(String uuid);
 
 	/**
-	 * Get all registered users
+	 * Get all users data
 	 *
 	 * @return All registered users
 	 */
 	public ResultSet getAllUsers();
 
 	/**
-	 * Parse single used row
+	 * Parse single user row
 	 *
 	 * @param data ResultSet
 	 * @return LoginData
