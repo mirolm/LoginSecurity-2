@@ -35,13 +35,13 @@ public class Converter {
 					LoginData login = manager.parseData(result);
 
 					if(!plugin.data.checkUser(login.uuid)) {
-						plugin.data.registerUser(login);
+						plugin.data.regUser(login);
 					}
 				}
 			} catch(SQLException e) {
 				log.warning("[LoginSecurity] Failed to convert from SQLite to MySQL");
 			} finally {
-				manager.closeConnection();
+				manager.closeConn();
 			}
 		}
 	}
