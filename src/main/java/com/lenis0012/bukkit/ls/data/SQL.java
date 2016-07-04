@@ -31,7 +31,7 @@ public abstract class SQL implements DataManager {
 		}
 	}
 
-	public void initConnection(String table, String url) {
+	public void initConn(String table, String url) {
 		PING_CONN = "SELECT 1;";
 		CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + table + " (unique_user_id VARCHAR(130) NOT NULL UNIQUE, password VARCHAR(300) NOT NULL, encryption INT, ip VARCHAR(130) NOT NULL);";
 		CHECK_REG = "SELECT 1 FROM " + table + " WHERE unique_user_id = ?;";
@@ -44,14 +44,14 @@ public abstract class SQL implements DataManager {
 
 		JDBC_URL = url;
 
-		openConnection();
+		openConn();
 		createTables();
 	}
 
 	@Override
-	public void openConnection() {
+	public void openConn() {
 		try {
-			closeConnection();
+			closeConn();
 
 			con = DriverManager.getConnection(JDBC_URL);
 		} catch(SQLException e) {
@@ -60,12 +60,12 @@ public abstract class SQL implements DataManager {
 	}
 
 	@Override
-	public void closeConnection() {
+	public void closeConn() {
 		closeQuietly(con);
 	}
 
 	@Override
-	public boolean pingConnection() {
+	public boolean pingConn() {
 		PreparedStatement stmt = null;
 		ResultSet result = null;
 
@@ -116,7 +116,7 @@ public abstract class SQL implements DataManager {
 	}
 
 	@Override
-	public void registerUser(LoginData login) {
+	public void regUser(LoginData login) {
 		PreparedStatement stmt = null;
 
 		try {
