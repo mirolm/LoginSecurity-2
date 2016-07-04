@@ -35,7 +35,7 @@ public class RegisterCommand implements CommandExecutor {
 		}
 
 		LoginData login = new LoginData(uuid, plugin.hasher.hash(args[0]), plugin.hasher.getTypeId(), player.getAddress().getAddress().toString());
-		plugin.data.registerUser(login);
+		plugin.data.regUser(login);
 
 		plugin.authList.remove(uuid);
 		plugin.thread.timeout.remove(uuid);
