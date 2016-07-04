@@ -25,7 +25,7 @@ public class ChangePassCommand implements CommandExecutor {
 		Player player = (Player) sender;
 		String uuid = player.getUniqueId().toString();
 
-		if (!plugin.data.isRegistered(uuid)) {
+		if (!plugin.data.checkUser(uuid)) {
 			player.sendMessage(ChatColor.RED + Lang.NOT_REG.toString());
 			return true;
 		}
