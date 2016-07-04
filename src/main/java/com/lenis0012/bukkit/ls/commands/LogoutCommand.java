@@ -27,7 +27,7 @@ public class LogoutCommand implements CommandExecutor {
 			player.sendMessage(ChatColor.RED + Lang.MUST_LGN_FIRST.toString());
 			return true;
 		}
-		if (!plugin.data.isRegistered(uuid)) {
+		if (!plugin.data.checkUser(uuid)) {
 			player.sendMessage(ChatColor.RED + Lang.NOT_REG.toString());
 		}
 
