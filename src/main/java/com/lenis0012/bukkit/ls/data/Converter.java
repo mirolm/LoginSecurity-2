@@ -34,7 +34,7 @@ public class Converter {
 				while(result.next()) {
 					LoginData login = manager.parseData(result);
 
-					if(!plugin.data.isRegistered(login.uuid)) {
+					if(!plugin.data.checkUser(login.uuid)) {
 						plugin.data.registerUser(login);
 					}
 				}
