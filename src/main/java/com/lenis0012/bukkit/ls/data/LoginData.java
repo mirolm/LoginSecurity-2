@@ -16,9 +16,12 @@ public class LoginData {
 		this.uuid = uuid;
 		this.password = password;
 		this.encryption = encryption;
+		this.ipaddr = null;
 	}
 	public LoginData(String uuid, String ipaddr) {
 		this.uuid = uuid;
+		this.password = null;
+		this.encryption = 0;
 		this.ipaddr = ipaddr;
 	}
 }
