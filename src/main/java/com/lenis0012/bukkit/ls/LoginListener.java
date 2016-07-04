@@ -86,7 +86,7 @@ public class LoginListener implements Listener {
 
 		if(plugin.authList.containsKey(uuid) && plugin.spawntp && plugin.loginLocations.containsKey(uuid)) {
 			player.teleport(plugin.loginLocations.remove(uuid));
-		} if (plugin.data.isRegistered(uuid)) {
+		} if (plugin.data.checkUser(uuid)) {
 			plugin.updateLastIp(player);
 			if (plugin.sesUse && !plugin.authList.containsKey(uuid)) {
 				plugin.thread.getSession().put(uuid, plugin.sesDelay);
