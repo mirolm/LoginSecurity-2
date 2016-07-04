@@ -13,15 +13,15 @@ public abstract class SQL implements DataManager {
 	private Connection con = null;
 
 	private String JDBC_URL;
-	private String CREATE_TABLE;
-        private String SELECT_REGISTERED;
-        private String SELECT_LOGIN;
-        private String INSERT_LOGIN;
-        private String UPDATE_PASSWORD;
-        private String UPDATE_IP;
-        private String DELETE_LOGIN;
-        private String GET_USERS;
         private String PING_CONN;
+	private String CREATE_TABLE;
+        private String SELECT_REG;
+        private String INSERT_LOGIN;
+        private String UPDATE_PASS;
+        private String UPDATE_ADDR;
+        private String DELETE_LOGIN;
+        private String SELECT_LOGIN;
+        private String SELECT_USERS;
 
 	public SQL(String driver) {
 		try {
@@ -32,15 +32,15 @@ public abstract class SQL implements DataManager {
 	}
 
 	public void initConnection(String table, String url) {
-		CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + table + " (unique_user_id VARCHAR(130) NOT NULL UNIQUE, password VARCHAR(300) NOT NULL, encryption INT, ip VARCHAR(130) NOT NULL);";
-		SELECT_REGISTERED = "SELECT 1 FROM " + table + " WHERE unique_user_id = ?;";
-		SELECT_LOGIN = "SELECT unique_user_id, password, encryption, ip FROM " + table + " WHERE unique_user_id = ?;";
-		INSERT_LOGIN = "INSERT INTO " + table + "(unique_user_id, password, encryption, ip) VALUES(?, ?, ?, ?);";
-		UPDATE_PASSWORD = "UPDATE " + table + " SET password = ?, encryption = ? WHERE unique_user_id = ?;";
-		UPDATE_IP = "UPDATE " + table + " SET ip = ? WHERE unique_user_id = ?;";
-		DELETE_LOGIN = "DELETE FROM " + table + " WHERE unique_user_id = ?;";
-		GET_USERS = "SELECT unique_user_id, password, encryption, ip FROM " + table + ";";
 		PING_CONN = "SELECT 1;";
+		CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + table + " (unique_user_id VARCHAR(130) NOT NULL UNIQUE, password VARCHAR(300) NOT NULL, encryption INT, ip VARCHAR(130) NOT NULL);";
+		SELECT_REG = "SELECT 1 FROM " + table + " WHERE unique_user_id = ?;";
+		INSERT_LOGIN = "INSERT INTO " + table + "(unique_user_id, password, encryption, ip) VALUES(?, ?, ?, ?);";
+		UPDATE_PASS = "UPDATE " + table + " SET password = ?, encryption = ? WHERE unique_user_id = ?;";
+		UPDATE_ADDR = "UPDATE " + table + " SET ip = ? WHERE unique_user_id = ?;";
+		DELETE_LOGIN = "DELETE FROM " + table + " WHERE unique_user_id = ?;";
+		SELECT_LOGIN = "SELECT unique_user_id, password, encryption, ip FROM " + table + " WHERE unique_user_id = ?;";
+		SELECT_USERS = "SELECT unique_user_id, password, encryption, ip FROM " + table + ";";
 
 		JDBC_URL = url;
 
@@ -102,7 +102,7 @@ public abstract class SQL implements DataManager {
 		ResultSet result = null;
 
 		try {
-			stmt = con.prepareStatement(SELECT_REGISTERED);
+			stmt = con.prepareStatement(SELECT_REG);
 			stmt.setString(1, uuid.replaceAll("-", ""));
 			result = stmt.executeQuery();
 			return result.next();
@@ -139,12 +139,12 @@ public abstract class SQL implements DataManager {
 
 		try {
 			if (login.ipaddr == null) {
-				stmt = con.prepareStatement(UPDATE_PASSWORD);
+				stmt = con.prepareStatement(UPDATE_PASS);
 				stmt.setString(1, login.password);
 				stmt.setInt(2, login.encryption);
 				stmt.setString(3, login.uuid.replaceAll("-", ""));
 			} else {
-				stmt = con.prepareStatement(UPDATE_IP);
+				stmt = con.prepareStatement(UPDATE_ADDR);
 				stmt.setString(1, login.ipaddr);
 				stmt.setString(2, login.uuid.replaceAll("-", ""));
 			}
@@ -197,7 +197,7 @@ public abstract class SQL implements DataManager {
 	@Override
 	public ResultSet getAllUsers() {
 		try {
-			PreparedStatement stmt = con.prepareStatement(GET_USERS);
+			PreparedStatement stmt = con.prepareStatement(SELECT_USERS);
 			return stmt.executeQuery();
 		} catch (SQLException e) {
 			return null;
