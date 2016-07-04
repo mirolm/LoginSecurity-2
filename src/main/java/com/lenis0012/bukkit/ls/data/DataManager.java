@@ -7,19 +7,19 @@ public interface DataManager {
 	/**
 	 * Open SQL connection
 	 */
-	public void openConnection();
+	public void openConn();
 
 	/**
 	 * Close SQL connection
 	 */
-	public void closeConnection();
+	public void closeConn();
 
 	/**
 	 * Check SQL connection
 	 *
 	 * @return connection alive
 	 */
-	public boolean pingConnection();
+	public boolean pingConn();
 
 	/**
 	 * Check if player is registered
@@ -34,7 +34,7 @@ public interface DataManager {
 	 *
 	 * @param login LoginData
 	 */
-	public void registerUser(LoginData login);
+	public void regUser(LoginData login);
 
 	/**
 	 * Update player data
