@@ -34,29 +34,14 @@ public interface DataManager {
 	 *
 	 * @param login LoginData
 	 */
-	public void register(LoginData login);
+	public void registerUser(LoginData login);
 
 	/**
 	 * Update a player's password
 	 *
 	 * @param login LoginData
 	 */
-	public void updatePassword(LoginData login);
-
-	/**
-	 * Update a user ip
-	 * 
-	 * @param login LoginData
-	 */
-	public void updateIp(LoginData login);
-
-	/**
-	 * Get user stored data
-	 *
-	 * @param uuid Player UUID
-	 * @return LoginData
-	 */
-	public LoginData getData(String uuid);
+	public void updateUser(LoginData login);
 
 	/**
 	 * Remove a user from the database
@@ -64,6 +49,14 @@ public interface DataManager {
 	 * @param user Username
 	 */
 	public void removeUser(String user);
+
+	/**
+	 * Get user stored data
+	 *
+	 * @param uuid Player UUID
+	 * @return LoginData
+	 */
+	public LoginData getUser(String uuid);
 
 	/**
 	 * Get all registered users
