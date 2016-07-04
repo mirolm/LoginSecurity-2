@@ -34,7 +34,7 @@ public class AdminCommand implements CommandExecutor {
 				sender.sendMessage(ChatColor.GREEN + "/lac reload");
 			} else if(args.length >= 2 && args[0].equalsIgnoreCase("rmpass")) {
 				String uuid = args[1];
-				if(uuid != null && !uuid.isEmpty() && plugin.data.isRegistered(uuid)) {
+				if(uuid != null && !uuid.isEmpty() && plugin.data.checkUser(uuid)) {
 					plugin.data.removeUser(uuid);
 					sender.sendMessage(ChatColor.GREEN + Lang.REM_USER_FROM_DB.toString());
 				} else {
