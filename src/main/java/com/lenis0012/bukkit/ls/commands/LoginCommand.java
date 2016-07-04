@@ -27,7 +27,7 @@ public class LoginCommand implements CommandExecutor {
 			player.sendMessage(ChatColor.RED + Lang.ALREADY_LOGIN.toString());
 			return true;
 		}
-		if(!plugin.data.isRegistered(uuid)) {
+		if(!plugin.data.checkUser(uuid)) {
 			player.sendMessage(ChatColor.RED + Lang.NO_PSW_SET.toString());
 			return true;
 		}
