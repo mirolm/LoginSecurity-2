@@ -35,7 +35,7 @@ public class Converter {
 					LoginData login = manager.parseData(result);
 
 					if(!plugin.data.isRegistered(login.uuid)) {
-						plugin.data.register(login);
+						plugin.data.registerUser(login);
 					}
 				}
 			} catch(SQLException e) {
