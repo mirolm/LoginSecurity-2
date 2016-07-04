@@ -40,8 +40,8 @@ public class ThreadManager {
 				if (time >= nextRefresh) {
 					if (plugin != null) {
 						if (plugin.data != null) {
-							if (!plugin.data.pingConnection()) {
-								plugin.data.openConnection();
+							if (!plugin.data.pingConn()) {
+								plugin.data.openConn();
 							}
 						}
 					}
