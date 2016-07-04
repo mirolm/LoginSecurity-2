@@ -27,7 +27,7 @@ public abstract class SQL implements DataManager {
 		try {
 			Class.forName(driver);
 		} catch (ClassNotFoundException e) {
-			log.log(Level.SEVERE, "Failed to load SQL driver", e);
+			log.log(Level.SEVERE, "Failed to load driver", e);
 		}
 	}
 
@@ -55,7 +55,7 @@ public abstract class SQL implements DataManager {
 
 			con = DriverManager.getConnection(JDBC_URL);
 		} catch(SQLException e) {
-			log.log(Level.SEVERE, "Failed to open connection", e);
+			log.log(Level.SEVERE, "Failed to open conn", e);
 		}
 	}
 
@@ -75,11 +75,13 @@ public abstract class SQL implements DataManager {
 			result = stmt.executeQuery();
 			return result.next();
 		} catch(SQLException e) {
-			return false;
+			log.log(Level.SEVERE, "Failed to ping conn", e);
 		} finally {
 			closeQuietly(result);
 			closeQuietly(stmt);
 		}
+
+		return false;
 	}
 
 	private void createTables() {
@@ -107,12 +109,13 @@ public abstract class SQL implements DataManager {
 			result = stmt.executeQuery();
 			return result.next();
 		} catch(SQLException e) {
-			log.log(Level.SEVERE, "Failed to check user exists", e);
-			return false;
+			log.log(Level.SEVERE, "Failed to check user", e);
 		} finally {
 			closeQuietly(result);
 			closeQuietly(stmt);
 		}
+
+		return false;
 	}
 
 	@Override
@@ -151,7 +154,7 @@ public abstract class SQL implements DataManager {
 
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			log.log(Level.SEVERE, "Failed to update user password", e);
+			log.log(Level.SEVERE, "Failed to update user", e);
 		} finally {
 			closeQuietly(stmt);
 		}
@@ -181,17 +184,17 @@ public abstract class SQL implements DataManager {
 			stmt = con.prepareStatement(SELECT_LOGIN);
 			stmt.setString(1, uuid.replaceAll("-", ""));
 			result = stmt.executeQuery();
-			if(result.next())
+			if(result.next()) {
 				return parseData(result);
-			else
-				return null;
+			}
 		} catch (SQLException e) {
-			log.log(Level.SEVERE, "Failed to get user data", e);
-			return null;
+			log.log(Level.SEVERE, "Failed to get user", e);
 		} finally {
 			closeQuietly(result);
 			closeQuietly(stmt);
 		}
+
+		return null;
 	}
 
 	@Override
