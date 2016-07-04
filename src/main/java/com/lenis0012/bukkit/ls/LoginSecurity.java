@@ -179,7 +179,7 @@ public class LoginSecurity extends JavaPlugin {
         public boolean checkLastIp(Player player) {
                 String uuid = player.getUniqueId().toString();
                 if (data.isRegistered(uuid)) {
-                        LoginData login = data.getData(uuid);
+                        LoginData login = data.getUser(uuid);
                         String currentIp = player.getAddress().getAddress().toString();
                         return currentIp.equalsIgnoreCase(login.ipaddr);
                 }
@@ -192,7 +192,7 @@ public class LoginSecurity extends JavaPlugin {
                 String ip = player.getAddress().getAddress().toString();
 
 		LoginData login = new LoginData(uuid, ip);
-		data.updateIp(login);
+		data.updateUser(login);
         }
 
 	public void debilitatePlayer(Player player, String name, boolean logout) {
