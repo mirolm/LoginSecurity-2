@@ -191,7 +191,7 @@ public class LoginSecurity extends JavaPlugin {
                 String uuid = player.getUniqueId().toString();
                 String ip = player.getAddress().getAddress().toString();
 
-		LoginData login = new LoginData(uuid, null, 0, ip);
+		LoginData login = new LoginData(uuid, ip);
 		data.updateIp(login);
         }
 
