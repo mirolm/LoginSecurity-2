@@ -40,7 +40,7 @@ public class ChangePassCommand implements CommandExecutor {
 			return true;
 		}
 
-		LoginData login = new LoginData(uuid, plugin.hasher.hash(args[1]), plugin.hasher.getTypeId(), null);
+		LoginData login = new LoginData(uuid, plugin.hasher.hash(args[1]), plugin.hasher.getTypeId());
 		plugin.data.updatePassword(login);
 
 		player.sendMessage(ChatColor.GREEN + Lang.PSW_CHANGED.toString());
