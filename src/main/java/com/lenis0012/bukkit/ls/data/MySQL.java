@@ -14,6 +14,6 @@ public class MySQL extends SQL {
 		String table = config.getString("MySQL.prefix", "") + "users";
 		String url = "jdbc:mysql://" + host + ':' + port + '/' + database + '?' + "user=" + user + "&password=" + pass;
 
-		initConnection(table, url);
+		initConn(table, url);
 	}
 }
