@@ -45,24 +45,17 @@ public abstract class SQL implements DataManager {
 		JDBC_URL = url;
 
 		openConnection();
+		createTables();
 	}
 
 	@Override
 	public void openConnection() {
-		PreparedStatement stmt = null;
-
 		try {
 			closeConnection();
 
 			con = DriverManager.getConnection(JDBC_URL);
-
-			stmt = con.prepareStatement(CREATE_TABLE);
-			stmt.setQueryTimeout(30);
-			stmt.executeUpdate();
 		} catch(SQLException e) {
 			log.log(Level.SEVERE, "Failed to open connection", e);
-		} finally {
-			closeQuietly(stmt);
 		}
 	}
 
@@ -85,6 +78,20 @@ public abstract class SQL implements DataManager {
 			return false;
 		} finally {
 			closeQuietly(result);
+			closeQuietly(stmt);
+		}
+	}
+
+	private void createTables() {
+		PreparedStatement stmt = null;
+
+		try {
+			stmt = con.prepareStatement(CREATE_TABLE);
+			stmt.setQueryTimeout(30);
+			stmt.executeUpdate();
+		} catch(SQLException e) {
+			log.log(Level.SEVERE, "Failed to create tables", e);
+		} finally {
 			closeQuietly(stmt);
 		}
 	}
