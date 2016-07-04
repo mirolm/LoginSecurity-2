@@ -9,7 +9,7 @@ public class PasswordManager {
 		LoginSecurity plugin = LoginSecurity.instance;
 		DataManager data = plugin.data;
 
-		LoginData login = data.getData(uuid);		
+		LoginData login = data.getUser(uuid);		
 		EncryptionType etype = EncryptionType.fromInt(login.encryption);
 
 		return etype.checkPass(password, login.password);
