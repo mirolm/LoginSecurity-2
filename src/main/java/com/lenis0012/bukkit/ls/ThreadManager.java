@@ -49,7 +49,7 @@ public class ThreadManager {
 					nextRefresh = System.currentTimeMillis() + 300000;
 				}
 			}
-		}, 20, 20);
+		}, 200L, 200L);
 	}
 
 	public void stopMainTask() {
