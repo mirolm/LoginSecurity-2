@@ -27,7 +27,7 @@ public interface DataManager {
 	 * @param uuid PlayerUUID
 	 * @return user registered
 	 */
-	public boolean isRegistered(String uuid);
+	public boolean checkUser(String uuid);
 
 	/**
 	 * Register a user
