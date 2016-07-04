@@ -116,7 +116,7 @@ public abstract class SQL implements DataManager {
 	}
 
 	@Override
-	public void register(LoginData login) {
+	public void registerUser(LoginData login) {
 		PreparedStatement stmt = null;
 
 		try {
@@ -134,14 +134,21 @@ public abstract class SQL implements DataManager {
 	}
 
 	@Override
-	public void updatePassword(LoginData login) {
+	public void updateUser(LoginData login) {
 		PreparedStatement stmt = null;
 
 		try {
-			stmt = con.prepareStatement(UPDATE_PASSWORD);
-			stmt.setString(1, login.password);
-			stmt.setInt(2, login.encryption);
-			stmt.setString(3, login.uuid.replaceAll("-", ""));
+			if (login.ipaddr == null) {
+				stmt = con.prepareStatement(UPDATE_PASSWORD);
+				stmt.setString(1, login.password);
+				stmt.setInt(2, login.encryption);
+				stmt.setString(3, login.uuid.replaceAll("-", ""));
+			} else {
+				stmt = con.prepareStatement(UPDATE_IP);
+				stmt.setString(1, login.ipaddr);
+				stmt.setString(2, login.uuid.replaceAll("-", ""));
+			}
+
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, "Failed to update user password", e);
@@ -151,23 +158,22 @@ public abstract class SQL implements DataManager {
 	}
 
 	@Override
-	public void updateIp(LoginData login) {
+	public void removeUser(String uuid) {
 		PreparedStatement stmt = null;
 
 		try {
-			stmt = con.prepareStatement(UPDATE_IP);
-			stmt.setString(1, login.ipaddr);
-			stmt.setString(2, login.uuid.replaceAll("-", ""));
+			stmt = con.prepareStatement(DELETE_LOGIN);
+			stmt.setString(1, uuid.replaceAll("-", ""));
 			stmt.executeUpdate();
-		} catch (SQLException e) {
-			log.log(Level.SEVERE, "Failed to update user ipaddr", e);
+		} catch(SQLException e) {
+			log.log(Level.SEVERE, "Failed to remove user", e);
 		} finally {
 			closeQuietly(stmt);
 		}
 	}
 
 	@Override
-	public LoginData getData(String uuid) {
+	public LoginData getUser(String uuid) {
 		PreparedStatement stmt = null;
 		ResultSet result = null;
 
@@ -184,21 +190,6 @@ public abstract class SQL implements DataManager {
 			return null;
 		} finally {
 			closeQuietly(result);
-			closeQuietly(stmt);
-		}
-	}
-
-	@Override
-	public void removeUser(String uuid) {
-		PreparedStatement stmt = null;
-
-		try {
-			stmt = con.prepareStatement(DELETE_LOGIN);
-			stmt.setString(1, uuid.replaceAll("-", ""));
-			stmt.executeUpdate();
-		} catch(SQLException e) {
-			log.log(Level.SEVERE, "Failed to remove user", e);
-		} finally {
 			closeQuietly(stmt);
 		}
 	}
