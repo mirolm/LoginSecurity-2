@@ -9,6 +9,6 @@ public class SQLite extends SQL {
 		String table = "users";
 		String url  = "jdbc:sqlite://" + file.getAbsolutePath();
 
-		initConnection(table, url);
+		initConn(table, url);
 	}
 }
