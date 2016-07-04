@@ -15,7 +15,7 @@ public abstract class SQL implements DataManager {
 	private String JDBC_URL;
         private String PING_CONN;
 	private String CREATE_TABLE;
-        private String SELECT_REG;
+        private String CHECK_REG;
         private String INSERT_LOGIN;
         private String UPDATE_PASS;
         private String UPDATE_ADDR;
@@ -34,7 +34,7 @@ public abstract class SQL implements DataManager {
 	public void initConnection(String table, String url) {
 		PING_CONN = "SELECT 1;";
 		CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + table + " (unique_user_id VARCHAR(130) NOT NULL UNIQUE, password VARCHAR(300) NOT NULL, encryption INT, ip VARCHAR(130) NOT NULL);";
-		SELECT_REG = "SELECT 1 FROM " + table + " WHERE unique_user_id = ?;";
+		CHECK_REG = "SELECT 1 FROM " + table + " WHERE unique_user_id = ?;";
 		INSERT_LOGIN = "INSERT INTO " + table + "(unique_user_id, password, encryption, ip) VALUES(?, ?, ?, ?);";
 		UPDATE_PASS = "UPDATE " + table + " SET password = ?, encryption = ? WHERE unique_user_id = ?;";
 		UPDATE_ADDR = "UPDATE " + table + " SET ip = ? WHERE unique_user_id = ?;";
@@ -97,12 +97,12 @@ public abstract class SQL implements DataManager {
 	}
 
 	@Override
-	public boolean isRegistered(String uuid) {
+	public boolean checkUser(String uuid) {
 		PreparedStatement stmt = null;
 		ResultSet result = null;
 
 		try {
-			stmt = con.prepareStatement(SELECT_REG);
+			stmt = con.prepareStatement(CHECK_REG);
 			stmt.setString(1, uuid.replaceAll("-", ""));
 			result = stmt.executeQuery();
 			return result.next();
