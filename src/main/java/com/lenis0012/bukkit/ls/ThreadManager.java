@@ -90,11 +90,11 @@ public class ThreadManager {
 			public void run() {
 				Iterator<String> it = getSession().keySet().iterator();
 				while (it.hasNext()) {
-					String user = it.next();
-					int current = getSession().get(user);
+					String puuid = it.next();
+					int current = getSession().get(puuid);
 					if (current >= 1) {
 						current -= 1;
-						getSession().put(user, current);
+						getSession().put(puuid, current);
 					} else {
 						it.remove();
 					}
@@ -117,19 +117,19 @@ public class ThreadManager {
 			public void run() {
 				Iterator<String> it = timeout.keySet().iterator();
 				while (it.hasNext()) {
-					String user = it.next();
-					int current = timeout.get(user);
+					String puuid = it.next();
+					int current = timeout.get(puuid);
 					if (current >= 1) {
 						current -= 1;
-						timeout.put(user, current);
+						timeout.put(puuid, current);
 					} else {
 						it.remove();
-						Player player = Bukkit.getPlayer(UUID.fromString(user));
+						Player player = Bukkit.getPlayer(UUID.fromString(puuid));
 						if (player != null && player.isOnline()) {
 							// teleport the player before kicking so that his location is not lost
 							if (plugin.spawntp) {
-								if (plugin.loginLocations.containsKey(user)) {
-									Location fixedLocation = plugin.loginLocations.remove(user);
+								if (plugin.loginLocations.containsKey(puuid)) {
+									Location fixedLocation = plugin.loginLocations.remove(puuid);
 									fixedLocation.add(0, 0.2, 0); // fix for players falling into ground
 									player.teleport(fixedLocation);
 								}
