@@ -12,7 +12,7 @@ public abstract class SQL implements DataManager {
 	private final Logger log = Logger.getLogger("Minecraft.LoginSecruity");
 	private Connection con = null;
 
-	private final String JDBC_URL;
+	private String JDBC_URL;
         private String PING_CONN;
 	private String CREATE_TABLE;
         private String CHECK_REG;
