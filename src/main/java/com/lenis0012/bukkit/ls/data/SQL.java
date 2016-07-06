@@ -12,7 +12,7 @@ public abstract class SQL implements DataManager {
 	private final Logger log = Logger.getLogger("Minecraft.LoginSecruity");
 	private Connection con = null;
 
-	private String JDBC_URL;
+	private final String JDBC_URL;
         private String PING_CONN;
 	private String CREATE_TABLE;
         private String CHECK_REG;
@@ -222,12 +222,12 @@ public abstract class SQL implements DataManager {
 	}
 
         private void closeQuietly(AutoCloseable closeable) {
-                if (closeable != null) {
-                        try {
-                                closeable.close();
-                        } catch (Exception e) {
-                                log.log(Level.SEVERE, "Failed to close", e);
-                        }
+		try {
+			if (closeable != null) {
+				closeable.close();
+	                }
+                } catch (Exception e) {
+                        log.log(Level.SEVERE, "Failed to close", e);
                 }
         }
 }
