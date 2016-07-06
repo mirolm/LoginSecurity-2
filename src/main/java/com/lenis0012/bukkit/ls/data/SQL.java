@@ -12,9 +12,7 @@ public abstract class SQL implements DataManager {
 	private final Logger log = Logger.getLogger("Minecraft.LoginSecruity");
 	private Connection con = null;
 	private String jdbcUrl;
-	private String jdbcUser;
-	private String jdbcPass;
-	
+
         private String PING_CONN;
 	private String CREATE_TABLE;
         private String CHECK_REG;
@@ -33,20 +31,18 @@ public abstract class SQL implements DataManager {
 		}
 	}
 
-	public void initConn(String table, String url, String user, String pass) {
-		this.PING_CONN = "SELECT 1;";
-		this.CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + table + " (unique_user_id VARCHAR(130) NOT NULL UNIQUE, password VARCHAR(300) NOT NULL, encryption INT, ip VARCHAR(130) NOT NULL);";
-		this.CHECK_REG = "SELECT 1 FROM " + table + " WHERE unique_user_id = ?;";
-		this.INSERT_LOGIN = "INSERT INTO " + table + "(unique_user_id, password, encryption, ip) VALUES(?, ?, ?, ?);";
-		this.UPDATE_PASS = "UPDATE " + table + " SET password = ?, encryption = ? WHERE unique_user_id = ?;";
-		this.UPDATE_ADDR = "UPDATE " + table + " SET ip = ? WHERE unique_user_id = ?;";
-		this.DELETE_LOGIN = "DELETE FROM " + table + " WHERE unique_user_id = ?;";
-		this.SELECT_LOGIN = "SELECT unique_user_id, password, encryption, ip FROM " + table + " WHERE unique_user_id = ?;";
-		this.SELECT_USERS = "SELECT unique_user_id, password, encryption, ip FROM " + table + ";";
+	public void initConn(String table, String url) {
+		PING_CONN = "SELECT 1;";
+		CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + table + " (unique_user_id VARCHAR(130) NOT NULL UNIQUE, password VARCHAR(300) NOT NULL, encryption INT, ip VARCHAR(130) NOT NULL);";
+		CHECK_REG = "SELECT 1 FROM " + table + " WHERE unique_user_id = ?;";
+		INSERT_LOGIN = "INSERT INTO " + table + "(unique_user_id, password, encryption, ip) VALUES(?, ?, ?, ?);";
+		UPDATE_PASS = "UPDATE " + table + " SET password = ?, encryption = ? WHERE unique_user_id = ?;";
+		UPDATE_ADDR = "UPDATE " + table + " SET ip = ? WHERE unique_user_id = ?;";
+		DELETE_LOGIN = "DELETE FROM " + table + " WHERE unique_user_id = ?;";
+		SELECT_LOGIN = "SELECT unique_user_id, password, encryption, ip FROM " + table + " WHERE unique_user_id = ?;";
+		SELECT_USERS = "SELECT unique_user_id, password, encryption, ip FROM " + table + ";";
 
-		this.jdbcUrl = url;
-		this.jdbcUser = user;
-		this.jdbcPass = pass;
+		jdbcUrl = url;
 
 		openConn();
 		createTables();
@@ -57,7 +53,7 @@ public abstract class SQL implements DataManager {
 		try {
 			closeConn();
 
-			con = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPass);
+			con = DriverManager.getConnection(jdbcUrl);
 		} catch(SQLException e) {
 			log.log(Level.SEVERE, "Failed to open conn", e);
 		}
