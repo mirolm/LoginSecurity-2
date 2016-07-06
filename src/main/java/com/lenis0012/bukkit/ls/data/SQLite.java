@@ -7,8 +7,9 @@ public class SQLite extends SQL {
 		super("org.sqlite.JDBC");
 
 		String table = "users";
+
 		String url  = "jdbc:sqlite://" + file.getAbsolutePath();
 
-		initConn(table, url);
+		initConn(table, url, null, null);
 	}
 }
