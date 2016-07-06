@@ -10,6 +10,6 @@ public class SQLite extends SQL {
 
 		String url  = "jdbc:sqlite://" + file.getAbsolutePath();
 
-		initConn(table, url, null, null);
+		initConn(table, url);
 	}
 }
