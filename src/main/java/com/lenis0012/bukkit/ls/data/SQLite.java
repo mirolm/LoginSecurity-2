@@ -6,9 +6,9 @@ public class SQLite extends SQL {
 	public SQLite(File file) {
 		super("org.sqlite.JDBC");
 
-		final String table = "users";
+		String table = "users";
 
-		final String url  = "jdbc:sqlite://" + file.getAbsolutePath();
+		String url  = "jdbc:sqlite://" + file.getAbsolutePath();
 
 		initConn(table, url);
 	}
