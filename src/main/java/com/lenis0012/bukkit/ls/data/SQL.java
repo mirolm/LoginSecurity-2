@@ -15,10 +15,10 @@ public abstract class SQL implements DataManager {
 
         private String PING_CONN = "SELECT 1";
 	private String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS <TABLE> ("
-		+ "unique_user_id VARCHAR(130) NOT NULL UNIQUE,"
-		+ "password VARCHAR(300) NOT NULL,"
-		+ "encryption INT,"
-		+ "ip VARCHAR(130) NOT NULL)";
+					+ "unique_user_id VARCHAR(130) NOT NULL UNIQUE,"
+					+ "password VARCHAR(300) NOT NULL,"
+					+ "encryption INT,"
+					+ "ip VARCHAR(130) NOT NULL)";
         private String CHECK_REG = "SELECT 1 FROM <TABLE> WHERE unique_user_id = ?";
         private String INSERT_LOGIN = "INSERT INTO <TABLE>(unique_user_id, password, encryption, ip) VALUES(?, ?, ?, ?)";
         private String UPDATE_PASS = "UPDATE <TABLE> SET password = ?, encryption = ? WHERE unique_user_id = ?";
