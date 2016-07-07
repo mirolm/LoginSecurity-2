@@ -13,19 +13,19 @@ public abstract class SQL implements DataManager {
 	private Connection con = null;
 	private String jdbcUrl;
 
-        private String PING_CONN = "SELECT 1;";
+        private String PING_CONN = "SELECT 1";
 	private String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS <TABLE> ("
 		+ "unique_user_id VARCHAR(130) NOT NULL UNIQUE,"
 		+ "password VARCHAR(300) NOT NULL,"
 		+ "encryption INT,"
-		+ "ip VARCHAR(130) NOT NULL);";
-        private String CHECK_REG = "SELECT 1 FROM <TABLE> WHERE unique_user_id = ?;";
-        private String INSERT_LOGIN = "INSERT INTO <TABLE>(unique_user_id, password, encryption, ip) VALUES(?, ?, ?, ?);";
-        private String UPDATE_PASS = "UPDATE <TABLE> SET password = ?, encryption = ? WHERE unique_user_id = ?;";
-        private String UPDATE_ADDR = "UPDATE <TABLE> SET ip = ? WHERE unique_user_id = ?;";
-        private String DELETE_LOGIN = "DELETE FROM <TABLE> WHERE unique_user_id = ?;";
-        private String SELECT_LOGIN = "SELECT * FROM <TABLE> WHERE unique_user_id = ?;";
-        private String SELECT_USERS = "SELECT * FROM <TABLE>;";
+		+ "ip VARCHAR(130) NOT NULL)";
+        private String CHECK_REG = "SELECT 1 FROM <TABLE> WHERE unique_user_id = ?";
+        private String INSERT_LOGIN = "INSERT INTO <TABLE>(unique_user_id, password, encryption, ip) VALUES(?, ?, ?, ?)";
+        private String UPDATE_PASS = "UPDATE <TABLE> SET password = ?, encryption = ? WHERE unique_user_id = ?";
+        private String UPDATE_ADDR = "UPDATE <TABLE> SET ip = ? WHERE unique_user_id = ?";
+        private String DELETE_LOGIN = "DELETE FROM <TABLE> WHERE unique_user_id = ?";
+        private String SELECT_LOGIN = "SELECT * FROM <TABLE> WHERE unique_user_id = ?";
+        private String SELECT_USERS = "SELECT * FROM <TABLE>";
 
 	public SQL(String driver) {
 		try {
