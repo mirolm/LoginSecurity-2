@@ -13,15 +13,19 @@ public abstract class SQL implements DataManager {
 	private Connection con = null;
 	private String jdbcUrl;
 
-        private String PING_CONN;
-	private String CREATE_TABLE;
-        private String CHECK_REG;
-        private String INSERT_LOGIN;
-        private String UPDATE_PASS;
-        private String UPDATE_ADDR;
-        private String DELETE_LOGIN;
-        private String SELECT_LOGIN;
-        private String SELECT_USERS;
+        private String PING_CONN = "SELECT 1;";
+	private String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS <TABLE> ("
+		+ "unique_user_id VARCHAR(130) NOT NULL UNIQUE,"
+		+ "password VARCHAR(300) NOT NULL,"
+		+ "encryption INT,"
+		+ "ip VARCHAR(130) NOT NULL);";
+        private String CHECK_REG = "SELECT 1 FROM <TABLE> WHERE unique_user_id = ?;";
+        private String INSERT_LOGIN = "INSERT INTO <TABLE>(unique_user_id, password, encryption, ip) VALUES(?, ?, ?, ?);";
+        private String UPDATE_PASS = "UPDATE <TABLE> SET password = ?, encryption = ? WHERE unique_user_id = ?;";
+        private String UPDATE_ADDR = "UPDATE <TABLE> SET ip = ? WHERE unique_user_id = ?;";
+        private String DELETE_LOGIN = "DELETE FROM <TABLE> WHERE unique_user_id = ?;";
+        private String SELECT_LOGIN = "SELECT * FROM <TABLE> WHERE unique_user_id = ?;";
+        private String SELECT_USERS = "SELECT * FROM <TABLE>;";
 
 	public SQL(String driver) {
 		try {
@@ -32,15 +36,14 @@ public abstract class SQL implements DataManager {
 	}
 
 	public void initConn(String table, String url) {
-		PING_CONN = "SELECT 1;";
-		CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + table + " (unique_user_id VARCHAR(130) NOT NULL UNIQUE, password VARCHAR(300) NOT NULL, encryption INT, ip VARCHAR(130) NOT NULL);";
-		CHECK_REG = "SELECT 1 FROM " + table + " WHERE unique_user_id = ?;";
-		INSERT_LOGIN = "INSERT INTO " + table + "(unique_user_id, password, encryption, ip) VALUES(?, ?, ?, ?);";
-		UPDATE_PASS = "UPDATE " + table + " SET password = ?, encryption = ? WHERE unique_user_id = ?;";
-		UPDATE_ADDR = "UPDATE " + table + " SET ip = ? WHERE unique_user_id = ?;";
-		DELETE_LOGIN = "DELETE FROM " + table + " WHERE unique_user_id = ?;";
-		SELECT_LOGIN = "SELECT unique_user_id, password, encryption, ip FROM " + table + " WHERE unique_user_id = ?;";
-		SELECT_USERS = "SELECT unique_user_id, password, encryption, ip FROM " + table + ";";
+		CREATE_TABLE = CREATE_TABLE.replace("<TABLE>", table);
+		CHECK_REG = CHECK_REG.replace("<TABLE>", table);
+		INSERT_LOGIN = INSERT_LOGIN.replace("<TABLE>", table);
+		UPDATE_PASS = UPDATE_PASS.replace("<TABLE>", table);
+		UPDATE_ADDR = UPDATE_ADDR.replace("<TABLE>", table);
+		DELETE_LOGIN = DELETE_LOGIN.replace("<TABLE>", table);
+		SELECT_LOGIN = SELECT_LOGIN.replace("<TABLE>", table);
+		SELECT_USERS = SELECT_USERS.replace("<TABLE>", table);
 
 		jdbcUrl = url;
 
