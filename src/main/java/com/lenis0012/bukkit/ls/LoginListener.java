@@ -29,6 +29,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.PlayerItemConsumeEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -175,6 +176,14 @@ public class LoginListener implements Listener {
 	public void onFoodLevelChange(FoodLevelChangeEvent event) {
 		Entity entity = event.getEntity();
 		if (checkEntity(entity)) {
+			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+	public void onPlayerItemConsume(PlayerItemConsumeEvent event) {
+		Player player = event.getPlayer();
+		if (checkEntity(player)) {
 			event.setCancelled(true);
 		}
 	}
