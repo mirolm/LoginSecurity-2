@@ -28,6 +28,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
@@ -222,6 +223,14 @@ public class LoginListener implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onEntityTarget(EntityTargetEvent event) {
+		Entity entity = event.getTarget();
+		if (checkEntity(entity)) {
+			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+	public void onEntityShootBow(EntityShootBowEvent event) {
 		Entity entity = event.getTarget();
 		if (checkEntity(entity)) {
 			event.setCancelled(true);
