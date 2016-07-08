@@ -244,6 +244,8 @@ public class LoginListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
 		Player player = event.getPlayer();
+		String uuid = player.getUniqueId().toString();
+
 		if (checkEntity(player)) {
 			if (!event.getMessage().startsWith("/login ") && !event.getMessage().startsWith("/register ")) {
 				//faction fix start
