@@ -39,6 +39,17 @@ public class LoginListener implements Listener {
 		this.plugin = i;
 	}
 
+	private boolean checkEntity(Entity entity) {
+		if (entity instanceof Player) {
+			Player player = (Player) entity;
+			String uuid = player.getUniqueId().toString();
+
+			return plugin.authList.containsKey(uuid);
+		}
+		
+		return false;
+	}
+
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
@@ -108,11 +119,10 @@ public class LoginListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onPlayerMove(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
-		String uuid = player.getUniqueId().toString();
 		Location from = event.getFrom();
 		Location to = event.getTo().clone();
 
-		if (plugin.authList.containsKey(uuid)) {
+		if checkEntity(player) {
 			to.setX(from.getX());
 			to.setZ(from.getZ());
 			event.setTo(to);
@@ -122,9 +132,7 @@ public class LoginListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onBlockPlace(BlockPlaceEvent event) {
 		Player player = event.getPlayer();
-		String uuid = player.getUniqueId().toString();
-
-		if (plugin.authList.containsKey(uuid)) {
+		if checkEntity(player) {
 			event.setCancelled(true);
 		}
 	}
@@ -132,9 +140,7 @@ public class LoginListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onBlockBreak(BlockBreakEvent event) {
 		Player player = event.getPlayer();
-		String uuid = player.getUniqueId().toString();
-
-		if (plugin.authList.containsKey(uuid)) {
+		if checkEntity(player) {
 			event.setCancelled(true);
 		}
 	}
@@ -142,9 +148,7 @@ public class LoginListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onPlayerDropItem(PlayerDropItemEvent event) {
 		Player player = event.getPlayer();
-		String uuid = player.getUniqueId().toString();
-
-		if (plugin.authList.containsKey(uuid)) {
+		if checkEntity(player) {
 			event.setCancelled(true);
 		}
 	}
@@ -152,9 +156,7 @@ public class LoginListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onPlayerPickupItem(PlayerPickupItemEvent event) {
 		Player player = event.getPlayer();
-		String uuid = player.getUniqueId().toString();
-
-		if (plugin.authList.containsKey(uuid)) {
+		if checkEntity(player) {
 			event.setCancelled(true);
 		}
 	}
@@ -162,8 +164,7 @@ public class LoginListener implements Listener {
 	@EventHandler
 	public void onPlayerChat(AsyncPlayerChatEvent chat) {
 		Player player = chat.getPlayer();
-		String uuid = player.getUniqueId().toString();
-		if (plugin.authList.containsKey(uuid)) {
+		if checkEntity(player) {
 			chat.setCancelled(true);
 		}
 	}
@@ -171,13 +172,7 @@ public class LoginListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onHealthRegain(EntityRegainHealthEvent event) {
 		Entity entity = event.getEntity();
-		if (!(entity instanceof Player)) {
-			return;
-		}
-		Player player = (Player) entity;
-		String uuid = player.getUniqueId().toString();
-
-		if (plugin.authList.containsKey(uuid)) {
+		if checkEntity(entity) {
 			event.setCancelled(true);
 		}
 	}
@@ -185,13 +180,7 @@ public class LoginListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onFoodLevelChange(FoodLevelChangeEvent event) {
 		Entity entity = event.getEntity();
-		if (!(entity instanceof Player)) {
-			return;
-		}
-		Player player = (Player) entity;
-		String uuid = player.getUniqueId().toString();
-
-		if (plugin.authList.containsKey(uuid)) {
+		if checkEntity(entity) {
 			event.setCancelled(true);
 		}
 	}
@@ -199,13 +188,7 @@ public class LoginListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onInventoryClick(InventoryClickEvent event) {
 		Entity entity = event.getWhoClicked();
-		if (!(entity instanceof Player)) {
-			return;
-		}
-		Player player = (Player) entity;
-		String uuid = player.getUniqueId().toString();
-
-		if (plugin.authList.containsKey(uuid)) {
+		if checkEntity(entity) {
 			event.setCancelled(true);
 		}
 	}
@@ -213,25 +196,16 @@ public class LoginListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onEntityDamage(EntityDamageEvent event) {
 		Entity entity = event.getEntity();
-
-		if (entity instanceof Player) {
-			Player player = (Player) entity;
-			String uuid = player.getUniqueId().toString();
-			if (plugin.authList.containsKey(uuid)) {
-				event.setCancelled(true);
-			}
+		if checkEntity(entity) {
+			event.setCancelled(true);
 		}
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onPotionSplash(PotionSplashEvent event) {
 		for (LivingEntity entity : event.getAffectedEntities()) {
-			if (entity instanceof Player) {
-				Player player = (Player) entity;
-				String uuid = player.getUniqueId().toString();
-				if (plugin.authList.containsKey(uuid)) {
-					event.setCancelled(true);
-				}
+			if checkEntity(entity) {
+				event.setCancelled(true);
 			}
 		}
 	}
@@ -241,46 +215,28 @@ public class LoginListener implements Listener {
 		Entity defender = event.getEntity();
 		Entity damager = event.getDamager();
 
-		if (defender instanceof Player) {
-			Player p1 = (Player) defender;
-			String u1 = p1.getUniqueId().toString();
+		if checkEntity(defender) {
+			event.setCancelled(true);
+			return;
+		}
 
-			if (plugin.authList.containsKey(u1)) {
-				event.setCancelled(true);
-				return;
-			}
-
-			if (damager instanceof Player) {
-				Player p2 = (Player) damager;
-				String u2 = p2.getUniqueId().toString();
-
-				if (plugin.authList.containsKey(u2)) {
-					event.setCancelled(true);
-				}
-			}
+		if checkEntity(damager) {
+			event.setCancelled(true);
 		}
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onEntityTarget(EntityTargetEvent event) {
 		Entity entity = event.getTarget();
-
-		if (entity instanceof Player) {
-			Player player = (Player) entity;
-			String uuid = player.getUniqueId().toString();
-
-			if (plugin.authList.containsKey(uuid)) {
-				event.setCancelled(true);
-			}
+		if checkEntity(entity) {
+			event.setCancelled(true);
 		}
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
-		String uuid = player.getUniqueId().toString();
-
-		if (plugin.authList.containsKey(uuid)) {
+		if checkEntity(player) {
 			event.setCancelled(true);
 		}
 	}
@@ -288,8 +244,7 @@ public class LoginListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
 		Player player = event.getPlayer();
-		String uuid = player.getUniqueId().toString();
-		if (plugin.authList.containsKey(uuid)) {
+		if checkEntity(player) {
 			if (!event.getMessage().startsWith("/login ") && !event.getMessage().startsWith("/register ")) {
 				//faction fix start
 				if (event.getMessage().startsWith("/f")) {
