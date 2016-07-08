@@ -1,6 +1,6 @@
 package com.lenis0012.bukkit.ls;
 
-import com.google.common.collect.Lists;
+import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
