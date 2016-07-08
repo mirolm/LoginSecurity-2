@@ -27,7 +27,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
@@ -169,14 +168,6 @@ public class LoginListener implements Listener {
 		Player player = chat.getPlayer();
 		if (checkEntity(player)) {
 			chat.setCancelled(true);
-		}
-	}
-
-	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-	public void onHealthRegain(EntityRegainHealthEvent event) {
-		Entity entity = event.getEntity();
-		if (checkEntity(entity)) {
-			event.setCancelled(true);
 		}
 	}
 
