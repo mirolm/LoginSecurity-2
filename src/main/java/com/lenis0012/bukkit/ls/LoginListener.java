@@ -26,7 +26,6 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
@@ -211,21 +210,6 @@ public class LoginListener implements Listener {
 			if (checkEntity(entity)) {
 				event.setCancelled(true);
 			}
-		}
-	}
-
-	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-		Entity defender = event.getEntity();
-		Entity damager = event.getDamager();
-
-		if (checkEntity(defender)) {
-			event.setCancelled(true);
-			return;
-		}
-
-		if (checkEntity(damager)) {
-			event.setCancelled(true);
 		}
 	}
 
