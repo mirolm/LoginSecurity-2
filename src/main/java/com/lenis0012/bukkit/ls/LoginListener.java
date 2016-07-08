@@ -121,7 +121,6 @@ public class LoginListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onPlayerMove(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
-
 		if (checkEntity(player)) {
 			Location from = event.getFrom();
 			Location to = event.getTo();
@@ -232,7 +231,6 @@ public class LoginListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
 		Player player = event.getPlayer();
-
 		if (checkEntity(player)) {
 			String message = event.getMessage().toLowerCase();
         		for(String cmd : ALLOWED_COMMANDS) {
