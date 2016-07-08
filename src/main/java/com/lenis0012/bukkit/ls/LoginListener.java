@@ -231,7 +231,7 @@ public class LoginListener implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onEntityShootBow(EntityShootBowEvent event) {
-		Entity entity = event.getTarget();
+		Entity entity = event.getEntity();
 		if (checkEntity(entity)) {
 			event.setCancelled(true);
 		}
