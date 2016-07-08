@@ -121,13 +121,14 @@ public class LoginListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onPlayerMove(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
-		Location from = event.getFrom();
-		Location to = event.getTo().clone();
 
 		if (checkEntity(player)) {
-			to.setX(from.getX());
-			to.setZ(from.getZ());
-			event.setTo(to);
+			Location from = event.getFrom();
+			Location to = event.getTo();
+
+			if(from.getBlockX() != to.getBlockX() || from.getBlockZ() != to.getBlockZ()) {
+            			event.setTo(event.getFrom());
+        		}
 		}
 	}
 
