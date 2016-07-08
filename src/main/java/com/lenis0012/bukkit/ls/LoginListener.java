@@ -1,6 +1,5 @@
 package com.lenis0012.bukkit.ls;
 
-import org.apache.commons.lang.RandomStringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -33,6 +32,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 public class LoginListener implements Listener {
 	private LoginSecurity plugin;
+	private final List<String> ALLOWED_COMMANDS = Lists.newArrayList("/login ", "/register ");
 
 	public LoginListener(LoginSecurity i) {
 		this.plugin = i;
@@ -243,17 +243,20 @@ public class LoginListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
 		Player player = event.getPlayer();
-		String uuid = player.getUniqueId().toString();
 
 		if (checkEntity(player)) {
-			if (!event.getMessage().startsWith("/login ") && !event.getMessage().startsWith("/register ")) {
-				//faction fix start
-				if (event.getMessage().startsWith("/f")) {
-					event.setMessage("/" + RandomStringUtils.randomAscii(uuid.length())); //this command does not exist :P
-				}
-				//faction fix end
-				event.setCancelled(true);
-			}
+			String message = event.getMessage().toLowerCase();
+        		for(String cmd : ALLOWED_COMMANDS) {
+            			if(message.startsWith(cmd)) {
+                			return;
+            			}
+        		}
+
+			if(message.startsWith("/f")) {
+            			event.setMessage("/LOGIN_SECURITY_FACTION_REPLACEMENT_FIX");
+        		}
+
+			event.setCancelled(true);
 		}
 	}
 }
