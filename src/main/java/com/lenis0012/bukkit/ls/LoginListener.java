@@ -122,7 +122,7 @@ public class LoginListener implements Listener {
 		Location from = event.getFrom();
 		Location to = event.getTo().clone();
 
-		if checkEntity(player) {
+		if (checkEntity(player)) {
 			to.setX(from.getX());
 			to.setZ(from.getZ());
 			event.setTo(to);
@@ -132,7 +132,7 @@ public class LoginListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onBlockPlace(BlockPlaceEvent event) {
 		Player player = event.getPlayer();
-		if checkEntity(player) {
+		if (checkEntity(player)) {
 			event.setCancelled(true);
 		}
 	}
@@ -140,7 +140,7 @@ public class LoginListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onBlockBreak(BlockBreakEvent event) {
 		Player player = event.getPlayer();
-		if checkEntity(player) {
+		if (checkEntity(player)) {
 			event.setCancelled(true);
 		}
 	}
@@ -148,7 +148,7 @@ public class LoginListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onPlayerDropItem(PlayerDropItemEvent event) {
 		Player player = event.getPlayer();
-		if checkEntity(player) {
+		if (checkEntity(player)) {
 			event.setCancelled(true);
 		}
 	}
@@ -156,7 +156,7 @@ public class LoginListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onPlayerPickupItem(PlayerPickupItemEvent event) {
 		Player player = event.getPlayer();
-		if checkEntity(player) {
+		if (checkEntity(player)) {
 			event.setCancelled(true);
 		}
 	}
@@ -164,7 +164,7 @@ public class LoginListener implements Listener {
 	@EventHandler
 	public void onPlayerChat(AsyncPlayerChatEvent chat) {
 		Player player = chat.getPlayer();
-		if checkEntity(player) {
+		if (checkEntity(player)) {
 			chat.setCancelled(true);
 		}
 	}
@@ -172,7 +172,7 @@ public class LoginListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onHealthRegain(EntityRegainHealthEvent event) {
 		Entity entity = event.getEntity();
-		if checkEntity(entity) {
+		if (checkEntity(entity)) {
 			event.setCancelled(true);
 		}
 	}
@@ -180,7 +180,7 @@ public class LoginListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onFoodLevelChange(FoodLevelChangeEvent event) {
 		Entity entity = event.getEntity();
-		if checkEntity(entity) {
+		if (checkEntity(entity)) {
 			event.setCancelled(true);
 		}
 	}
@@ -188,7 +188,7 @@ public class LoginListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onInventoryClick(InventoryClickEvent event) {
 		Entity entity = event.getWhoClicked();
-		if checkEntity(entity) {
+		if (checkEntity(entity)) {
 			event.setCancelled(true);
 		}
 	}
@@ -196,7 +196,7 @@ public class LoginListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onEntityDamage(EntityDamageEvent event) {
 		Entity entity = event.getEntity();
-		if checkEntity(entity) {
+		if (checkEntity(entity)) {
 			event.setCancelled(true);
 		}
 	}
@@ -204,7 +204,7 @@ public class LoginListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onPotionSplash(PotionSplashEvent event) {
 		for (LivingEntity entity : event.getAffectedEntities()) {
-			if checkEntity(entity) {
+			if (checkEntity(entity)) {
 				event.setCancelled(true);
 			}
 		}
@@ -215,12 +215,12 @@ public class LoginListener implements Listener {
 		Entity defender = event.getEntity();
 		Entity damager = event.getDamager();
 
-		if checkEntity(defender) {
+		if (checkEntity(defender)) {
 			event.setCancelled(true);
 			return;
 		}
 
-		if checkEntity(damager) {
+		if (checkEntity(damager)) {
 			event.setCancelled(true);
 		}
 	}
@@ -228,7 +228,7 @@ public class LoginListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onEntityTarget(EntityTargetEvent event) {
 		Entity entity = event.getTarget();
-		if checkEntity(entity) {
+		if (checkEntity(entity)) {
 			event.setCancelled(true);
 		}
 	}
@@ -236,7 +236,7 @@ public class LoginListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
-		if checkEntity(player) {
+		if (checkEntity(player)) {
 			event.setCancelled(true);
 		}
 	}
@@ -244,7 +244,7 @@ public class LoginListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
 		Player player = event.getPlayer();
-		if checkEntity(player) {
+		if (checkEntity(player)) {
 			if (!event.getMessage().startsWith("/login ") && !event.getMessage().startsWith("/register ")) {
 				//faction fix start
 				if (event.getMessage().startsWith("/f")) {
