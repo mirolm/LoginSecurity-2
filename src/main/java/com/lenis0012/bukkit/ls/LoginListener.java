@@ -23,7 +23,6 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
@@ -203,7 +202,7 @@ public class LoginListener implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onPotionSplash(PotionSplashEvent event) {
-		for (LivingEntity entity : event.getAffectedEntities()) {
+		for (Entity entity : event.getAffectedEntities()) {
 			if (checkEntity(entity)) {
 				event.setCancelled(true);
 			}
