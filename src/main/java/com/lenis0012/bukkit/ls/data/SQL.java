@@ -25,7 +25,6 @@ public abstract class SQL implements DataManager {
         private String INSERT_LOGIN = "INSERT INTO <TABLE>(unique_user_id, password, encryption, ip) VALUES(?, ?, ?, ?)";
         private String UPDATE_PASS = "UPDATE <TABLE> SET password = ?, encryption = ? WHERE unique_user_id = ?";
         private String UPDATE_ADDR = "UPDATE <TABLE> SET ip = ? WHERE unique_user_id = ?";
-        private String DELETE_LOGIN = "DELETE FROM <TABLE> WHERE unique_user_id = ?";
         private String SELECT_LOGIN = "SELECT * FROM <TABLE> WHERE unique_user_id = ?";
         private String SELECT_USERS = "SELECT * FROM <TABLE>";
 
@@ -43,7 +42,6 @@ public abstract class SQL implements DataManager {
 		INSERT_LOGIN = INSERT_LOGIN.replace("<TABLE>", table);
 		UPDATE_PASS = UPDATE_PASS.replace("<TABLE>", table);
 		UPDATE_ADDR = UPDATE_ADDR.replace("<TABLE>", table);
-		DELETE_LOGIN = DELETE_LOGIN.replace("<TABLE>", table);
 		SELECT_LOGIN = SELECT_LOGIN.replace("<TABLE>", table);
 		SELECT_USERS = SELECT_USERS.replace("<TABLE>", table);
 
@@ -160,21 +158,6 @@ public abstract class SQL implements DataManager {
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, "Failed to update user", e);
-		} finally {
-			closeQuietly(stmt);
-		}
-	}
-
-	@Override
-	public void removeUser(String uuid) {
-		PreparedStatement stmt = null;
-
-		try {
-			stmt = con.prepareStatement(DELETE_LOGIN);
-			stmt.setString(1, uuid.replaceAll("-", ""));
-			stmt.executeUpdate();
-		} catch(SQLException e) {
-			log.log(Level.SEVERE, "Failed to remove user", e);
 		} finally {
 			closeQuietly(stmt);
 		}
