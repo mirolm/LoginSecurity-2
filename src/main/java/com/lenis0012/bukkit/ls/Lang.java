@@ -9,10 +9,10 @@ public enum Lang {
     TIMED_OUT("timed_out", "Login timed out"),
     REG_MSG("reg_msg", "Please register using /register <password>"),
     LOG_MSG("log_msg", "Please login using /login <password>"),
-    MUST_BE_PLAYER("must_be_player", "You must be a player"),
+//    MUST_BE_PLAYER("must_be_player", "You must be a player"),
     NOT_REG("not_reg", "You are not registered on the server"),
-    INVALID_ARGS("invalid_args", "Not enough arguments"),
-    USAGE("usage", "Usage: "),
+//    INVALID_ARGS("invalid_args", "Not enough arguments"),
+//    USAGE("usage", "Usage: "),
     INVALID_PSW("invalid_psw", "Password Incorrect"),
     REQUIRED_PSW("required_psw", "Passwords are required on this server!"),
     ALREADY_REG("already_reg", "You are already registered"),
@@ -22,7 +22,7 @@ public enum Lang {
     ALREADY_LOGIN("already_login", "You are already logged in"),
     NO_PSW_SET("no_psw_set", "You do not have a password set"),
     LOGIN("login", "Succesfully logged in"),
-    INVALID_USERNAME("invalid_username", "Invalid username"),
+//    INVALID_USERNAME("invalid_username", "Invalid username"),
     PSW_CHANGED("psw_changed", "Sucessfully changed password"),
     SESS_EXTENDED("sess_extended", "Extended session from last login");
 
