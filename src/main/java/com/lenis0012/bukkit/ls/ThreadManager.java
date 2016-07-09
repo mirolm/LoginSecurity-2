@@ -8,7 +8,6 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -126,14 +125,6 @@ public class ThreadManager {
 						it.remove();
 						Player player = Bukkit.getPlayer(UUID.fromString(puuid));
 						if (player != null && player.isOnline()) {
-							// teleport the player before kicking so that his location is not lost
-							if (plugin.spawntp) {
-								if (plugin.loginLocations.containsKey(puuid)) {
-									Location fixedLocation = plugin.loginLocations.remove(puuid);
-									fixedLocation.add(0, 0.2, 0); // fix for players falling into ground
-									player.teleport(fixedLocation);
-								}
-							}
 							player.kickPlayer(Lang.TIMED_OUT.toString());
 							LoginSecurity.log.log(Level.INFO, "{0} was kicked for login timeout", player.getName());
 						}
