@@ -45,7 +45,6 @@ public class LoginSecurity extends JavaPlugin {
 	public int sesDelay, timeDelay;
 	public static final Logger log = Logger.getLogger("Minecraft");
 	public ThreadManager thread;
-	public String prefix;
 	public EncryptionType hasher;
 	public Map<String, CommandExecutor> commandMap = Maps.newHashMap();
 	public static int PHP_VERSION;
@@ -70,20 +69,18 @@ public class LoginSecurity extends JavaPlugin {
 		config.addDefault("settings.session.timeout (sec)", 60);
 		config.addDefault("settings.timeout.use", true);
 		config.addDefault("settings.timeout.timeout (sec)", 60);
-		config.addDefault("settings.table prefix", "ls_");
 		config.addDefault("MySQL.use", false);
 		config.addDefault("MySQL.host", "localhost");
 		config.addDefault("MySQL.port", 3306);
-		config.addDefault("MySQL.database", "LoginSecurity");
-		config.addDefault("MySQL.username", "root");
-		config.addDefault("MySQL.password", "password");
-		config.addDefault("MySQL.prefix", "");
+		config.addDefault("MySQL.database", "");
+		config.addDefault("MySQL.username", "");
+		config.addDefault("MySQL.password", "");
+		config.addDefault("MySQL.prefix", "ls_");
 		config.options().copyDefaults(true);
 		saveConfig();
 
 		//intalize fields
 		instance = (LoginSecurity) pm.getPlugin("LoginSecurity");
-		prefix = config.getString("settings.table prefix");
 		data = this.getDataManager(config);
 		thread = new ThreadManager(this);
 		required = config.getBoolean("settings.password-required");
