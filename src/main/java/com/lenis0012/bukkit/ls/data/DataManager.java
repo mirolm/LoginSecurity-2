@@ -44,13 +44,6 @@ public interface DataManager {
 	public void updateUser(LoginData login);
 
 	/**
-	 * Remove user from database
-	 *
-	 * @param uuid PlayerUUID
-	 */
-	public void removeUser(String uuid);
-
-	/**
 	 * Get user stored data
 	 *
 	 * @param uuid PlayerUUID
