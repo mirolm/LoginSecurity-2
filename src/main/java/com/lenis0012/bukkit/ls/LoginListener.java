@@ -103,9 +103,7 @@ public class LoginListener implements Listener {
 		Player player = event.getPlayer();
 		String uuid = player.getUniqueId().toString();
 
-		if(plugin.authList.containsKey(uuid) && plugin.spawntp && plugin.loginLocations.containsKey(uuid)) {
-			player.teleport(plugin.loginLocations.remove(uuid));
-		} if (plugin.data.checkUser(uuid)) {
+		if (plugin.data.checkUser(uuid)) {
 			plugin.updateLastIp(player);
 			if (plugin.sesUse && !plugin.authList.containsKey(uuid)) {
 				plugin.thread.getSession().put(uuid, plugin.sesDelay);
@@ -113,15 +111,6 @@ public class LoginListener implements Listener {
 		}
 
 		plugin.authList.remove(uuid);
-	}
-
-	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onPlayerRespawn(PlayerRespawnEvent event) {
-		Player player = event.getPlayer();
-		String uuid = player.getUniqueId().toString();
-		if(plugin.loginLocations.containsKey(uuid)) {
-			plugin.loginLocations.put(uuid, event.getRespawnLocation());
-		}
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
