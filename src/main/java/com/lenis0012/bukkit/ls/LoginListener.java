@@ -127,7 +127,7 @@ public class LoginListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onPlayerMove(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
-		if (checkEntity(player)) {
+		if (authEntity(player)) {
 			Location from = event.getFrom();
 			Location to = event.getTo();
 
