@@ -15,7 +15,6 @@ public enum Lang {
     USAGE("usage", "Usage: "),
     INVALID_PSW("invalid_psw", "Password Incorrect"),
     REQUIRED_PSW("required_psw", "Passwords are required on this server!"),
-    REMOVED_PSW("removed_psw", "Succesfully removed your password"),
     ALREADY_REG("already_reg", "You are already registered"),
     REGISTERED("registered", "Registered successful"),
     MUST_LGN_FIRST("must_lgn_first", "You must login first"),
@@ -23,10 +22,7 @@ public enum Lang {
     ALREADY_LOGIN("already_login", "You are already logged in"),
     NO_PSW_SET("no_psw_set", "You do not have a password set"),
     LOGIN("login", "Succesfully logged in"),
-    RELOADED("reloaded", "Plugin config reloaded!"),
     INVALID_USERNAME("invalid_username", "Invalid username"),
-    REM_USER_FROM_DB("rem_user_from_db", "Removed user from accounts database!"),
-    NO_PERM("no_perm", "You do not have permission"),
     PSW_CHANGED("psw_changed", "Sucessfully changed password"),
     SESS_EXTENDED("sess_extended", "Extended session from last login");
 
