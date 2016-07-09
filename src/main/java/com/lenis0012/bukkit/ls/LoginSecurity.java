@@ -12,7 +12,6 @@ import com.lenis0012.bukkit.ls.util.LoggingFilter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Filter;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -21,12 +20,10 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.lenis0012.bukkit.ls.commands.AdminCommand;
 import com.lenis0012.bukkit.ls.commands.ChangePassCommand;
 import com.lenis0012.bukkit.ls.commands.LoginCommand;
 import com.lenis0012.bukkit.ls.commands.LogoutCommand;
 import com.lenis0012.bukkit.ls.commands.RegisterCommand;
-import com.lenis0012.bukkit.ls.commands.RmPassCommand;
 import com.lenis0012.bukkit.ls.data.Converter;
 import com.lenis0012.bukkit.ls.data.Converter.FileType;
 import com.lenis0012.bukkit.ls.data.DataManager;
@@ -44,8 +41,7 @@ public class LoginSecurity extends JavaPlugin {
 	public DataManager data;
 	public static LoginSecurity instance;
 	public Map<String, Boolean> authList = Maps.newConcurrentMap();
-	public Map<String, Location> loginLocations = Maps.newConcurrentMap();
-	public boolean required, blindness, sesUse, timeUse, spawntp;
+	public boolean required, blindness, sesUse, timeUse;
 	public int sesDelay, timeDelay;
 	public static final Logger log = Logger.getLogger("Minecraft");
 	public ThreadManager thread;
@@ -69,9 +65,7 @@ public class LoginSecurity extends JavaPlugin {
 		config.addDefault("settings.encryption", "BCRYPT");
 		config.addDefault("settings.encoder", "UTF-8");
 		config.addDefault("settings.PHP_VERSION", 4);
-		config.addDefault("settings.messager-api", true);
 		config.addDefault("settings.blindness", true);
-		config.addDefault("settings.fake-location", false);
 		config.addDefault("settings.session.use", true);
 		config.addDefault("settings.session.timeout (sec)", 60);
 		config.addDefault("settings.timeout.use", true);
@@ -94,7 +88,6 @@ public class LoginSecurity extends JavaPlugin {
 		thread = new ThreadManager(this);
 		required = config.getBoolean("settings.password-required");
 		blindness = config.getBoolean("settings.blindness");
-		spawntp = config.getBoolean("settings.fake-location");
 		sesUse = config.getBoolean("settings.session.use", true);
 		sesDelay = config.getInt("settings.session.timeout (sec)", 60);
 		timeUse = config.getBoolean("settings.timeout.use", true);
@@ -164,9 +157,7 @@ public class LoginSecurity extends JavaPlugin {
 		this.commandMap.put("login", new LoginCommand());
 		this.commandMap.put("register", new RegisterCommand());
 		this.commandMap.put("changepass", new ChangePassCommand());
-		this.commandMap.put("rmpass", new RmPassCommand());
 		this.commandMap.put("logout", new LogoutCommand());
-		this.commandMap.put("lac", new AdminCommand());
 
 		for (Entry<String, CommandExecutor> entry : this.commandMap.entrySet()) {
 			String cmd = entry.getKey();
@@ -199,24 +190,15 @@ public class LoginSecurity extends JavaPlugin {
 		if (timeUse) {
 			thread.timeout.put(name, timeDelay);
 		}
+
 		if (blindness) {
 			player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 1), true);
-		}
-		if (spawntp && !logout) {
-			loginLocations.put(name, player.getLocation().clone());
-			player.teleport(player.getWorld().getSpawnLocation());
 		}
 	}
 
 	public void rehabPlayer(Player player, String name) {
 		player.removePotionEffect(PotionEffectType.BLINDNESS);
-		if (spawntp) {
-			if (loginLocations.containsKey(name)) {
-				Location fixedLocation = loginLocations.remove(name);
-				fixedLocation.add(0, 0.2, 0); // fix for players falling into ground
-				player.teleport(fixedLocation);
-			}
-		}
+
 		// ensure that player does not drown after logging in
 		player.setRemainingAir(player.getMaximumAir());
 	}
