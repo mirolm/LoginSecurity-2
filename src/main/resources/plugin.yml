@@ -13,12 +13,6 @@ commands:
   changepass:
     description: Change the password for your account.
     usage: /changepass <old> <new>
-  rmpass:
-    description: Remove your password.
-    usage: /rmpass <password>
   logout:
     description: Logout and end your session.
     usage: /logout
-  lac:
-    description: LoginSecurity Admin command.
-    usage: /lac
