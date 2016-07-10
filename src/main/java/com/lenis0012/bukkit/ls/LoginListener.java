@@ -14,7 +14,6 @@ import org.bukkit.event.Listener;
 
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
@@ -31,7 +30,6 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.event.player.PlayerEditBookEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -140,14 +138,6 @@ public class LoginListener implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-	public void onSignChange(SignChangeEvent event) {
-		Player player = event.getPlayer();
-		if (authEntity(player)) {
-			event.setCancelled(true);
-		}
-	}
-
-	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onPlayerDropItem(PlayerDropItemEvent event) {
 		Player player = event.getPlayer();
 		if (authEntity(player)) {
@@ -181,14 +171,6 @@ public class LoginListener implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onPlayerItemConsume(PlayerItemConsumeEvent event) {
-		Player player = event.getPlayer();
-		if (authEntity(player)) {
-			event.setCancelled(true);
-		}
-	}
-
-	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-	public void onPlayerEditBook(PlayerEditBookEvent event) {
 		Player player = event.getPlayer();
 		if (authEntity(player)) {
 			event.setCancelled(true);
