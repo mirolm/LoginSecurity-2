@@ -41,8 +41,9 @@ public class LoginSecurity extends JavaPlugin {
 	public DataManager data;
 	public static LoginSecurity instance;
 	public Map<String, Boolean> authList = Maps.newConcurrentMap();
+	public Map<String, Integer> failList = Maps.newConcurrentMap();
 	public boolean required, blindness, sesUse, timeUse;
-	public int sesDelay, timeDelay;
+	public int sesDelay, timeDelay, countFail;
 	public static final Logger log = Logger.getLogger("Minecraft");
 	public ThreadManager thread;
 	public EncryptionType hasher;
@@ -69,6 +70,7 @@ public class LoginSecurity extends JavaPlugin {
 		config.addDefault("settings.session.timeout (sec)", 60);
 		config.addDefault("settings.timeout.use", true);
 		config.addDefault("settings.timeout.timeout (sec)", 60);
+		config.addDefault("settings.failed-count", 3);
 		config.addDefault("MySQL.use", false);
 		config.addDefault("MySQL.host", "localhost");
 		config.addDefault("MySQL.port", 3306);
@@ -89,6 +91,7 @@ public class LoginSecurity extends JavaPlugin {
 		sesDelay = config.getInt("settings.session.timeout (sec)", 60);
 		timeUse = config.getBoolean("settings.timeout.use", true);
 		timeDelay = config.getInt("settings.timeout.timeout (sec)", 60);
+		countFail = config.getInt("settings.failed-count", 3);
 		PHP_VERSION = config.getInt("settings.PHP_VERSION", 4);
 		this.hasher = EncryptionType.fromString(config.getString("settings.encryption"));
 		String enc = config.getString("settings.encoder");
@@ -182,6 +185,17 @@ public class LoginSecurity extends JavaPlugin {
 		LoginData login = new LoginData(uuid, ip);
 		data.updateUser(login);
         }
+
+	public boolean checkFailed(String uuid) {
+		if (failList.containsKey(uuid)) {
+			int failCount = failList.put(uuid, failList.get(uuid) + 1);
+			return failCount >= countFail;
+		} else {
+			failList.put(uuid, 1);
+			return false;
+		}
+
+	}
 
 	public void debilitatePlayer(Player player, String name, boolean logout) {
 		if (timeUse) {
