@@ -7,6 +7,7 @@ public enum Lang {
     INVALID_USERNAME_CHARS("invalid_username_chars", "Invalid characters in username!"),
     ALREADY_ONLINE("already_online", "A player with this name is already online!"),
     TIMED_OUT("timed_out", "Login timed out"),
+    FAIL_COUNT("fail_count", "Too many failed login attempts"),
     REG_MSG("reg_msg", "Please register using /register <password>"),
     LOG_MSG("log_msg", "Please login using /login <password>"),
     MUST_BE_PLAYER("must_be_player", "You must be a player"),
