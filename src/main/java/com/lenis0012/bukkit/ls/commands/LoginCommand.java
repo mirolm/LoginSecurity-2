@@ -38,13 +38,18 @@ public class LoginCommand implements CommandExecutor {
 		}
 		if(PasswordManager.checkPass(uuid, args[0])) {
 			plugin.authList.remove(uuid);
+			plugin.failList.remove(uuid);
 			plugin.thread.timeout.remove(uuid);
 			plugin.rehabPlayer(player, uuid);
 			player.sendMessage(ChatColor.GREEN + Lang.LOGIN.toString());
 			LoginSecurity.log.log(Level.INFO, "[LoginSecurity] {0} authenticated", player.getName());
 		} else {
-			player.sendMessage(ChatColor.RED + Lang.INVALID_PSW.toString());
-			LoginSecurity.log.log(Level.WARNING, "[LoginSecurity] {0} entered an incorrect password", player.getName());
+			if (plugin.checkFailed(uuid)) {
+				player.kickPlayer(Lang.FAIL_COUNT.toString());
+			} else {
+				player.sendMessage(ChatColor.RED + Lang.INVALID_PSW.toString());
+				LoginSecurity.log.log(Level.WARNING, "[LoginSecurity] {0} entered an incorrect password", player.getName());
+			}
 		}
 
 		return true;
