@@ -188,13 +188,12 @@ public class LoginSecurity extends JavaPlugin {
 
 	public boolean checkFailed(String uuid) {
 		if (failList.containsKey(uuid)) {
-			int failCount = failList.put(uuid, failList.get(uuid) + 1);
-			return failCount >= countFail;
+			return failList.put(uuid, failList.get(uuid) + 1)  >= countFail;
 		} else {
 			failList.put(uuid, 1);
-			return false;
 		}
 
+		return false;
 	}
 
 	public void debilitatePlayer(Player player, String name, boolean logout) {
