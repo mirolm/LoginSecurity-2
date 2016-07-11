@@ -126,7 +126,7 @@ public class ThreadManager {
 						Player player = Bukkit.getPlayer(UUID.fromString(puuid));
 						if (player != null && player.isOnline()) {
 							player.kickPlayer(Lang.TIMED_OUT.toString());
-							LoginSecurity.log.log(Level.INFO, "{0} was kicked for login timeout", player.getName());
+							LoginSecurity.log.log(Level.WARNING, "[LoginSecurity] {0} was kicked for login timeout", player.getName());
 						}
 					}
 				}
