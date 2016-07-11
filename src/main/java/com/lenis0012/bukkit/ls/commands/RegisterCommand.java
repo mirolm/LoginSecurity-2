@@ -38,7 +38,6 @@ public class RegisterCommand implements CommandExecutor {
 		plugin.data.regUser(login);
 
 		plugin.authList.remove(uuid);
-		plugin.failList.remove(uuid);
 		plugin.thread.timeout.remove(uuid);
 		plugin.rehabPlayer(player, uuid);
 		player.sendMessage(ChatColor.GREEN + Lang.REGISTERED.toString());
