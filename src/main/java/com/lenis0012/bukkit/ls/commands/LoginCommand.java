@@ -46,7 +46,6 @@ public class LoginCommand implements CommandExecutor {
 		} else {
 			if (plugin.checkFailed(uuid)) {
 				player.kickPlayer(Lang.FAIL_COUNT.toString());
-				LoginSecurity.log.log(Level.WARNING, "[LoginSecurity] {0} was kicked for failed login attempts", player.getName());
 			} else {
 				player.sendMessage(ChatColor.RED + Lang.INVALID_PSW.toString());
 				LoginSecurity.log.log(Level.WARNING, "[LoginSecurity] {0} entered an incorrect password", player.getName());
