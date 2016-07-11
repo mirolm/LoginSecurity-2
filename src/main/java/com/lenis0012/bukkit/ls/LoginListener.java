@@ -49,7 +49,7 @@ public class LoginListener implements Listener {
 
 			return plugin.authList.containsKey(uuid);
 		}
-		
+
 		return false;
 	}
 
@@ -105,6 +105,7 @@ public class LoginListener implements Listener {
 			}
 		}
 
+		plugin.failList.remove(uuid);
 		plugin.authList.remove(uuid);
 	}
 
