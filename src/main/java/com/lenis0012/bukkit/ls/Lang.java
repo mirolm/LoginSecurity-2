@@ -4,7 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public enum Lang {
-    INVALID_USERNAME("invalid_username", "Trying to use invalid username!"),
+    INVALID_USERNAME("invalid_username", "Player uses invalid username!"),
     ALREADY_ONLINE("already_online", "A player with this name is already online!"),
     TIMED_OUT("timed_out", "Login timed out"),
     FAIL_COUNT("fail_count", "Too many failed login attempts"),
