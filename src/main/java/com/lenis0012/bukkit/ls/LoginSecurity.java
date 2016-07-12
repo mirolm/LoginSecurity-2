@@ -77,7 +77,7 @@ public class LoginSecurity extends JavaPlugin {
 		config.addDefault("MySQL.database", "");
 		config.addDefault("MySQL.username", "");
 		config.addDefault("MySQL.password", "");
-		config.addDefault("MySQL.prefix", "ls_");
+		config.addDefault("MySQL.prefix", "");
 		config.options().copyDefaults(true);
 		saveConfig();
 
