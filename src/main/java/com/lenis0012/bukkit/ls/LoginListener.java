@@ -78,7 +78,7 @@ public class LoginListener implements Listener {
 	public void onPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
 		String pname = event.getName();
 		//Check for valid user name (code from @games647)
-		if (!pname.matches("^\\w{2,16}$")) {
+		if (!pname.matches("^\\w{3,16}$")) {
 			event.disallow(Result.KICK_OTHER, Lang.INVALID_USERNAME.toString());
 			return;
  		}
