@@ -7,12 +7,15 @@ commands:
   login:
     description: Login with your account.
     usage: /login <password>
+    aliases: [l,log]
   register:
     description: Set a password for your account.
     usage: /register <password>
+    aliases: [reg]
   changepass:
     description: Change the password for your account.
     usage: /changepass <old> <new>
+    aliases: [cp]
   logout:
     description: Logout and end your session.
     usage: /logout
