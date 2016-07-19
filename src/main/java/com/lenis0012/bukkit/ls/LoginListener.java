@@ -36,7 +36,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 public class LoginListener implements Listener {
 	private LoginSecurity plugin;
-	private final List<String> ALLOWED_COMMANDS = Lists.newArrayList("/login ", "/register ");
+	private final List<String> ALLOWED_COMMANDS = Lists.newArrayList("/login ", "/l ", "/log ", "/register ", "/reg ");
 
 	public LoginListener(LoginSecurity i) {
 		this.plugin = i;
