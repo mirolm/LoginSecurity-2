@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class LoggingFilter extends AbstractFilter {
-    private static final List<String> filteredWords = Arrays.asList("/register", "/login", "/changepass");
+    private static final List<String> filteredWords = Arrays.asList("/register", "/reg", "/login", "/l", "/log", "/changepass", "/cp", "/changepassword");
 
     private Result handle(String message) {
         message = message.toLowerCase();
