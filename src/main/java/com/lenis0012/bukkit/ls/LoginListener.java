@@ -1,7 +1,7 @@
 package com.lenis0012.bukkit.ls;
 
+import java.util.Arrays;
 import java.util.List;
-import com.google.common.collect.Lists;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -36,7 +36,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 public class LoginListener implements Listener {
 	private LoginSecurity plugin;
-	private static final List<String> ALLOWED_COMMANDS = Lists.newArrayList("/login ", "/log ", "/l ", "/register ", "/reg ");
+	private static final List<String> ALLOWED_COMMANDS = Arrays.asList("/login ", "/log ", "/l ", "/register ", "/reg ");
 
 	public LoginListener(LoginSecurity i) {
 		this.plugin = i;
