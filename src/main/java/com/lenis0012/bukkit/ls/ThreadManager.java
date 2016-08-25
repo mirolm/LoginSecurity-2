@@ -16,10 +16,12 @@ public class ThreadManager {
 	private LoginSecurity plugin;
 	private BukkitTask msg;
 	private BukkitTask ses;
+	private BukkitTask lck;
 	private BukkitTask to;
 	private BukkitTask main = null;
 	public Map<String, Integer> session = new HashMap<String, Integer>();
 	public Map<String, Integer> timeout = new HashMap<String, Integer>();
+	public Map<String, Integer> lockout = new HashMap<String, Integer>();
 	private long nextRefresh;
 
 	public ThreadManager(LoginSecurity plugin) {
@@ -28,6 +30,10 @@ public class ThreadManager {
 
 	public synchronized Map<String, Integer> getSession() {
 		return this.session;
+	}
+
+	public synchronized Map<String, Integer> getLockout() {
+		return this.lockout;
 	}
 
 	public void startMainTask() {
@@ -108,6 +114,32 @@ public class ThreadManager {
 		}
 
 		ses = null;
+	}
+
+	public void startLockTask() {
+		lck = plugin.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
+			public void run() {
+				Iterator<String> it = getLockout().keySet().iterator();
+				while (it.hasNext()) {
+					String puuid = it.next();
+					int current = getLockout().get(puuid);
+					if (current >= 1) {
+						current -= 1;
+						getLockout().put(puuid, current);
+					} else {
+						it.remove();
+					}
+				}
+			}
+		}, 1200L, 1200L);
+	}
+
+	public void stopLockTask() {
+		if (lck != null) {
+			lck.cancel();
+		}
+
+		lck = null;
 	}
 
 	public void startTimeoutTask() {
