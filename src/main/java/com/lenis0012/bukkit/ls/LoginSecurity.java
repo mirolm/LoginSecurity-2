@@ -202,7 +202,7 @@ public class LoginSecurity extends JavaPlugin {
 
 	public void debilitatePlayer(Player player, String name, boolean logout) {
 		if (timeUse) {
-			thread.timeout.put(name, timeDelay);
+			thread.getTimeout().put(name, timeDelay);
 		}
 
 		if (blindness) {
