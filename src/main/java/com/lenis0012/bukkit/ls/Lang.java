@@ -6,6 +6,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 public enum Lang {
     INVALID_USERNAME("invalid_username", "Player uses invalid username!"),
     ALREADY_ONLINE("already_online", "A player with this name is already online!"),
+    ACCOUNT_LOCKED(account_locked, "Account locked try again later"),
     TIMED_OUT("timed_out", "Login timed out"),
     FAIL_COUNT("fail_count", "Too many failed login attempts"),
     REG_MSG("reg_msg", "Please register using /register <password>"),
