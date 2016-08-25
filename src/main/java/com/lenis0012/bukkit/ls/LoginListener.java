@@ -87,7 +87,7 @@ public class LoginListener implements Listener {
 
 		String uuid = event.getUniqueId().toString();
 		//Check account locked die to failed logins
-		if (plugin.thread.getSession().containsKey(uuid)) {
+		if (plugin.thread.getLockout().containsKey(uuid)) {
 			event.disallow(Result.KICK_OTHER, Lang.ACCOUNT_LOCKED.toString());
 			return;
 		}
