@@ -39,7 +39,7 @@ public class LoginCommand implements CommandExecutor {
 		if(PasswordManager.checkPass(uuid, args[0])) {
 			plugin.authList.remove(uuid);
 			plugin.failList.remove(uuid);
-			plugin.thread.timeout.remove(uuid);
+			plugin.thread.getTimeout().remove(uuid);
 			plugin.rehabPlayer(player, uuid);
 			player.sendMessage(ChatColor.GREEN + Lang.LOGIN.toString());
 			LoginSecurity.log.log(Level.INFO, "[LoginSecurity] {0} authenticated", player.getName());
