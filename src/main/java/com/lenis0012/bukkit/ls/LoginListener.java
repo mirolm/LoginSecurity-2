@@ -85,6 +85,12 @@ public class LoginListener implements Listener {
 			return;
  		}
 
+		//Check account locked die to failed logins
+		if (plugin.thread.getSession().containsKey(uuid)) {
+			event.disallow(Result.KICK_OTHER, Lang.ACCOUNT_LOCKED.toString());
+			return;
+		}
+
 		String uuid = event.getUniqueId().toString();
 		//Check if the player is already online
 		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
