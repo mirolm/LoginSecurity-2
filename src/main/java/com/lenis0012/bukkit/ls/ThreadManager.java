@@ -33,7 +33,7 @@ public class ThreadManager {
 	}
 
 	public synchronized Map<String, Integer> getTimeout() {
-		return this.lockout;
+		return this.timeout;
 	}
 
 	public void startMainTask() {
@@ -146,13 +146,13 @@ public class ThreadManager {
 		to = plugin.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
 			@Override
 			public void run() {
-				Iterator<String> it = getTimeout.keySet().iterator();
+				Iterator<String> it = getTimeout().keySet().iterator();
 				while (it.hasNext()) {
 					String puuid = it.next();
-					int current = getTimeout.get(puuid);
+					int current = getTimeout().get(puuid);
 					if (current >= 1) {
 						current -= 1;
-						getTimeout.put(puuid, current);
+						getTimeout().put(puuid, current);
 					} else {
 						it.remove();
 						Player player = Bukkit.getPlayer(UUID.fromString(puuid));
