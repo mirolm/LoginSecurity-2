@@ -14,14 +14,10 @@ import org.bukkit.scheduler.BukkitTask;
 public class ThreadManager {
 
 	private LoginSecurity plugin;
-	private BukkitTask msg;
-	private BukkitTask ses;
-	private BukkitTask lck;
-	private BukkitTask to;
-	private BukkitTask main = null;
-	public Map<String, Integer> session = new HashMap<String, Integer>();
-	public Map<String, Integer> timeout = new HashMap<String, Integer>();
-	public Map<String, Integer> lockout = new HashMap<String, Integer>();
+	private BukkitTask main, msg, ses, lck, to;
+	private Map<String, Integer> session = new HashMap<String, Integer>();
+	private Map<String, Integer> lockout = new HashMap<String, Integer>();
+	private Map<String, Integer> timeout = new HashMap<String, Integer>();
 	private long nextRefresh;
 
 	public ThreadManager(LoginSecurity plugin) {
@@ -33,6 +29,10 @@ public class ThreadManager {
 	}
 
 	public synchronized Map<String, Integer> getLockout() {
+		return this.lockout;
+	}
+
+	public synchronized Map<String, Integer> getTimeout() {
 		return this.lockout;
 	}
 
@@ -146,13 +146,13 @@ public class ThreadManager {
 		to = plugin.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
 			@Override
 			public void run() {
-				Iterator<String> it = timeout.keySet().iterator();
+				Iterator<String> it = getTimeout.keySet().iterator();
 				while (it.hasNext()) {
 					String puuid = it.next();
-					int current = timeout.get(puuid);
+					int current = getTimeout.get(puuid);
 					if (current >= 1) {
 						current -= 1;
-						timeout.put(puuid, current);
+						getTimeout.put(puuid, current);
 					} else {
 						it.remove();
 						Player player = Bukkit.getPlayer(UUID.fromString(puuid));
