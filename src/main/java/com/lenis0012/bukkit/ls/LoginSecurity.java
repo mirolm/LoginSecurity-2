@@ -67,9 +67,9 @@ public class LoginSecurity extends JavaPlugin {
 		config.addDefault("settings.PHP_VERSION", 4);
 		config.addDefault("settings.blindness", true);
 		config.addDefault("settings.session.use", true);
-		config.addDefault("settings.session.timeout (sec)", 60);
+		config.addDefault("settings.session.timeout", 60);
 		config.addDefault("settings.timeout.use", true);
-		config.addDefault("settings.timeout.timeout (sec)", 60);
+		config.addDefault("settings.timeout.timeout", 60);
 		config.addDefault("settings.failed.count", 3);
 		config.addDefault("settings.failed.minutes", 120);
 		config.addDefault("MySQL.use", false);
@@ -89,9 +89,9 @@ public class LoginSecurity extends JavaPlugin {
 		required = config.getBoolean("settings.password-required");
 		blindness = config.getBoolean("settings.blindness");
 		sesUse = config.getBoolean("settings.session.use", true);
-		sesDelay = config.getInt("settings.session.timeout (sec)", 60);
+		sesDelay = config.getInt("settings.session.timeout", 60);
 		timeUse = config.getBoolean("settings.timeout.use", true);
-		timeDelay = config.getInt("settings.timeout.timeout (sec)", 60);
+		timeDelay = config.getInt("settings.timeout.timeout", 60);
 		countFail = config.getInt("settings.failed.count", 3);
 		minFail = config.getInt("settings.failed.minutes", 120);
 		PHP_VERSION = config.getInt("settings.PHP_VERSION", 4);
