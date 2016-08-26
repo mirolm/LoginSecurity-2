@@ -1,10 +1,11 @@
 package com.lenis0012.bukkit.ls;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.UUID;
+
+import com.google.common.collect.Maps;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,9 +16,9 @@ public class ThreadManager {
 
 	private LoginSecurity plugin;
 	private BukkitTask main, msg, ses, lck, to;
-	private Map<String, Integer> session = new HashMap<String, Integer>();
-	private Map<String, Integer> lockout = new HashMap<String, Integer>();
-	private Map<String, Integer> timeout = new HashMap<String, Integer>();
+	private final Map<String, Integer> session = Maps.newConcurrentMap();
+	private final Map<String, Integer> lockout = Maps.newConcurrentMap();
+	private final Map<String, Integer> timeout = Maps.newConcurrentMap();
 	private long nextRefresh;
 
 	public ThreadManager(LoginSecurity plugin) {
