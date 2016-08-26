@@ -1,7 +1,7 @@
 package com.lenis0012.bukkit.ls;
 
 import java.util.Iterator;
-import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Level;
 import java.util.UUID;
 
@@ -16,9 +16,9 @@ public class ThreadManager {
 
 	private LoginSecurity plugin;
 	private BukkitTask main, msg, ses, lck, to;
-	private final Map<String, Integer> session = Maps.newConcurrentMap();
-	private final Map<String, Integer> lockout = Maps.newConcurrentMap();
-	private final Map<String, Integer> timeout = Maps.newConcurrentMap();
+	private final ConcurrentMap<String, Integer> session = Maps.newConcurrentMap();
+	private final ConcurrentMap<String, Integer> lockout = Maps.newConcurrentMap();
+	private final ConcurrentMap<String, Integer> timeout = Maps.newConcurrentMap();
 	private long nextRefresh;
 
 	public ThreadManager(LoginSecurity plugin) {
