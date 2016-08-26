@@ -25,15 +25,15 @@ public class ThreadManager {
 		this.plugin = plugin;
 	}
 
-	public synchronized Map<String, Integer> getSession() {
+	public synchronized ConcurrentMap<String, Integer> getSession() {
 		return this.session;
 	}
 
-	public synchronized Map<String, Integer> getLockout() {
+	public synchronized ConcurrentMap<String, Integer> getLockout() {
 		return this.lockout;
 	}
 
-	public synchronized Map<String, Integer> getTimeout() {
+	public synchronized ConcurrentMap<String, Integer> getTimeout() {
 		return this.timeout;
 	}
 
