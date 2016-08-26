@@ -2,15 +2,14 @@ package com.lenis0012.bukkit.ls;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
-import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
 import com.google.common.collect.Maps;
-import com.lenis0012.bukkit.ls.util.LoggingFilter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Filter;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -19,7 +18,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.ChatColor;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
+import com.lenis0012.bukkit.ls.util.LoggingFilter;
 import com.lenis0012.bukkit.ls.commands.ChangePassCommand;
 import com.lenis0012.bukkit.ls.commands.LoginCommand;
 import com.lenis0012.bukkit.ls.commands.LogoutCommand;
@@ -32,22 +35,18 @@ import com.lenis0012.bukkit.ls.data.MySQL;
 import com.lenis0012.bukkit.ls.data.SQLite;
 import com.lenis0012.bukkit.ls.encryption.EncryptionType;
 
-import org.bukkit.ChatColor;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-
 public class LoginSecurity extends JavaPlugin {
 
 	public DataManager data;
 	public static LoginSecurity instance;
-	public final Map<String, Boolean> authList = Maps.newConcurrentMap();
-	public final Map<String, Integer> failList = Maps.newConcurrentMap();
+	public final ConcurrentMap<String, Boolean> authList = Maps.newConcurrentMap();
+	public final ConcurrentMap<String, Integer> failList = Maps.newConcurrentMap();
 	public boolean required, blindness, sesUse, timeUse;
 	public int sesDelay, timeDelay, countFail, minFail;
 	public static final Logger log = Logger.getLogger("Minecraft");
 	public ThreadManager thread;
 	public EncryptionType hasher;
-	public final Map<String, CommandExecutor> commandMap = Maps.newConcurrentMap();
+	public final ConcurrentMap<String, CommandExecutor> commandMap = Maps.newConcurrentMap();
 	public static int PHP_VERSION;
 	public static String encoder;
 	public static YamlConfiguration LANG;
