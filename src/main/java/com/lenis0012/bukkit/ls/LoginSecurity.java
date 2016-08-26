@@ -40,14 +40,14 @@ public class LoginSecurity extends JavaPlugin {
 
 	public DataManager data;
 	public static LoginSecurity instance;
-	public Map<String, Boolean> authList = Maps.newConcurrentMap();
-	public Map<String, Integer> failList = Maps.newConcurrentMap();
+	public final Map<String, Boolean> authList = Maps.newConcurrentMap();
+	public final Map<String, Integer> failList = Maps.newConcurrentMap();
 	public boolean required, blindness, sesUse, timeUse;
 	public int sesDelay, timeDelay, countFail, minFail;
 	public static final Logger log = Logger.getLogger("Minecraft");
 	public ThreadManager thread;
 	public EncryptionType hasher;
-	public Map<String, CommandExecutor> commandMap = Maps.newHashMap();
+	public final Map<String, CommandExecutor> commandMap = Maps.newConcurrentMap();
 	public static int PHP_VERSION;
 	public static String encoder;
 	public static YamlConfiguration LANG;
