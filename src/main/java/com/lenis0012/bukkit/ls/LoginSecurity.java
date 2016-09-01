@@ -202,7 +202,7 @@ public class LoginSecurity extends JavaPlugin {
 	}
 
 	public String getFullUUID(String uuid, String addr) {
-                return UUID.nameUUIDFromBytes((uuid + "^|^" + addr).getBytes()).toString();
+                return UUID.nameUUIDFromBytes(("|#" + uuid + "^|^" + addr + "#|").getBytes()).toString();
 	}
 
 
