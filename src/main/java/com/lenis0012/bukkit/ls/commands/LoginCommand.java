@@ -46,7 +46,7 @@ public class LoginCommand implements CommandExecutor {
 			LoginSecurity.log.log(Level.INFO, "[LoginSecurity] {0} authenticated", player.getName());
 		} else {
 			if (plugin.checkFailed(uuid)) {
-				plugin.thread.getLockout().put(getFullUUID(uuid, addr), plugin.minFail);
+				plugin.thread.getLockout().put(plugin.getFullUUID(uuid, addr), plugin.minFail);
 				player.kickPlayer(Lang.FAIL_COUNT.toString());
 			} else {
 				player.sendMessage(ChatColor.RED + Lang.INVALID_PSW.toString());
