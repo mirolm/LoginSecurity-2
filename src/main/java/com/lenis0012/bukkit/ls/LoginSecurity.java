@@ -205,7 +205,6 @@ public class LoginSecurity extends JavaPlugin {
                 return UUID.nameUUIDFromBytes(("|#" + uuid + "^|^" + addr + "#|").getBytes()).toString();
 	}
 
-
 	public void debilitatePlayer(Player player, String name, boolean logout) {
 		if (timeUse) {
 			thread.getTimeout().put(name, timeDelay);
