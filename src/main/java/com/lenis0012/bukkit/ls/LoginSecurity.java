@@ -45,7 +45,7 @@ public class LoginSecurity extends JavaPlugin {
 	public final ConcurrentMap<String, Integer> failList = Maps.newConcurrentMap();
 	public boolean required, blindness, sesUse, timeUse;
 	public int sesDelay, timeDelay, countFail, minFail;
-	public static final Logger log;
+	public static Logger log;
 	public ThreadManager thread;
 	public EncryptionType hasher;
 	public final ConcurrentMap<String, CommandExecutor> commandMap = Maps.newConcurrentMap();
