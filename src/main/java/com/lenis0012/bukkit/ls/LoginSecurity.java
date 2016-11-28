@@ -45,7 +45,7 @@ public class LoginSecurity extends JavaPlugin {
 	public final ConcurrentMap<String, Integer> failList = Maps.newConcurrentMap();
 	public boolean required, blindness, sesUse, timeUse;
 	public int sesDelay, timeDelay, countFail, minFail;
-	public static final Logger log = Logger.getLogger("Minecraft");
+	public static final Logger log = Logger.getLogger();
 	public ThreadManager thread;
 	public EncryptionType hasher;
 	public final ConcurrentMap<String, CommandExecutor> commandMap = Maps.newConcurrentMap();
