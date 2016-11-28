@@ -4,7 +4,7 @@ import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Set;
-import java.util.logging.Logger;
+//import java.util.logging.Logger;
 
 import com.lenis0012.bukkit.ls.LoginSecurity;
 
@@ -15,7 +15,6 @@ public class Converter {
 
 	private final FileType type;
 	private final File file;
-	private final Logger log = Logger.getLogger("Minecraft");
 
 	public Converter(FileType type, File file) {
 		this.type = type;
@@ -39,7 +38,7 @@ public class Converter {
 					}
 				}
 			} catch(SQLException e) {
-				log.warning("[LoginSecurity] Failed to convert from SQLite to MySQL");
+				plugin.log.warn("Failed to convert from SQLite to MySQL");
 			} finally {
 				manager.closeConn();
 			}
