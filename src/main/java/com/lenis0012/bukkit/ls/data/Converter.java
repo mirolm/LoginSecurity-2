@@ -39,7 +39,7 @@ public class Converter {
 					}
 				}
 			} catch(SQLException e) {
-				plugin.log.log(Level.WARN, "Failed to convert from SQLite to MySQL");
+				plugin.log.log(Level.WARNING, "Failed to convert from SQLite to MySQL");
 			} finally {
 				manager.closeConn();
 			}
