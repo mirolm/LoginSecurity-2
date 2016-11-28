@@ -36,7 +36,7 @@ public class ChangePassCommand implements CommandExecutor {
 		}
 		if (!PasswordManager.checkPass(uuid, args[0])) {
 			player.sendMessage(ChatColor.RED + Lang.INVALID_PSW.toString());
-			plugin.log.log(Level.WARNING, " {0} failed to change password", player.getName());
+			plugin.log.log(Level.WARNING, "{0} failed to change password", player.getName());
 			return true;
 		}
 
@@ -44,7 +44,7 @@ public class ChangePassCommand implements CommandExecutor {
 		plugin.data.updateUser(login);
 
 		player.sendMessage(ChatColor.GREEN + Lang.PSW_CHANGED.toString());
-		plugin.log.log(Level.INFO, " {0} sucessfully changed password", player.getName());
+		plugin.log.log(Level.INFO, "{0} sucessfully changed password", player.getName());
 
 		return true;
 	}
