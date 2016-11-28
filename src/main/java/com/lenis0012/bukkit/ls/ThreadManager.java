@@ -2,7 +2,6 @@ package com.lenis0012.bukkit.ls;
 
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentMap;
-import java.util.logging.Level;
 import java.util.UUID;
 
 import com.google.common.collect.Maps;
