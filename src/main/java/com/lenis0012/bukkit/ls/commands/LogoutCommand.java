@@ -39,7 +39,7 @@ public class LogoutCommand implements CommandExecutor {
 		}
 
 		player.sendMessage(ChatColor.GREEN + Lang.LOGOUT.toString());
-		LoginSecurity.log.log(Level.INFO, "[LoginSecurity] {0} logged out", player.getName());
+		plugin.log.log(Level.INFO, " {0} logged out", player.getName());
 		return true;
 	}
 }
