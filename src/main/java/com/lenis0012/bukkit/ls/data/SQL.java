@@ -9,7 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public abstract class SQL implements DataManager {
-	private final Logger log = Logger.getLogger("Minecraft.LoginSecruity");
+	private final Logger log = LoginSecurity.instance.log;
 	private Connection con = null;
 	private String jdbcUrl;
 
