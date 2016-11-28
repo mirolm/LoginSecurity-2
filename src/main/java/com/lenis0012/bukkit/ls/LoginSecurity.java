@@ -45,7 +45,7 @@ public class LoginSecurity extends JavaPlugin {
 	public final ConcurrentMap<String, Integer> failList = Maps.newConcurrentMap();
 	public boolean required, blindness, sesUse, timeUse;
 	public int sesDelay, timeDelay, countFail, minFail;
-	public static final Logger log = Logger.getLogger();
+	public static final Logger log;
 	public ThreadManager thread;
 	public EncryptionType hasher;
 	public final ConcurrentMap<String, CommandExecutor> commandMap = Maps.newConcurrentMap();
@@ -61,6 +61,9 @@ public class LoginSecurity extends JavaPlugin {
 		PluginManager pm = this.getServer().getPluginManager();
 		loadLang();
 
+		//loging stuff
+		log = this.getLogger();
+		
 		//setup config
 		config.addDefault("settings.password-required", true);
 		config.addDefault("settings.encryption", "BCRYPT");
