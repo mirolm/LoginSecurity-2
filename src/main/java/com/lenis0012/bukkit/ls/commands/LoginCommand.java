@@ -43,14 +43,14 @@ public class LoginCommand implements CommandExecutor {
 			plugin.thread.getTimeout().remove(uuid);
 			plugin.rehabPlayer(player, uuid);
 			player.sendMessage(ChatColor.GREEN + Lang.LOGIN.toString());
-			plugin.log.log(Level.INFO, " {0} authenticated", player.getName());
+			plugin.log.log(Level.INFO, "{0} authenticated", player.getName());
 		} else {
 			if (plugin.checkFailed(uuid)) {
 				plugin.thread.getLockout().put(plugin.getFullUUID(uuid, addr), plugin.minFail);
 				player.kickPlayer(Lang.FAIL_COUNT.toString());
 			} else {
 				player.sendMessage(ChatColor.RED + Lang.INVALID_PSW.toString());
-				plugin.log.log(Level.WARNING, " {0} entered an incorrect password", player.getName());
+				plugin.log.log(Level.WARNING, "{0} entered an incorrect password", player.getName());
 			}
 		}
 
