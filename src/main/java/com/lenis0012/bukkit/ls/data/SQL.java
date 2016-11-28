@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.lenis0012.bukkit.ls.LoginSecurity;
+
 public abstract class SQL implements DataManager {
 	private final Logger log = LoginSecurity.instance.log;
 	private Connection con = null;
