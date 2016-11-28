@@ -6,12 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import com.lenis0012.bukkit.ls.LoginSecurity;
 
 public abstract class SQL implements DataManager {
-	private final Logger log = LoginSecurity.instance.log;
+	private LoginSecurity plugin = LoginSecurity.instance;
 	private Connection con = null;
 	private String jdbcUrl;
 
@@ -34,7 +33,7 @@ public abstract class SQL implements DataManager {
 		try {
 			Class.forName(driver);
 		} catch (ClassNotFoundException e) {
-			log.log(Level.SEVERE, "Failed to load driver", e);
+			plugin.log.log(Level.SEVERE, "Failed to load driver", e);
 		}
 	}
 
@@ -60,7 +59,7 @@ public abstract class SQL implements DataManager {
 
 			con = DriverManager.getConnection(jdbcUrl);
 		} catch(SQLException e) {
-			log.log(Level.SEVERE, "Failed to open conn", e);
+			plugin.log.log(Level.SEVERE, "Failed to open conn", e);
 		}
 	}
 
@@ -80,7 +79,7 @@ public abstract class SQL implements DataManager {
 			result = stmt.executeQuery();
 			return result.next();
 		} catch(SQLException e) {
-			log.log(Level.SEVERE, "Failed to ping conn", e);
+			plugin.log.log(Level.SEVERE, "Failed to ping conn", e);
 		} finally {
 			closeQuietly(result);
 			closeQuietly(stmt);
@@ -97,7 +96,7 @@ public abstract class SQL implements DataManager {
 			stmt.setQueryTimeout(30);
 			stmt.executeUpdate();
 		} catch(SQLException e) {
-			log.log(Level.SEVERE, "Failed to create tables", e);
+			plugin.log.log(Level.SEVERE, "Failed to create tables", e);
 		} finally {
 			closeQuietly(stmt);
 		}
@@ -114,7 +113,7 @@ public abstract class SQL implements DataManager {
 			result = stmt.executeQuery();
 			return result.next();
 		} catch(SQLException e) {
-			log.log(Level.SEVERE, "Failed to check user", e);
+			plugin.log.log(Level.SEVERE, "Failed to check user", e);
 		} finally {
 			closeQuietly(result);
 			closeQuietly(stmt);
@@ -135,7 +134,7 @@ public abstract class SQL implements DataManager {
 			stmt.setString(4, login.ipaddr);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			log.log(Level.SEVERE, "Failed to create user", e);
+			plugin.log.log(Level.SEVERE, "Failed to create user", e);
 		} finally {
 			closeQuietly(stmt);
 		}
@@ -159,7 +158,7 @@ public abstract class SQL implements DataManager {
 
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			log.log(Level.SEVERE, "Failed to update user", e);
+			plugin.log.log(Level.SEVERE, "Failed to update user", e);
 		} finally {
 			closeQuietly(stmt);
 		}
@@ -178,7 +177,7 @@ public abstract class SQL implements DataManager {
 				return parseData(result);
 			}
 		} catch (SQLException e) {
-			log.log(Level.SEVERE, "Failed to get user", e);
+			plugin.log.log(Level.SEVERE, "Failed to get user", e);
 		} finally {
 			closeQuietly(result);
 			closeQuietly(stmt);
@@ -217,7 +216,7 @@ public abstract class SQL implements DataManager {
 				closeable.close();
 	                }
                 } catch (Exception e) {
-                        log.log(Level.SEVERE, "Failed to close", e);
+                        plugin.log.log(Level.SEVERE, "Failed to close", e);
                 }
         }
 }
