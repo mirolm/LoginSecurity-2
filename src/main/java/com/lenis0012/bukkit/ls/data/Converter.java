@@ -4,6 +4,7 @@ import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.lenis0012.bukkit.ls.LoginSecurity;
@@ -38,7 +39,7 @@ public class Converter {
 					}
 				}
 			} catch(SQLException e) {
-				plugin.log.warning("Failed to convert from SQLite to MySQL");
+				plugin.log.log(Level.WARN, "Failed to convert from SQLite to MySQL");
 			} finally {
 				manager.closeConn();
 			}
