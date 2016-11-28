@@ -41,7 +41,7 @@ public class RegisterCommand implements CommandExecutor {
 		plugin.thread.getTimeout().remove(uuid);
 		plugin.rehabPlayer(player, uuid);
 		player.sendMessage(ChatColor.GREEN + Lang.REGISTERED.toString());
-		plugin.log.log(Level.INFO, " {0} registered sucessfully", player.getName());
+		plugin.log.log(Level.INFO, "{0} registered sucessfully", player.getName());
 		return true;
 	}
 }
