@@ -44,7 +44,7 @@ public class ChangePassCommand implements CommandExecutor {
 		plugin.data.updateUser(login);
 
 		player.sendMessage(ChatColor.GREEN + Lang.PSW_CHANGED.toString());
-		plugin.log.log(Level.INFO, "{0} sucessfully changed password", player.getName());
+		plugin.getLogger().log(Level.INFO, "{0} sucessfully changed password", player.getName());
 
 		return true;
 	}
