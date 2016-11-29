@@ -59,7 +59,7 @@ public class LoginSecurity extends JavaPlugin {
 		FileConfiguration config = this.getConfig();
 		PluginManager pm = this.getServer().getPluginManager();
 		loadLang();
-		
+
 		//setup config
 		config.addDefault("settings.password-required", true);
 		config.addDefault("settings.encryption", "BCRYPT");
