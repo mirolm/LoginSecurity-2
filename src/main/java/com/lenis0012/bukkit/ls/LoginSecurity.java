@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentMap;
+import java.util.logging.Logger;
 import java.util.logging.Level;
 import java.util.UUID;
 
@@ -221,20 +222,25 @@ public class LoginSecurity extends JavaPlugin {
 	}
 
 	public void loadLang() {
+		Logger logger = plugin.getLogger();
+
 		File lang = new File(getDataFolder(), "lang.yml");
 		YamlConfiguration conf = YamlConfiguration.loadConfiguration(lang);
+		
 		for(Lang item:Lang.values()) {
 			if (conf.getString(item.getPath()) == null) {
 				conf.set(item.getPath(), item.getDefault());
 			}
 		}
+		
 		Lang.setFile(conf);
 		LoginSecurity.LANG = conf;
 		LoginSecurity.LANG_FILE = lang;
+		
 		try {
 			conf.save(getLangFile());
 		} catch(IOException e) {
-			this.getLogger().log(Level.WARNING, "Failed to save lang.yml.");
+			logger.log(Level.WARNING, "Failed to save lang.yml.");
 			e.printStackTrace();
 		}
 	}
