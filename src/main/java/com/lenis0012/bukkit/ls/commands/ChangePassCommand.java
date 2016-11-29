@@ -10,6 +10,7 @@ import com.lenis0012.bukkit.ls.Lang;
 import com.lenis0012.bukkit.ls.LoginSecurity;
 import com.lenis0012.bukkit.ls.encryption.PasswordManager;
 import com.lenis0012.bukkit.ls.data.LoginData;
+import java.util.logging.Logger;
 import java.util.logging.Level;
 
 public class ChangePassCommand implements CommandExecutor {
@@ -17,6 +18,8 @@ public class ChangePassCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		LoginSecurity plugin = LoginSecurity.instance;
+		Logger logger = plugin.getLogger();
+		
 		if (!(sender instanceof Player)) {
 			sender.sendMessage(Lang.MUST_BE_PLAYER.toString());
 			return true;
@@ -36,7 +39,7 @@ public class ChangePassCommand implements CommandExecutor {
 		}
 		if (!PasswordManager.checkPass(uuid, args[0])) {
 			player.sendMessage(ChatColor.RED + Lang.INVALID_PSW.toString());
-			plugin.log.log(Level.WARNING, "{0} failed to change password", player.getName());
+			logger.log(Level.WARNING, "{0} failed to change password", player.getName());
 			return true;
 		}
 
@@ -44,7 +47,7 @@ public class ChangePassCommand implements CommandExecutor {
 		plugin.data.updateUser(login);
 
 		player.sendMessage(ChatColor.GREEN + Lang.PSW_CHANGED.toString());
-		plugin.getLogger().log(Level.INFO, "{0} sucessfully changed password", player.getName());
+		logger.log(Level.INFO, "{0} sucessfully changed password", player.getName());
 
 		return true;
 	}
