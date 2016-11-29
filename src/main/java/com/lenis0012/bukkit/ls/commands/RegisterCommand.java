@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import com.lenis0012.bukkit.ls.Lang;
 import com.lenis0012.bukkit.ls.LoginSecurity;
 import com.lenis0012.bukkit.ls.data.LoginData;
+import java.util.logging.Logger;
 import java.util.logging.Level;
 
 public class RegisterCommand implements CommandExecutor {
@@ -16,6 +17,8 @@ public class RegisterCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		LoginSecurity plugin = LoginSecurity.instance;
+		Logger logger = plugin.getLogger();
+		
 		if (!(sender instanceof Player)) {
 			sender.sendMessage(Lang.MUST_BE_PLAYER.toString());
 			return true;
@@ -41,7 +44,7 @@ public class RegisterCommand implements CommandExecutor {
 		plugin.thread.getTimeout().remove(uuid);
 		plugin.rehabPlayer(player, uuid);
 		player.sendMessage(ChatColor.GREEN + Lang.REGISTERED.toString());
-		plugin.log.log(Level.INFO, "{0} registered sucessfully", player.getName());
+		logger.log(Level.INFO, "{0} registered sucessfully", player.getName());
 		return true;
 	}
 }
