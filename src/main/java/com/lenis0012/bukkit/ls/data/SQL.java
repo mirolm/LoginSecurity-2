@@ -34,7 +34,7 @@ public abstract class SQL implements DataManager {
 		try {
 			Class.forName(driver);
 		} catch (ClassNotFoundException e) {
-			plugin.log.log(Level.SEVERE, "Failed to load driver", e);
+			logger.log(Level.SEVERE, "Failed to load driver", e);
 		}
 	}
 
