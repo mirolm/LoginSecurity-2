@@ -31,6 +31,8 @@ public abstract class SQL implements DataManager {
         private String SELECT_USERS = "SELECT * FROM <TABLE>";
 
 	public SQL(String driver) {
+		logger = LoginSecurity.instance.getLogger();
+
 		try {
 			Class.forName(driver);
 		} catch (ClassNotFoundException e) {
@@ -39,8 +41,6 @@ public abstract class SQL implements DataManager {
 	}
 
 	public void initConn(String table, String url) {
-		logger = LoginSecurity.instance.getLogger();
-		
 		CREATE_TABLE = CREATE_TABLE.replace("<TABLE>", table);
 		CHECK_REG = CHECK_REG.replace("<TABLE>", table);
 		INSERT_LOGIN = INSERT_LOGIN.replace("<TABLE>", table);
