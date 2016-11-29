@@ -9,12 +9,15 @@ import org.bukkit.entity.Player;
 import com.lenis0012.bukkit.ls.Lang;
 import com.lenis0012.bukkit.ls.LoginSecurity;
 import com.lenis0012.bukkit.ls.encryption.PasswordManager;
+import java.util.logging.Logger;
 import java.util.logging.Level;
 
 public class LoginCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		LoginSecurity plugin = LoginSecurity.instance;
+		Logger logger = plugin.getLogger();
+		
 		if(!(sender instanceof Player)) {
 			sender.sendMessage(Lang.MUST_BE_PLAYER.toString());
 			return true;
@@ -43,14 +46,14 @@ public class LoginCommand implements CommandExecutor {
 			plugin.thread.getTimeout().remove(uuid);
 			plugin.rehabPlayer(player, uuid);
 			player.sendMessage(ChatColor.GREEN + Lang.LOGIN.toString());
-			plugin.log.log(Level.INFO, "{0} authenticated", player.getName());
+			logger.log(Level.INFO, "{0} authenticated", player.getName());
 		} else {
 			if (plugin.checkFailed(uuid)) {
 				plugin.thread.getLockout().put(plugin.getFullUUID(uuid, addr), plugin.minFail);
 				player.kickPlayer(Lang.FAIL_COUNT.toString());
 			} else {
 				player.sendMessage(ChatColor.RED + Lang.INVALID_PSW.toString());
-				plugin.log.log(Level.WARNING, "{0} entered an incorrect password", player.getName());
+				logger.log(Level.WARNING, "{0} entered an incorrect password", player.getName());
 			}
 		}
 
