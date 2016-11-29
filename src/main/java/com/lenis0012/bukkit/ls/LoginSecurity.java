@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentMap;
-import java.util.logging.Logger;
 import java.util.logging.Level;
 import java.util.UUID;
 
@@ -45,7 +44,6 @@ public class LoginSecurity extends JavaPlugin {
 	public final ConcurrentMap<String, Integer> failList = Maps.newConcurrentMap();
 	public boolean required, blindness, sesUse, timeUse;
 	public int sesDelay, timeDelay, countFail, minFail;
-	public static Logger log;
 	public ThreadManager thread;
 	public EncryptionType hasher;
 	public final ConcurrentMap<String, CommandExecutor> commandMap = Maps.newConcurrentMap();
@@ -239,7 +237,7 @@ public class LoginSecurity extends JavaPlugin {
 		try {
 			conf.save(getLangFile());
 		} catch(IOException e) {
-			log.log(Level.WARNING, "Failed to save lang.yml.");
+			this.getLogger().log(Level.WARNING, "Failed to save lang.yml.");
 			e.printStackTrace();
 		}
 	}
