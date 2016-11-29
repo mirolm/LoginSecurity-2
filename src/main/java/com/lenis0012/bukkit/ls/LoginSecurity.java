@@ -58,9 +58,6 @@ public class LoginSecurity extends JavaPlugin {
 		FileConfiguration config = this.getConfig();
 		PluginManager pm = this.getServer().getPluginManager();
 		loadLang();
-
-		//loging stuff
-		log = this.getLogger();
 		
 		//setup config
 		config.addDefault("settings.password-required", true);
