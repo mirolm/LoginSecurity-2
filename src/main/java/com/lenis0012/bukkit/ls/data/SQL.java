@@ -10,7 +10,7 @@ import java.util.logging.Level;
 import com.lenis0012.bukkit.ls.LoginSecurity;
 
 public abstract class SQL implements DataManager {
-	private LoginSecurity plugin = LoginSecurity.instance;
+	private LoginSecurity plugin;
 	private Connection con = null;
 	private String jdbcUrl;
 
@@ -38,6 +38,8 @@ public abstract class SQL implements DataManager {
 	}
 
 	public void initConn(String table, String url) {
+		plugin = LoginSecurity.instance;
+		
 		CREATE_TABLE = CREATE_TABLE.replace("<TABLE>", table);
 		CHECK_REG = CHECK_REG.replace("<TABLE>", table);
 		INSERT_LOGIN = INSERT_LOGIN.replace("<TABLE>", table);
