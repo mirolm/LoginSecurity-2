@@ -222,7 +222,7 @@ public class LoginSecurity extends JavaPlugin {
 	}
 
 	public void loadLang() {
-		Logger logger = plugin.getLogger();
+		Logger logger = this.getLogger();
 
 		File lang = new File(getDataFolder(), "lang.yml");
 		YamlConfiguration conf = YamlConfiguration.loadConfiguration(lang);
