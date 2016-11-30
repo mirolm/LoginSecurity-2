@@ -58,7 +58,12 @@ public class LoginSecurity extends JavaPlugin {
 		//setup quickcalls
 		FileConfiguration config = this.getConfig();
 		PluginManager pm = this.getServer().getPluginManager();
+		
+		// load translation
 		loadLang();
+
+		//filter logs
+		setFilter();
 
 		//setup config
 		config.addDefault("settings.password-required", true);
@@ -121,10 +126,6 @@ public class LoginSecurity extends JavaPlugin {
 		//register events
 		pm.registerEvents(new LoginListener(this), this);
 		this.registerCommands();
-
-		// Filter logs
-		org.apache.logging.log4j.core.Logger consoleLogger = (org.apache.logging.log4j.core.Logger) LogManager.getRootLogger();
-		consoleLogger.addFilter(new LoggingFilter());
 	}
 
 	@Override
@@ -221,6 +222,13 @@ public class LoginSecurity extends JavaPlugin {
 		player.setRemainingAir(player.getMaximumAir());
 	}
 
+	public void setFilter() {
+		org.apache.logging.log4j.core.Logger logger; 
+		
+		logger = (org.apache.logging.log4j.core.Logger) LogManager.getRootLogger();
+		logger.addFilter(new LoggingFilter());
+	}
+	
 	public void loadLang() {
 		Logger logger = this.getLogger();
 
