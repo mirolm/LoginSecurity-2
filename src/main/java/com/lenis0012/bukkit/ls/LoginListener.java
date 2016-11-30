@@ -45,7 +45,7 @@ public class LoginListener implements Listener {
 	private boolean authEntity(Entity entity) {
 		if (entity instanceof Player) {
 			Player player = (Player) entity;
-			if (!player.hasMetadata("NPC")) {
+			if (!player.hasMetadata("NPC") && player.isOnline()) {
 				String uuid = player.getUniqueId().toString();
 
 				return plugin.authList.containsKey(uuid);
