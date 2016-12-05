@@ -75,7 +75,7 @@ public class LoginSecurity extends JavaPlugin {
 		config.addDefault("settings.session.timeout", 60);
 		config.addDefault("settings.timeout.use", true);
 		config.addDefault("settings.timeout.timeout", 60);
-		config.addDefault("settings.failed.count", 3);
+		config.addDefault("settings.failed.count", 5);
 		config.addDefault("settings.failed.minutes", 120);
 		config.addDefault("MySQL.use", false);
 		config.addDefault("MySQL.host", "localhost");
