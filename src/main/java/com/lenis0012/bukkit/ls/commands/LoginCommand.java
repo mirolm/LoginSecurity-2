@@ -49,6 +49,7 @@ public class LoginCommand implements CommandExecutor {
 			logger.log(Level.INFO, "{0} authenticated", player.getName());
 		} else {
 			if (plugin.checkFailed(uuid)) {
+			        plugin.failList.remove(uuid);
 				plugin.thread.getLockout().put(plugin.getFullUUID(uuid, addr), plugin.minFail);
 				player.kickPlayer(Lang.FAIL_COUNT.toString());
 			} else {
