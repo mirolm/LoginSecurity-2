@@ -114,7 +114,6 @@ public class LoginListener implements Listener {
 			}
 		}
 
-		plugin.failList.remove(uuid);
 		plugin.authList.remove(uuid);
 	}
 
