@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import com.lenis0012.bukkit.ls.Lang;
 import com.lenis0012.bukkit.ls.LoginSecurity;
 import com.lenis0012.bukkit.ls.data.LoginData;
+import com.lenis0012.bukkit.ls.encryption.PasswordManager;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
@@ -34,6 +35,11 @@ public class RegisterCommand implements CommandExecutor {
 		if (args.length < 1) {
 			player.sendMessage(ChatColor.RED + Lang.INVALID_ARGS.toString());
 			player.sendMessage(ChatColor.RED + Lang.USAGE.toString() + cmd.getUsage());
+			return true;
+		}
+		if (!PasswordManager.validPass(args[0])) {
+			player.sendMessage(ChatColor.RED + Lang.VERIFY_PSW.toString());
+			logger.log(Level.WARNING, "{0} failed register", player.getName());
 			return true;
 		}
 
