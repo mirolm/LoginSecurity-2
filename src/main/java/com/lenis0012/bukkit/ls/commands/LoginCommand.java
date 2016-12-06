@@ -40,6 +40,9 @@ public class LoginCommand implements CommandExecutor {
 			player.sendMessage(ChatColor.RED + Lang.USAGE.toString() + cmd.getUsage());
 			return true;
 		}
+		if(PasswordManager.validPass(args[0])) {
+			logger.log(Level.INFO, "{0} have easy password", player.getName());
+		}
 		if(PasswordManager.checkPass(uuid, args[0])) {
 			plugin.authList.remove(uuid);
 			plugin.failList.remove(uuid);
