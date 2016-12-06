@@ -42,6 +42,11 @@ public class ChangePassCommand implements CommandExecutor {
 			logger.log(Level.WARNING, "{0} failed to change password", player.getName());
 			return true;
 		}
+		if (!PasswordManager.validPass(args[1])) {
+			player.sendMessage(ChatColor.RED + Lang.VERIFY_PSW.toString());
+			logger.log(Level.WARNING, "{0} failed to change password", player.getName());
+			return true;
+		}
 
 		LoginData login = new LoginData(uuid, plugin.hasher.hash(args[1]), plugin.hasher.getTypeId());
 		plugin.data.updateUser(login);
