@@ -17,6 +17,6 @@ public class PasswordManager {
 	
 	public static boolean validPass(String password) {
 		// at least 4 chars 1 letter 1 number
-		return password.matches("^(?=.*[a-zA-Z])(?=.*\d).{4,}+$");	
+		return password.matches("^(?=.*[a-zA-Z])(?=.*\\d).{4,}+$");	
 	}
 }
