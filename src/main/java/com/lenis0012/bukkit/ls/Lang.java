@@ -16,6 +16,7 @@ public enum Lang {
     INVALID_ARGS("invalid_args", "Not enough arguments"),
     USAGE("usage", "Usage: "),
     INVALID_PSW("invalid_psw", "Password Incorrect"),
+    VERIFY_PSW("verify_psw", "Password must be at least 4 characters long alphanumeric"),
     REQUIRED_PSW("required_psw", "Passwords are required on this server!"),
     ALREADY_REG("already_reg", "You are already registered"),
     REGISTERED("registered", "Registered successful"),
