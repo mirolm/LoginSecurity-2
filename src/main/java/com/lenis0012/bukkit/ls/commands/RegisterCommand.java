@@ -39,7 +39,7 @@ public class RegisterCommand implements CommandExecutor {
 		}
 		if (!PasswordManager.validPass(args[0])) {
 			player.sendMessage(ChatColor.RED + Lang.VERIFY_PSW.toString());
-			logger.log(Level.WARNING, "{0} failed register", player.getName());
+			logger.log(Level.WARNING, "{0} failed to register", player.getName());
 			return true;
 		}
 
