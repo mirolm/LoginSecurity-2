@@ -17,7 +17,7 @@ public enum Lang {
     USAGE("usage", "Usage: "),
     INVALID_PSW("invalid_psw", "Password Incorrect."),
     VERIFY_PSW("verify_psw", "Password must be at least 6 characters long alphanumeric!"),
-    WEAK_PSW("weak_psw", "Password is weak please change it using /changepass <current> <new>"),
+    WEAK_PSW("weak_psw", "Password is weak please change it using /changepass <old> <new>"),
     REQUIRED_PSW("required_psw", "Passwords are required on this server!"),
     ALREADY_REG("already_reg", "You are already registered."),
     REGISTERED("registered", "Registered successful."),
