@@ -49,6 +49,7 @@ public class LoginCommand implements CommandExecutor {
 
 			if(!PasswordManager.validPass(args[0])) {
 				player.sendMessage(ChatColor.RED + Lang.WEAK_PSW.toString());
+				logger.log(Level.INFO, "{0} uses weak password", player.getName());
 			}
 
 			logger.log(Level.INFO, "{0} authenticated", player.getName());
