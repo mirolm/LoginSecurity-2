@@ -19,7 +19,6 @@ public class LoginCommand implements CommandExecutor {
 		Logger logger = plugin.getLogger();
 		
 		if(!(sender instanceof Player)) {
-			sender.sendMessage(Lang.MUST_BE_PLAYER.toString());
 			return true;
 		}
 
