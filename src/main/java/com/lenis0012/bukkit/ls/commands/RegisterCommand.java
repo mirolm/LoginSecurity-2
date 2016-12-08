@@ -52,6 +52,7 @@ public class RegisterCommand implements CommandExecutor {
 
 		player.sendMessage(ChatColor.GREEN + Lang.REGISTERED.toString());
 		logger.log(Level.INFO, "{0} registered sucessfully", player.getName());
+
 		return true;
 	}
 }
