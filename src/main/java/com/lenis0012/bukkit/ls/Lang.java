@@ -11,7 +11,6 @@ public enum Lang {
     FAIL_COUNT("fail_count", "Too many failed login attempts."),
     REG_MSG("reg_msg", "Please register using /register <password>"),
     LOG_MSG("log_msg", "Please login using /login <password>"),
-    MUST_BE_PLAYER("must_be_player", "You must be a player."),
     NOT_REG("not_reg", "You are not registered on the server."),
     INVALID_ARGS("invalid_args", "Not enough arguments."),
     USAGE("usage", "Usage: "),
