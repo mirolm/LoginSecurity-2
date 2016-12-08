@@ -21,12 +21,12 @@ public class RegisterCommand implements CommandExecutor {
 		Logger logger = plugin.getLogger();
 		
 		if (!(sender instanceof Player)) {
-			sender.sendMessage(Lang.MUST_BE_PLAYER.toString());
 			return true;
 		}
 
 		Player player = (Player) sender;
 		String uuid = player.getUniqueId().toString();
+		String addr = player.getAddress().getAddress().toString();
 
 		if (plugin.data.checkUser(uuid)) {
 			player.sendMessage(ChatColor.RED + Lang.ALREADY_REG.toString());
@@ -43,12 +43,13 @@ public class RegisterCommand implements CommandExecutor {
 			return true;
 		}
 
-		LoginData login = new LoginData(uuid, plugin.hasher.hash(args[0]), plugin.hasher.getTypeId(), player.getAddress().getAddress().toString());
+		LoginData login = new LoginData(uuid, plugin.hasher.hash(args[0]), plugin.hasher.getTypeId(), addr);
 		plugin.data.regUser(login);
 
 		plugin.authList.remove(uuid);
 		plugin.thread.getTimeout().remove(uuid);
 		plugin.rehabPlayer(player, uuid);
+
 		player.sendMessage(ChatColor.GREEN + Lang.REGISTERED.toString());
 		logger.log(Level.INFO, "{0} registered sucessfully", player.getName());
 		return true;
