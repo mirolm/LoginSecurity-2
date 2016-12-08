@@ -42,6 +42,7 @@ public class LogoutCommand implements CommandExecutor {
 
 		player.sendMessage(ChatColor.GREEN + Lang.LOGOUT.toString());
 		logger.log(Level.INFO, "{0} logged out", player.getName());
+
 		return true;
 	}
 }
