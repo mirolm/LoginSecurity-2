@@ -186,13 +186,13 @@ public class LoginSecurity extends JavaPlugin {
                 return UUID.nameUUIDFromBytes(("|#" + uuid + "^|^" + addr + "#|").getBytes()).toString();
 	}
 
-	public String getSessUUID(String uuid) {
+	public String getSessUUID(String uuid, String addr) {
 		if (data.checkUser(uuid)) {
 			LoginData login = data.getUser(uuid);
 
-                	return getFullUUID(uuid, login.sess);
+                	return getFullUUID(login.sess, addr);
 		} else {
-			return getFullUUID(uuid, UUID.randomUUID().toString());
+			return getFullUUID(UUID.randomUUID().toString(), addr);
 		}
 	}
 
