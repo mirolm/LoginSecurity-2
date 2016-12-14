@@ -187,9 +187,13 @@ public class LoginSecurity extends JavaPlugin {
 	}
 
 	public String getSessUUID(String uuid) {
-		LoginData login = data.getUser(uuid);
+		if (data.checkUser(uuid)) {
+			LoginData login = data.getUser(uuid);
 
-                return getFullUUID(uuid, login.sess);
+                	return getFullUUID(uuid, login.sess);
+		}
+		
+		return getFullUUID(uuid, UUID.randomUUID().toString());
 	}
 
 	public void debilitatePlayer(Player player, String name, boolean logout) {
