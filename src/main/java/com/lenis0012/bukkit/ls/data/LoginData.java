@@ -19,6 +19,6 @@ public class LoginData {
 		this.uuid = uuid;
 		this.password = password;
 		this.encryption = encryption;
-		this.sess = UUID.randomUUID.toString();
+		this.sess = UUID.randomUUID().toString();
 	}
 }
