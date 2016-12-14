@@ -133,7 +133,7 @@ public abstract class SQL implements DataManager {
 			stmt.setString(2, login.password);
 			stmt.setInt(3, login.encryption);
 			stmt.setString(4, login.sess);
-			
+
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			logger.log(Level.SEVERE, "Failed to create user", e);
@@ -198,9 +198,9 @@ public abstract class SQL implements DataManager {
 			String uuid = data.getString("unique_user_id");
 			String password = data.getString("password");
 			int encryption = data.getInt("encryption");
-			String ipaddr = data.getString("sess_guid");
+			String sess = data.getString("sess_guid");
 
-			return new LoginData(uuid, password, encryption, ipaddr);
+			return new LoginData(uuid, password, encryption, sess);
 		} catch (SQLException e) {
 			return null;
 		}
