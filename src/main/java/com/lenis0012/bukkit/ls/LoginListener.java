@@ -60,7 +60,7 @@ public class LoginListener implements Listener {
 		Player player = event.getPlayer();
 		String uuid = player.getUniqueId().toString();
 
-		if (plugin.sesUse && plugin.thread.getSession().containsKey(uuid) && plugin.checkLastIp(player)) {
+		if (plugin.sesUse && plugin.thread.getSession().containsKey(plugin.getSessUUID(uuid))) {
 			player.sendMessage(ChatColor.GREEN + Lang.SESS_EXTENDED.toString());
 			return;
 		} else if (plugin.data.checkUser(uuid)) {
@@ -110,7 +110,7 @@ public class LoginListener implements Listener {
 		if (plugin.data.checkUser(uuid)) {
 			plugin.updateLastIp(player);
 			if (plugin.sesUse && !plugin.authList.containsKey(uuid)) {
-				plugin.thread.getSession().put(uuid, plugin.sesDelay);
+				plugin.thread.getSession().put(plugin.getSessUUID(uuid), plugin.sesDelay);
 			}
 		}
 
