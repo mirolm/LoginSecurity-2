@@ -1,5 +1,7 @@
 package com.lenis0012.bukkit.ls.data;
 
+import java.util.UUID;
+
 public class LoginData {
 	public final String uuid;
 	public final String password;
@@ -10,13 +12,13 @@ public class LoginData {
 		this.uuid = uuid;
 		this.password = password;
 		this.encryption = encryption;
-		this.ipaddr = sess;
+		this.sess = sess;
 	}
 
 	public LoginData(String uuid, String password, int encryption) {
 		this.uuid = uuid;
 		this.password = password;
 		this.encryption = encryption;
-		this.sess = null;
+		this.sess = UUID.randomUUID.toString();
 	}
 }
