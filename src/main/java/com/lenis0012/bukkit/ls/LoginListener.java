@@ -107,10 +107,8 @@ public class LoginListener implements Listener {
 		Player player = event.getPlayer();
 		String uuid = player.getUniqueId().toString();
 
-		if (plugin.data.checkUser(uuid)) {
-			if (plugin.sesUse && !plugin.authList.containsKey(uuid)) {
-				plugin.thread.getSession().put(plugin.getSessUUID(uuid), plugin.sesDelay);
-			}
+		if (plugin.sesUse && !plugin.authList.containsKey(uuid)) {
+			plugin.thread.getSession().put(plugin.getSessUUID(uuid), plugin.sesDelay);
 		}
 
 		plugin.authList.remove(uuid);
