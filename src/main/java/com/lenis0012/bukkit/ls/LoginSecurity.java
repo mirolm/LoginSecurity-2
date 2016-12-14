@@ -72,7 +72,7 @@ public class LoginSecurity extends JavaPlugin {
 		config.addDefault("settings.PHP_VERSION", 4);
 		config.addDefault("settings.blindness", true);
 		config.addDefault("settings.session.use", true);
-		config.addDefault("settings.session.timeout", 20);
+		config.addDefault("settings.session.timeout", 40);
 		config.addDefault("settings.timeout.use", true);
 		config.addDefault("settings.timeout.timeout", 40);
 		config.addDefault("settings.failed.count", 3);
