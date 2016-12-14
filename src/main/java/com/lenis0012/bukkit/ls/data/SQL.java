@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.UUID;
 
 import com.lenis0012.bukkit.ls.LoginSecurity;
 
@@ -24,7 +25,7 @@ public abstract class SQL implements DataManager {
 					+ "sess_guid VARCHAR(130) NOT NULL)";
 
         private String CHECK_REG = "SELECT 1 FROM <TABLE> WHERE unique_user_id = ?";
-        private String INSERT_LOGIN = "INSERT INTO <TABLE>(unique_user_id, password, encryption, ip) VALUES(?, ?, ?, ?)";
+        private String INSERT_LOGIN = "INSERT INTO <TABLE>(unique_user_id, password, encryption, sess_guid) VALUES(?, ?, ?, ?)";
         private String UPDATE_PASS = "UPDATE <TABLE> SET password = ?, encryption = ? WHERE unique_user_id = ?";
         private String SELECT_LOGIN = "SELECT * FROM <TABLE> WHERE unique_user_id = ?";
         private String SELECT_USERS = "SELECT * FROM <TABLE>";
@@ -132,7 +133,8 @@ public abstract class SQL implements DataManager {
 			stmt.setString(1, login.uuid.replaceAll("-", ""));
 			stmt.setString(2, login.password);
 			stmt.setInt(3, login.encryption);
-			stmt.setString(4, login.ipaddr);
+			stmt.setString(4, UUID.randomUUID.toString());
+			
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			logger.log(Level.SEVERE, "Failed to create user", e);
