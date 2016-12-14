@@ -172,25 +172,6 @@ public class LoginSecurity extends JavaPlugin {
 		}
 	}
 
-        public boolean checkLastIp(Player player) {
-                String uuid = player.getUniqueId().toString();
-                if (data.checkUser(uuid)) {
-                        LoginData login = data.getUser(uuid);
-                        String currentIp = player.getAddress().getAddress().toString();
-                        return currentIp.equalsIgnoreCase(login.ipaddr);
-                }
-
-                return false;
-        }
-
-        public void updateLastIp(Player player) {
-                String uuid = player.getUniqueId().toString();
-                String ip = player.getAddress().getAddress().toString();
-
-		LoginData login = new LoginData(uuid, ip);
-		data.updateUser(login);
-        }
-
 	public boolean checkFailed(String uuid) {
 		if (failList.containsKey(uuid)) {
 			return failList.put(uuid, failList.get(uuid) + 1)  >= countFail;
@@ -203,6 +184,12 @@ public class LoginSecurity extends JavaPlugin {
 
 	public String getFullUUID(String uuid, String addr) {
                 return UUID.nameUUIDFromBytes(("|#" + uuid + "^|^" + addr + "#|").getBytes()).toString();
+	}
+
+	public String getSessUUID(String uuid) {
+		LoginData login = data.getUser(uuid);
+
+                return getFullUUID(uuid, login.sess);
 	}
 
 	public void debilitatePlayer(Player player, String name, boolean logout) {
