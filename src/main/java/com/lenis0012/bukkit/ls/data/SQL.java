@@ -44,7 +44,6 @@ public abstract class SQL implements DataManager {
 		CHECK_REG = CHECK_REG.replace("<TABLE>", table);
 		INSERT_LOGIN = INSERT_LOGIN.replace("<TABLE>", table);
 		UPDATE_PASS = UPDATE_PASS.replace("<TABLE>", table);
-		UPDATE_ADDR = UPDATE_ADDR.replace("<TABLE>", table);
 		SELECT_LOGIN = SELECT_LOGIN.replace("<TABLE>", table);
 		SELECT_USERS = SELECT_USERS.replace("<TABLE>", table);
 
