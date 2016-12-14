@@ -4,26 +4,19 @@ public class LoginData {
 	public final String uuid;
 	public final String password;
 	public final int encryption;
-	public final String ipaddr;
+	public final String sess;
 
-	public LoginData(String uuid, String password, int encryption, String ipaddr) {
+	public LoginData(String uuid, String password, int encryption, String sess) {
 		this.uuid = uuid;
 		this.password = password;
 		this.encryption = encryption;
-		this.ipaddr = ipaddr;
+		this.ipaddr = sess;
 	}
 
 	public LoginData(String uuid, String password, int encryption) {
 		this.uuid = uuid;
 		this.password = password;
 		this.encryption = encryption;
-		this.ipaddr = null;
-	}
-
-	public LoginData(String uuid, String ipaddr) {
-		this.uuid = uuid;
-		this.password = null;
-		this.encryption = 0;
-		this.ipaddr = ipaddr;
+		this.sess = null;
 	}
 }
