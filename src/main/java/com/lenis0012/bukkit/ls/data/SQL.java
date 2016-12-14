@@ -21,12 +21,11 @@ public abstract class SQL implements DataManager {
 					+ "unique_user_id VARCHAR(130) NOT NULL UNIQUE,"
 					+ "password VARCHAR(300) NOT NULL,"
 					+ "encryption INT,"
-					+ "ip VARCHAR(130) NOT NULL)";
+					+ "sess_guid VARCHAR(130) NOT NULL)";
 
         private String CHECK_REG = "SELECT 1 FROM <TABLE> WHERE unique_user_id = ?";
         private String INSERT_LOGIN = "INSERT INTO <TABLE>(unique_user_id, password, encryption, ip) VALUES(?, ?, ?, ?)";
         private String UPDATE_PASS = "UPDATE <TABLE> SET password = ?, encryption = ? WHERE unique_user_id = ?";
-        private String UPDATE_ADDR = "UPDATE <TABLE> SET ip = ? WHERE unique_user_id = ?";
         private String SELECT_LOGIN = "SELECT * FROM <TABLE> WHERE unique_user_id = ?";
         private String SELECT_USERS = "SELECT * FROM <TABLE>";
 
@@ -148,16 +147,10 @@ public abstract class SQL implements DataManager {
 		PreparedStatement stmt = null;
 
 		try {
-			if (login.ipaddr == null) {
-				stmt = con.prepareStatement(UPDATE_PASS);
-				stmt.setString(1, login.password);
-				stmt.setInt(2, login.encryption);
-				stmt.setString(3, login.uuid.replaceAll("-", ""));
-			} else {
-				stmt = con.prepareStatement(UPDATE_ADDR);
-				stmt.setString(1, login.ipaddr);
-				stmt.setString(2, login.uuid.replaceAll("-", ""));
-			}
+			stmt = con.prepareStatement(UPDATE_PASS);
+			stmt.setString(1, login.password);
+			stmt.setInt(2, login.encryption);
+			stmt.setString(3, login.uuid.replaceAll("-", ""));
 
 			stmt.executeUpdate();
 		} catch (SQLException e) {
@@ -205,7 +198,7 @@ public abstract class SQL implements DataManager {
 			String uuid = data.getString("unique_user_id");
 			String password = data.getString("password");
 			int encryption = data.getInt("encryption");
-			String ipaddr = data.getString("ip");
+			String ipaddr = data.getString("sess_guid");
 
 			return new LoginData(uuid, password, encryption, ipaddr);
 		} catch (SQLException e) {
