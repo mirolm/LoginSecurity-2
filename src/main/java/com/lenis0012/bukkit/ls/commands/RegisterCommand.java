@@ -26,7 +26,6 @@ public class RegisterCommand implements CommandExecutor {
 
 		Player player = (Player) sender;
 		String uuid = player.getUniqueId().toString();
-		String addr = player.getAddress().getAddress().toString();
 
 		if (plugin.data.checkUser(uuid)) {
 			player.sendMessage(ChatColor.RED + Lang.ALREADY_REG.toString());
@@ -43,7 +42,7 @@ public class RegisterCommand implements CommandExecutor {
 			return true;
 		}
 
-		LoginData login = new LoginData(uuid, plugin.hasher.hash(args[0]), plugin.hasher.getTypeId(), addr);
+		LoginData login = new LoginData(uuid, plugin.hasher.hash(args[0]), plugin.hasher.getTypeId());
 		plugin.data.regUser(login);
 
 		plugin.authList.remove(uuid);
