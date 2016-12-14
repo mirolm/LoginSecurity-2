@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 import java.util.logging.Level;
-import java.util.UUID;
 
 import com.lenis0012.bukkit.ls.LoginSecurity;
 
@@ -133,7 +132,7 @@ public abstract class SQL implements DataManager {
 			stmt.setString(1, login.uuid.replaceAll("-", ""));
 			stmt.setString(2, login.password);
 			stmt.setInt(3, login.encryption);
-			stmt.setString(4, UUID.randomUUID.toString());
+			stmt.setString(4, login.sess);
 			
 			stmt.executeUpdate();
 		} catch (SQLException e) {
