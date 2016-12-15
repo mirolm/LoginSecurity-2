@@ -20,14 +20,13 @@ public abstract class SQL implements DataManager {
 	private String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS <TABLE> ("
 					+ "unique_user_id VARCHAR(130) NOT NULL UNIQUE,"
 					+ "password VARCHAR(300) NOT NULL,"
-					+ "encryption INT,"
-					+ "sess_guid VARCHAR(130) NOT NULL)";
+					+ "encryption INT)";
 
         private String CHECK_REG = "SELECT 1 FROM <TABLE> WHERE unique_user_id = ?";
-        private String INSERT_LOGIN = "INSERT INTO <TABLE>(unique_user_id, password, encryption, sess_guid) VALUES(?, ?, ?, ?)";
+        private String INSERT_LOGIN = "INSERT INTO <TABLE>(unique_user_id, password, encryption) VALUES(?, ?, ?)";
         private String UPDATE_PASS = "UPDATE <TABLE> SET password = ?, encryption = ? WHERE unique_user_id = ?";
-        private String SELECT_LOGIN = "SELECT * FROM <TABLE> WHERE unique_user_id = ?";
-        private String SELECT_USERS = "SELECT * FROM <TABLE>";
+        private String SELECT_LOGIN = "SELECT unique_user_id, password, encryption FROM <TABLE> WHERE unique_user_id = ?";
+        private String SELECT_USERS = "SELECT unique_user_id, password, encryption FROM <TABLE>";
 
 	public SQL(String driver) {
 		logger = LoginSecurity.instance.getLogger();
@@ -132,7 +131,6 @@ public abstract class SQL implements DataManager {
 			stmt.setString(1, login.uuid.replaceAll("-", ""));
 			stmt.setString(2, login.password);
 			stmt.setInt(3, login.encryption);
-			stmt.setString(4, login.sess);
 
 			stmt.executeUpdate();
 		} catch (SQLException e) {
@@ -198,9 +196,8 @@ public abstract class SQL implements DataManager {
 			String uuid = data.getString("unique_user_id");
 			String password = data.getString("password");
 			int encryption = data.getInt("encryption");
-			String sess = data.getString("sess_guid");
 
-			return new LoginData(uuid, password, encryption, sess);
+			return new LoginData(uuid, password, encryption);
 		} catch (SQLException e) {
 			return null;
 		}
