@@ -71,7 +71,7 @@ public class LoginSecurity extends JavaPlugin {
 		config.addDefault("settings.encoder", "UTF-8");
 		config.addDefault("settings.PHP_VERSION", 4);
 		config.addDefault("settings.blindness", true);
-		config.addDefault("settings.session.use", true);
+		config.addDefault("settings.session.use", false);
 		config.addDefault("settings.session.timeout", 60);
 		config.addDefault("settings.timeout.use", true);
 		config.addDefault("settings.timeout.timeout", 60);
@@ -93,7 +93,7 @@ public class LoginSecurity extends JavaPlugin {
 		thread = new ThreadManager(this);
 		required = config.getBoolean("settings.password-required");
 		blindness = config.getBoolean("settings.blindness");
-		sesUse = config.getBoolean("settings.session.use", true);
+		sesUse = config.getBoolean("settings.session.use", false);
 		sesDelay = config.getInt("settings.session.timeout", 60);
 		timeUse = config.getBoolean("settings.timeout.use", true);
 		timeDelay = config.getInt("settings.timeout.timeout", 60);
@@ -184,16 +184,6 @@ public class LoginSecurity extends JavaPlugin {
 
 	public String getFullUUID(String uuid, String addr) {
                 return UUID.nameUUIDFromBytes(("|#" + uuid + "^|^" + addr + "#|").getBytes()).toString();
-	}
-
-	public String getSessUUID(String uuid, String addr) {
-		if (data.checkUser(uuid)) {
-			LoginData login = data.getUser(uuid);
-
-                	return getFullUUID(login.sess, addr);
-		} else {
-			return getFullUUID(UUID.randomUUID().toString(), addr);
-		}
 	}
 
 	public void debilitatePlayer(Player player, String name, boolean logout) {
