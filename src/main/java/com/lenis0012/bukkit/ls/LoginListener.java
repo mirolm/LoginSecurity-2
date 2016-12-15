@@ -61,7 +61,7 @@ public class LoginListener implements Listener {
 		String uuid = player.getUniqueId().toString();
 		String addr = player.getAddress().getAddress().toString();
 
-		if (plugin.sesUse && plugin.thread.getSession().containsKey(plugin.getSessUUID(uuid, addr))) {
+		if (plugin.sesUse && plugin.thread.getSession().containsKey(plugin.getFullUUID(uuid, addr))) {
 			player.sendMessage(ChatColor.GREEN + Lang.SESS_EXTENDED.toString());
 			return;
 		} else if (plugin.data.checkUser(uuid)) {
@@ -110,7 +110,7 @@ public class LoginListener implements Listener {
 		String addr = player.getAddress().getAddress().toString();
 
 		if (plugin.sesUse && !plugin.authList.containsKey(uuid)) {
-			plugin.thread.getSession().put(plugin.getSessUUID(uuid, addr), plugin.sesDelay);
+			plugin.thread.getSession().put(plugin.getFullUUID(uuid, addr), plugin.sesDelay);
 		}
 
 		plugin.authList.remove(uuid);
