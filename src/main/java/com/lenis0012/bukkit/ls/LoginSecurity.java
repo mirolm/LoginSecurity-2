@@ -148,7 +148,6 @@ public class LoginSecurity extends JavaPlugin {
 		this.commandMap.put("login", new LoginCommand());
 		this.commandMap.put("register", new RegisterCommand());
 		this.commandMap.put("changepass", new ChangePassCommand());
-		this.commandMap.put("logout", new LogoutCommand());
 
 		for (Entry<String, CommandExecutor> entry : this.commandMap.entrySet()) {
 			String cmd = entry.getKey();
