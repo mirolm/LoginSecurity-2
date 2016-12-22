@@ -35,10 +35,6 @@ public class LogoutCommand implements CommandExecutor {
 
 		plugin.authList.put(uuid, false);
 		plugin.debilitatePlayer(player);
-		// terminate user's current session
-		if (plugin.sesUse) {
-			plugin.thread.getSession().remove(uuid);
-		}
 
 		player.sendMessage(ChatColor.GREEN + Lang.LOGOUT.toString());
 		logger.log(Level.INFO, "{0} logged out", player.getName());
