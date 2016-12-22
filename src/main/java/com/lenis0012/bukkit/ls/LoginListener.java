@@ -59,12 +59,8 @@ public class LoginListener implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 		String uuid = player.getUniqueId().toString();
-		String addr = player.getAddress().getAddress().toString();
 
-		if (plugin.sesUse && plugin.thread.getSession().containsKey(plugin.getFullUUID(uuid, addr))) {
-			player.sendMessage(ChatColor.GREEN + Lang.SESS_EXTENDED.toString());
-			return;
-		} else if (plugin.data.checkUser(uuid)) {
+		if (plugin.data.checkUser(uuid)) {
 			plugin.authList.put(uuid, false);
 			player.sendMessage(ChatColor.RED + Lang.LOG_MSG.toString());
 		} else if (plugin.required) {
