@@ -16,6 +16,3 @@ commands:
     description: Change the password for your account.
     usage: /changepass <old> <new>
     aliases: [cp,changepassword]
-  logout:
-    description: Logout and end your session.
-    usage: /logout
