@@ -186,17 +186,15 @@ public class LoginSecurity extends JavaPlugin {
                 return UUID.nameUUIDFromBytes(("|#" + uuid + "^|^" + addr + "#|").getBytes()).toString();
 	}
 
-	public void debilitatePlayer(Player player, String name, boolean logout) {
-		if (timeUse) {
-			thread.getTimeout().put(name, timeDelay);
-		}
+	public void debilitatePlayer(Player player) {
+		String uuid = player.getUniqueId().toString();
+		
+		thread.getTimeout().put(uuid, timeDelay);
 
-		if (blindness) {
-			player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 1), true);
-		}
+		player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 1), true);
 	}
 
-	public void rehabPlayer(Player player, String name) {
+	public void rehabPlayer(Player player) {
 		player.removePotionEffect(PotionEffectType.BLINDNESS);
 
 		// ensure that player does not drown after logging in
