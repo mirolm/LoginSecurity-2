@@ -20,7 +20,6 @@ public enum Lang {
     REQUIRED_PSW("required_psw", "Passwords are required on this server!"),
     ALREADY_REG("already_reg", "You are already registered."),
     REGISTERED("registered", "Registered successful."),
-    LOGOUT("logout", "Succesfully logged out."),
     ALREADY_LOGIN("already_login", "You are already logged in."),
     NO_PSW_SET("no_psw_set", "You do not have a password set."),
     LOGIN("login", "Succesfully logged in."),
