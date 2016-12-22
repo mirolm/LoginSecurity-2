@@ -103,11 +103,6 @@ public class LoginListener implements Listener {
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
 		String uuid = player.getUniqueId().toString();
-		String addr = player.getAddress().getAddress().toString();
-
-		if (plugin.sesUse && !plugin.authList.containsKey(uuid)) {
-			plugin.thread.getSession().put(plugin.getFullUUID(uuid, addr), plugin.sesDelay);
-		}
 
 		plugin.authList.remove(uuid);
 	}
