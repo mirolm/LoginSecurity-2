@@ -14,18 +14,13 @@ import org.bukkit.scheduler.BukkitTask;
 public class ThreadManager {
 
 	private LoginSecurity plugin;
-	private BukkitTask main, msg, ses, lck, to;
-	private final ConcurrentMap<String, Integer> session = Maps.newConcurrentMap();
+	private BukkitTask main, msg, lck, to;
 	private final ConcurrentMap<String, Integer> lockout = Maps.newConcurrentMap();
 	private final ConcurrentMap<String, Integer> timeout = Maps.newConcurrentMap();
 	private long nextRefresh;
 
 	public ThreadManager(LoginSecurity plugin) {
 		this.plugin = plugin;
-	}
-
-	public synchronized ConcurrentMap<String, Integer> getSession() {
-		return this.session;
 	}
 
 	public synchronized ConcurrentMap<String, Integer> getLockout() {
@@ -88,32 +83,6 @@ public class ThreadManager {
 		}
 
 		msg = null;
-	}
-
-	public void startSessionTask() {
-		ses = plugin.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
-			public void run() {
-				Iterator<String> it = getSession().keySet().iterator();
-				while (it.hasNext()) {
-					String puuid = it.next();
-					int current = getSession().get(puuid);
-					if (current >= 1) {
-						current -= 1;
-						getSession().put(puuid, current);
-					} else {
-						it.remove();
-					}
-				}
-			}
-		}, 20, 20);
-	}
-
-	public void stopSessionTask() {
-		if (ses != null) {
-			ses.cancel();
-		}
-
-		ses = null;
 	}
 
 	public void startLockTask() {
