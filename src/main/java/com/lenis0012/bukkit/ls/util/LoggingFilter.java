@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class LoggingFilter extends AbstractFilter {
-    private static final List<String> filteredWords = Arrays.asList("/register ", "/reg ", "/login ", "/log ", "/l ", "/changepassword ", "/changepass ", "/cp ", "/logout");
+    private static final List<String> filteredWords = Arrays.asList("/register ", "/reg ", "/login ", "/log ", "/l ", "/changepassword ", "/changepass ", "/cp ");
 
     private static final long serialVersionUID = 1L;
 
