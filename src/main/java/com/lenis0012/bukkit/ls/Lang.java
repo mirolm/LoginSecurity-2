@@ -25,8 +25,7 @@ public enum Lang {
     ALREADY_LOGIN("already_login", "You are already logged in."),
     NO_PSW_SET("no_psw_set", "You do not have a password set."),
     LOGIN("login", "Succesfully logged in."),
-    PSW_CHANGED("psw_changed", "Sucessfully changed password."),
-    SESS_EXTENDED("sess_extended", "Extended session from last login.");
+    PSW_CHANGED("psw_changed", "Sucessfully changed password.");
 
     private String path;
     private String def;
