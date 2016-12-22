@@ -70,11 +70,7 @@ public class LoginSecurity extends JavaPlugin {
 		config.addDefault("settings.encryption", "BCRYPT");
 		config.addDefault("settings.encoder", "UTF-8");
 		config.addDefault("settings.PHP_VERSION", 4);
-		config.addDefault("settings.blindness", true);
-		config.addDefault("settings.session.use", false);
-		config.addDefault("settings.session.timeout", 60);
-		config.addDefault("settings.timeout.use", true);
-		config.addDefault("settings.timeout.timeout", 60);
+		config.addDefault("settings.timeout", 60);
 		config.addDefault("settings.failed.count", 3);
 		config.addDefault("settings.failed.minutes", 120);
 		config.addDefault("MySQL.use", false);
@@ -92,11 +88,7 @@ public class LoginSecurity extends JavaPlugin {
 		data = this.getDataManager(config);
 		thread = new ThreadManager(this);
 		required = config.getBoolean("settings.password-required");
-		blindness = config.getBoolean("settings.blindness");
-		sesUse = config.getBoolean("settings.session.use", false);
-		sesDelay = config.getInt("settings.session.timeout", 60);
-		timeUse = config.getBoolean("settings.timeout.use", true);
-		timeDelay = config.getInt("settings.timeout.timeout", 60);
+		timeDelay = config.getInt("settings.timeout", 60);
 		countFail = config.getInt("settings.failed.count", 3);
 		minFail = config.getInt("settings.failed.minutes", 120);
 		PHP_VERSION = config.getInt("settings.PHP_VERSION", 4);
@@ -108,12 +100,7 @@ public class LoginSecurity extends JavaPlugin {
 			encoder = "UTF-8";
 		}
 
-		if (sesUse) {
-			thread.startSessionTask();
-		}
-		if (timeUse) {
-			thread.startTimeoutTask();
-		}
+		thread.startTimeoutTask();
 
 		// Threads
 		thread.startMainTask();
