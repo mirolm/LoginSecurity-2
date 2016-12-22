@@ -122,7 +122,6 @@ public class LoginSecurity extends JavaPlugin {
 		}
 		if (thread != null) {
 			thread.stopMsgTask();
-			thread.stopSessionTask();
 			thread.stopLockTask();
 		}
 	}
