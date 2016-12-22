@@ -27,7 +27,6 @@ import org.bukkit.potion.PotionEffectType;
 import com.lenis0012.bukkit.ls.util.LoggingFilter;
 import com.lenis0012.bukkit.ls.commands.ChangePassCommand;
 import com.lenis0012.bukkit.ls.commands.LoginCommand;
-import com.lenis0012.bukkit.ls.commands.LogoutCommand;
 import com.lenis0012.bukkit.ls.commands.RegisterCommand;
 import com.lenis0012.bukkit.ls.data.Converter;
 import com.lenis0012.bukkit.ls.data.Converter.FileType;
