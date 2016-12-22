@@ -43,7 +43,7 @@ public class LoginCommand implements CommandExecutor {
 			plugin.authList.remove(uuid);
 			plugin.failList.remove(uuid);
 			plugin.thread.getTimeout().remove(uuid);
-			plugin.rehabPlayer(player, uuid);
+			plugin.rehabPlayer(player);
 
 			player.sendMessage(ChatColor.GREEN + Lang.LOGIN.toString());
 
