@@ -74,7 +74,7 @@ public class LoginListener implements Listener {
 			return;
 		}
 
-		plugin.debilitatePlayer(player, uuid, false);
+		plugin.debilitatePlayer(player);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
