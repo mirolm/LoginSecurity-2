@@ -25,6 +25,7 @@ public class LoginCommand implements CommandExecutor {
 		Player player = (Player)sender;
 		String uuid = player.getUniqueId().toString();
 		String addr = player.getAddress().getAddress().toString();
+		String fuuid = plugin.getFullUUID(uuid, addr);
 
 		if(!plugin.authList.containsKey(uuid)) {
 			player.sendMessage(ChatColor.RED + Lang.ALREADY_LOGIN.toString());
@@ -41,7 +42,7 @@ public class LoginCommand implements CommandExecutor {
 		}
 		if(PasswordManager.checkPass(uuid, args[0])) {
 			plugin.authList.remove(uuid);
-			plugin.failList.remove(plugin.getFullUUID(uuid, addr));
+			plugin.failList.remove(fuuid);
 			plugin.thread.getTimeout().remove(uuid);
 			plugin.rehabPlayer(player);
 
@@ -54,9 +55,9 @@ public class LoginCommand implements CommandExecutor {
 
 			logger.log(Level.INFO, "{0} authenticated", player.getName());
 		} else {
-			if (plugin.checkFailed(plugin.getFullUUID(uuid, addr))) {
-			        plugin.failList.remove(plugin.getFullUUID(uuid, addr));
-				plugin.thread.getLockout().put(plugin.getFullUUID(uuid, addr), plugin.minFail);
+			if (plugin.checkFailed(fuuid)) {
+			        plugin.failList.remove(fuuid);
+				plugin.thread.getLockout().put(fuuid, plugin.minFail);
 				player.kickPlayer(Lang.FAIL_COUNT.toString());
 			} else {
 				player.sendMessage(ChatColor.RED + Lang.INVALID_PSW.toString());
