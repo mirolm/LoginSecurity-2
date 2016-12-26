@@ -41,7 +41,7 @@ public class LoginCommand implements CommandExecutor {
 		}
 		if(PasswordManager.checkPass(uuid, args[0])) {
 			plugin.authList.remove(uuid);
-			plugin.failList.remove(uuid);
+			plugin.failList.remove(plugin.getFullUUID(uuid, addr));
 			plugin.thread.getTimeout().remove(uuid);
 			plugin.rehabPlayer(player);
 
@@ -54,8 +54,8 @@ public class LoginCommand implements CommandExecutor {
 
 			logger.log(Level.INFO, "{0} authenticated", player.getName());
 		} else {
-			if (plugin.checkFailed(uuid)) {
-			        plugin.failList.remove(uuid);
+			if (plugin.checkFailed(plugin.getFullUUID(uuid, addr))) {
+			        plugin.failList.remove(plugin.getFullUUID(uuid, addr));
 				plugin.thread.getLockout().put(plugin.getFullUUID(uuid, addr), plugin.minFail);
 				player.kickPlayer(Lang.FAIL_COUNT.toString());
 			} else {
