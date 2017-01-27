@@ -99,10 +99,8 @@ public class LoginSecurity extends JavaPlugin {
 			encoder = "UTF-8";
 		}
 
-		thread.startTimeoutTask();
-
 		// Threads
-		thread.startMainTask();
+		thread.startTimeoutTask();
 		thread.startMsgTask();
 		thread.startLockTask();
 
@@ -119,6 +117,7 @@ public class LoginSecurity extends JavaPlugin {
 		if (thread != null) {
 			thread.stopMsgTask();
 			thread.stopLockTask();
+			thread.stopTimeoutTask();
 		}
 	}
 
