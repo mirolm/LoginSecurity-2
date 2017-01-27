@@ -67,7 +67,12 @@ public abstract class SQL implements DataManager {
 		
 		createTables();
 	}
-
+	
+	@Override
+	public void closePool() {
+		closeQuietly(dataSource);
+	}
+	
 	private void createTables() {
 		PreparedStatement stmt = null;
 
