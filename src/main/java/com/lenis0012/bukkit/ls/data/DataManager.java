@@ -5,6 +5,11 @@ import java.sql.ResultSet;
 public interface DataManager {
 
 	/**
+ 	 * Close SQL connection
+ 	 */
+ 	public void closePool();
+	
+	/**
 	 * Check if player is registered
 	 *
 	 * @param uuid PlayerUUID
