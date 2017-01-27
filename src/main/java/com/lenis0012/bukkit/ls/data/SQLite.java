@@ -4,14 +4,16 @@ import java.io.File;
 import com.zaxxer.hikari.HikariConfig;
 
 public class SQLite extends SQL {
+	private String JDBC_DRIVER = "org.sqlite.JDBC";
+
 	public SQLite(File file) {
-		super("org.sqlite.JDBC");
+		super(JDBC_DRIVER);
 
 		String table = "users";
         
 		HikariConfig dbConfig = new HikariConfig();
 		
-        	dbConfig.setDriverClassName("org.sqlite.JDBC");
+        	dbConfig.setDriverClassName(JDBC_DRIVER);
 	        dbConfig.setUsername("");
         	dbConfig.setPassword("");
             	dbConfig.setMaximumPoolSize(1);
