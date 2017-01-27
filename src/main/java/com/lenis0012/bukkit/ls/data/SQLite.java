@@ -7,15 +7,15 @@ public class SQLite extends SQL {
 	public SQLite(File file) {
 		String table = "users";
         
-		HikariConfig dbConfig = new HikariConfig();
+		HikariConfig dbcfg = new HikariConfig();
 		
-        	dbConfig.setDriverClassName("org.sqlite.JDBC");
-        	dbConfig.setJdbcUrl("jdbc:sqlite://" + file.getAbsolutePath());
-	        dbConfig.setUsername("");
-        	dbConfig.setPassword("");
+        	dbcfg.setDriverClassName("org.sqlite.JDBC");
+        	dbcfg.setJdbcUrl("jdbc:sqlite://" + file.getAbsolutePath());
+	        dbcfg.setUsername("");
+        	dbcfg.setPassword("");
 
-		dbConfig.setMaximumPoolSize(1);
+		dbcfg.setMaximumPoolSize(1);
 
-		init(table, dbConfig);
+		init(table, dbcfg);
 	}
 }
