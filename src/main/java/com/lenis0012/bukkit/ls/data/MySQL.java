@@ -17,7 +17,6 @@ public class MySQL extends SQL {
 		HikariConfig dbConfig = new HikariConfig();
 		Properties properties = new Properties();
 		
-		properties.setProperty("date_string_format", "yyyy-MM-dd HH:mm:ss");
 		properties.setProperty("characterEncoding", "utf8");
         	properties.setProperty("encoding","UTF-8");
         	properties.setProperty("useUnicode", "true");
