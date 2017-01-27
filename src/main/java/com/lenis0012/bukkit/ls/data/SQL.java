@@ -9,6 +9,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -16,9 +17,8 @@ import com.lenis0012.bukkit.ls.LoginSecurity;
 
 public abstract class SQL implements DataManager {
 	private Logger logger;
-	private Connection con = null;
-	private String jdbcUrl;
-
+	private HikariDataSource dataSource;
+	
         private String PING_CONN = "SELECT 1";
 
 	private String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS <TABLE> ("
@@ -42,7 +42,7 @@ public abstract class SQL implements DataManager {
 		}
 	}
 
-	public void initConn(String table, String url) {
+	public void initConn(String table, HikariConfig config) {
 		CREATE_TABLE = CREATE_TABLE.replace("<TABLE>", table);
 		CHECK_REG = CHECK_REG.replace("<TABLE>", table);
 		INSERT_LOGIN = INSERT_LOGIN.replace("<TABLE>", table);
@@ -50,46 +50,21 @@ public abstract class SQL implements DataManager {
 		SELECT_LOGIN = SELECT_LOGIN.replace("<TABLE>", table);
 		SELECT_USERS = SELECT_USERS.replace("<TABLE>", table);
 
-		jdbcUrl = url;
-
-		openConn();
+		ThreadFactory threadFactory = new ThreadFactoryBuilder();
+                threadFactory.setNameFormat(getName() + " Database Pool Thread #%1$d");
+                threadFactory.setDaemon(true);
+                threadFactory.build();
+		
+		Properties properties = new Properties();
+		properties.setProperty("date_string_format", "yyyy-MM-dd HH:mm:ss");
+        	
+		config.setDataSourceProperties(properties);
+		config.setConnectionTestQuery(PING_CONN);
+		config.setThreadFactory(threadFactory);
+		
+		this.dataSource = new HikariDataSource(config);
+		
 		createTables();
-	}
-
-	@Override
-	public void openConn() {
-		try {
-			closeConn();
-
-			con = DriverManager.getConnection(jdbcUrl);
-		} catch(SQLException e) {
-			logger.log(Level.SEVERE, "Failed to open conn", e);
-		}
-	}
-
-	@Override
-	public void closeConn() {
-		closeQuietly(con);
-	}
-
-	@Override
-	public boolean pingConn() {
-		PreparedStatement stmt = null;
-		ResultSet result = null;
-
-		try {
-			stmt = con.prepareStatement(PING_CONN);
-			stmt.setQueryTimeout(5);
-			result = stmt.executeQuery();
-			return result.next();
-		} catch(SQLException e) {
-			logger.log(Level.SEVERE, "Failed to ping conn", e);
-		} finally {
-			closeQuietly(result);
-			closeQuietly(stmt);
-		}
-
-		return false;
 	}
 
 	private void createTables() {
