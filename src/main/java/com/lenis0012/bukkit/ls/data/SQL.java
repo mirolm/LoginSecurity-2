@@ -76,7 +76,7 @@ public abstract class SQL implements DataManager {
 	private void createTables() {
 		Connection con = null;
 		PreparedStatement stmt = null;
-		
+
 		try {
 			con = datasrc.getConnection();
 			stmt = con.prepareStatement(CREATE_TABLE);
