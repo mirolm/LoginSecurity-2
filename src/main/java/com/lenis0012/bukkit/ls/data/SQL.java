@@ -33,16 +33,6 @@ public abstract class SQL implements DataManager {
         private String SELECT_LOGIN = "SELECT unique_user_id, password, encryption FROM <TABLE> WHERE unique_user_id = ?";
         private String SELECT_USERS = "SELECT unique_user_id, password, encryption FROM <TABLE>";
 
-	public SQL(String driver) {
-		logger = LoginSecurity.instance.getLogger();
-
-		try {
-			Class.forName(driver);
-		} catch (ClassNotFoundException e) {
-			logger.log(Level.SEVERE, "Failed to load driver", e);
-		}
-	}
-
 	public void initConn(String table, HikariConfig config) {
 		CREATE_TABLE = CREATE_TABLE.replace("<TABLE>", table);
 		CHECK_REG = CHECK_REG.replace("<TABLE>", table);
