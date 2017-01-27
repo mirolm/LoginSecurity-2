@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 public interface DataManager {
 
 	/**
- 	 * Close SQL connection
+ 	 * Close Connection Pool
  	 */
  	public void closePool();
 	
