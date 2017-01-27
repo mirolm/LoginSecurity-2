@@ -14,27 +14,27 @@ public class MySQL extends SQL {
 		String pass = config.getString("MySQL.password", "");
 		String table = config.getString("MySQL.prefix", "") + "users";
 
-		HikariConfig dbConfig = new HikariConfig();
-		Properties properties = new Properties();
+		HikariConfig dbcfg = new HikariConfig();
+		Properties prop = new Properties();
 		
-		properties.setProperty("characterEncoding", "utf8");
-        	properties.setProperty("encoding","UTF-8");
-        	properties.setProperty("useUnicode", "true");
+		prop.setProperty("characterEncoding", "utf8");
+        	prop.setProperty("encoding","UTF-8");
+        	prop.setProperty("useUnicode", "true");
 		
-        	properties.setProperty("rewriteBatchedStatements", "true");
-        	properties.setProperty("jdbcCompliantTruncation", "false");
+        	prop.setProperty("rewriteBatchedStatements", "true");
+        	prop.setProperty("jdbcCompliantTruncation", "false");
 
-        	properties.setProperty("cachePrepStmts", "true");
-        	properties.setProperty("prepStmtCacheSize", "275");
-        	properties.setProperty("prepStmtCacheSqlLimit", "2048");
+        	prop.setProperty("cachePrepStmts", "true");
+        	prop.setProperty("prepStmtCacheSize", "275");
+        	prop.setProperty("prepStmtCacheSqlLimit", "2048");
 		
-        	dbConfig.setDriverClassName("com.mysql.jdbc.Driver");
-		dbConfig.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + database);
-		dbConfig.setUsername(user);
-        	dbConfig.setPassword(pass);
+        	dbcfg.setDriverClassName("com.mysql.jdbc.Driver");
+		dbcfg.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + database);
+		dbcfg.setUsername(user);
+        	dbcfg.setPassword(pass);
 
-		dbConfig.setMaximumPoolSize(10);
-		dbConfig.setDataSourceProperties(properties);
+		dbcfg.setMaximumPoolSize(10);
+		dbcfg.setDataSourceProperties(prop);
 
 		init(table, dbConfig);
 	}
