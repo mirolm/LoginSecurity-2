@@ -16,6 +16,6 @@ public class SQLite extends SQL {
 
 		dbConfig.setMaximumPoolSize(1);
 
-		initPool(table, dbConfig);
+		init(table, dbConfig);
 	}
 }
