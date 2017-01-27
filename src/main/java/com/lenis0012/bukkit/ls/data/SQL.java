@@ -51,7 +51,7 @@ public abstract class SQL implements DataManager {
 		SELECT_USERS = SELECT_USERS.replace("<TABLE>", table);
 
 		ThreadFactory threadFactory = new ThreadFactoryBuilder()
-                	.setNameFormat(getName() + " Database Pool Thread #%1$d")
+                	.setNameFormat("LoginSecurity Database Pool Thread #%1$d")
                 	.setDaemon(true)
 			.build();
 		
