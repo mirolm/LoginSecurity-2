@@ -37,6 +37,6 @@ public class MySQL extends SQL {
 		dbConfig.setMaximumPoolSize(10);
 		dbConfig.setDataSourceProperties(properties);
 
-		initConn(table, dbConfig);
+		initPool(table, dbConfig);
 	}
 }
