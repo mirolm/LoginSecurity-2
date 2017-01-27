@@ -4,8 +4,10 @@ import org.bukkit.configuration.file.FileConfiguration;
 import com.zaxxer.hikari.HikariConfig;
 
 public class MySQL extends SQL {
+	private String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+	
 	public MySQL(FileConfiguration config) {
-		super("com.mysql.jdbc.Driver");
+		super(JDBC_DRIVER);
 
 		String host = config.getString("MySQL.host", "localhost");
 		String port = String.valueOf(config.getInt("MySQL.port", 3306));
@@ -16,9 +18,10 @@ public class MySQL extends SQL {
 
 		HikariConfig dbConfig = new HikariConfig();
         	
+        	dbConfig.setDriverClassName(JDBC_DRIVER);
 		dbConfig.setUsername(user);
         	dbConfig.setPassword(pass);
-        	dbConfig.setDriverClassName("com.mysql.jdbc.Driver");
+		dbConfig.setMaximumPoolSize(10);
 		dbConfig.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + database);
 
 		initConn(table, dbConfig);
