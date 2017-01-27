@@ -7,7 +7,7 @@ public interface DataManager {
 	/**
  	 * Close Connection Pool
  	 */
- 	public void closePool();
+ 	public void close();
 	
 	/**
 	 * Check if player is registered
