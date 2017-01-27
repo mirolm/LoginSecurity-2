@@ -18,7 +18,7 @@ import com.lenis0012.bukkit.ls.LoginSecurity;
 
 public abstract class SQL implements DataManager {
 	private Logger logger;
-	private HikariDataSource dataSource;
+	private HikariDataSource datasrc;
 	
         private String PING_CONN = "SELECT 1";
 
@@ -70,13 +70,15 @@ public abstract class SQL implements DataManager {
 	
 	@Override
 	public void closePool() {
-		closeQuietly(dataSource);
+		closeQuietly(datasrc);
 	}
 	
 	private void createTables() {
+		Connection con = null;
 		PreparedStatement stmt = null;
-
+		
 		try {
+			con = datasrc.getConnection();
 			stmt = con.prepareStatement(CREATE_TABLE);
 			stmt.setQueryTimeout(30);
 			stmt.executeUpdate();
@@ -84,15 +86,18 @@ public abstract class SQL implements DataManager {
 			logger.log(Level.SEVERE, "Failed to create tables", e);
 		} finally {
 			closeQuietly(stmt);
+			closeQuietly(con);
 		}
 	}
 
 	@Override
 	public boolean checkUser(String uuid) {
+		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet result = null;
 
 		try {
+			con = datasrc.getConnection();
 			stmt = con.prepareStatement(CHECK_REG);
 			stmt.setString(1, uuid.replaceAll("-", ""));
 			result = stmt.executeQuery();
@@ -102,6 +107,7 @@ public abstract class SQL implements DataManager {
 		} finally {
 			closeQuietly(result);
 			closeQuietly(stmt);
+			closeQuietly(con);
 		}
 
 		return false;
@@ -109,9 +115,11 @@ public abstract class SQL implements DataManager {
 
 	@Override
 	public void regUser(LoginData login) {
+		Connection con = null;
 		PreparedStatement stmt = null;
 
 		try {
+			con = datasrc.getConnection();
 			stmt = con.prepareStatement(INSERT_LOGIN);
 			stmt.setString(1, login.uuid.replaceAll("-", ""));
 			stmt.setString(2, login.password);
@@ -122,14 +130,17 @@ public abstract class SQL implements DataManager {
 			logger.log(Level.SEVERE, "Failed to create user", e);
 		} finally {
 			closeQuietly(stmt);
+			closeQuietly(con);
 		}
 	}
 
 	@Override
 	public void updateUser(LoginData login) {
+		Connection con = null;
 		PreparedStatement stmt = null;
 
 		try {
+			con = datasrc.getConnection();
 			stmt = con.prepareStatement(UPDATE_PASS);
 			stmt.setString(1, login.password);
 			stmt.setInt(2, login.encryption);
@@ -140,15 +151,18 @@ public abstract class SQL implements DataManager {
 			logger.log(Level.SEVERE, "Failed to update user", e);
 		} finally {
 			closeQuietly(stmt);
+			closeQuietly(con);
 		}
 	}
 
 	@Override
 	public LoginData getUser(String uuid) {
+		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet result = null;
 
 		try {
+			con = datasrc.getConnection();
 			stmt = con.prepareStatement(SELECT_LOGIN);
 			stmt.setString(1, uuid.replaceAll("-", ""));
 			result = stmt.executeQuery();
@@ -160,6 +174,7 @@ public abstract class SQL implements DataManager {
 		} finally {
 			closeQuietly(result);
 			closeQuietly(stmt);
+			closeQuietly(con);
 		}
 
 		return null;
@@ -167,8 +182,12 @@ public abstract class SQL implements DataManager {
 
 	@Override
 	public ResultSet getAllUsers() {
+		Connection con = null;
+		PreparedStatement stmt = null;
+
 		try {
-			PreparedStatement stmt = con.prepareStatement(SELECT_USERS);
+			con = datasrc.getConnection();
+			stmt = con.prepareStatement(SELECT_USERS);
 			return stmt.executeQuery();
 		} catch (SQLException e) {
 			return null;
