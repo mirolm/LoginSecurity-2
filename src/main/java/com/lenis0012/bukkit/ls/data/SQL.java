@@ -50,10 +50,10 @@ public abstract class SQL implements DataManager {
 		SELECT_LOGIN = SELECT_LOGIN.replace("<TABLE>", table);
 		SELECT_USERS = SELECT_USERS.replace("<TABLE>", table);
 
-		ThreadFactory threadFactory = new ThreadFactoryBuilder();
-                threadFactory.setNameFormat(getName() + " Database Pool Thread #%1$d");
-                threadFactory.setDaemon(true);
-                threadFactory.build();
+		ThreadFactory threadFactory = new ThreadFactoryBuilder()
+                	.setNameFormat(getName() + " Database Pool Thread #%1$d")
+                	.setDaemon(true)
+			.build();
 		
 		Properties properties = new Properties();
 		properties.setProperty("date_string_format", "yyyy-MM-dd HH:mm:ss");
