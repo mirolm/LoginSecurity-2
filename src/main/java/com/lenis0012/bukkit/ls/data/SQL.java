@@ -54,7 +54,7 @@ public abstract class SQL implements DataManager {
 	}
 	
 	@Override
-	public void closePool() {
+	public void close() {
 		closeQuietly(datasrc);
 	}
 	
