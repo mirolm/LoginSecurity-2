@@ -42,6 +42,8 @@ public class Converter {
 				}
 			} catch(SQLException e) {
 				logger.log(Level.WARNING, "Failed to convert from SQLite to MySQL");
+			} finally {
+				manager.closePool();
 			}
 		}
 	}
