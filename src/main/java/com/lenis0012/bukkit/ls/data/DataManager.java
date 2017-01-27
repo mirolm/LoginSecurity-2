@@ -5,23 +5,6 @@ import java.sql.ResultSet;
 public interface DataManager {
 
 	/**
-	 * Open SQL connection
-	 */
-	public void openConn();
-
-	/**
-	 * Close SQL connection
-	 */
-	public void closeConn();
-
-	/**
-	 * Check SQL connection
-	 *
-	 * @return connection alive
-	 */
-	public boolean pingConn();
-
-	/**
 	 * Check if player is registered
 	 *
 	 * @param uuid PlayerUUID
