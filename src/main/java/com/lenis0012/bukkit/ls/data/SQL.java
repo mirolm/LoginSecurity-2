@@ -19,13 +19,12 @@ public abstract class SQL implements DataManager {
 	private Logger logger;
 	private HikariDataSource datasrc;
 
-        private String PING_CONN = "SELECT 1";
-
 	private String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS <TABLE> ("
 					+ "unique_user_id VARCHAR(130) NOT NULL UNIQUE,"
 					+ "password VARCHAR(300) NOT NULL,"
 					+ "encryption INT)";
 
+        private String PING_CONN = "SELECT 1";
         private String CHECK_REG = "SELECT 1 FROM <TABLE> WHERE unique_user_id = ?";
         private String INSERT_LOGIN = "INSERT INTO <TABLE>(unique_user_id, password, encryption) VALUES(?, ?, ?)";
         private String UPDATE_PASS = "UPDATE <TABLE> SET password = ?, encryption = ? WHERE unique_user_id = ?";
@@ -90,6 +89,7 @@ public abstract class SQL implements DataManager {
 
 			stmt = con.prepareStatement(CHECK_REG);
 			stmt.setString(1, uuid.replaceAll("-", ""));
+
 			result = stmt.executeQuery();
 			return result.next();
 		} catch(SQLException e) {
@@ -158,6 +158,7 @@ public abstract class SQL implements DataManager {
 
 			stmt = con.prepareStatement(SELECT_LOGIN);
 			stmt.setString(1, uuid.replaceAll("-", ""));
+
 			result = stmt.executeQuery();
 			if(result.next()) {
 				return parseData(result);
@@ -182,6 +183,7 @@ public abstract class SQL implements DataManager {
 			con = datasrc.getConnection();
 
 			stmt = con.prepareStatement(SELECT_USERS);
+
 			return stmt.executeQuery();
 		} catch (SQLException e) {
 			return null;
