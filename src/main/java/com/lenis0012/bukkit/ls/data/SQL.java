@@ -45,11 +45,7 @@ public abstract class SQL implements DataManager {
                 	.setNameFormat("LoginSecurity Database Pool Thread #%1$d")
                 	.setDaemon(true)
 			.build();
-		
-		Properties properties = new Properties();
-		properties.setProperty("date_string_format", "yyyy-MM-dd HH:mm:ss");
-        	
-		config.setDataSourceProperties(properties);
+
 		config.setConnectionTestQuery(PING_CONN);
 		config.setThreadFactory(threadFactory);
 		
