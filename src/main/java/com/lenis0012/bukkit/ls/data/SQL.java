@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.util.concurrent.ThreadFactory;
 import java.util.logging.Logger;
 import java.util.logging.Level;
-import java.util.Properties;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.zaxxer.hikari.HikariConfig;
