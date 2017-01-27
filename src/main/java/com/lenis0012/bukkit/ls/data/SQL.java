@@ -66,8 +66,10 @@ public abstract class SQL implements DataManager {
 
 		try {
 			con = datasrc.getConnection();
+
 			stmt = con.prepareStatement(CREATE_TABLE);
 			stmt.setQueryTimeout(30);
+
 			stmt.executeUpdate();
 		} catch(SQLException e) {
 			logger.log(Level.SEVERE, "Failed to create tables", e);
@@ -85,6 +87,7 @@ public abstract class SQL implements DataManager {
 
 		try {
 			con = datasrc.getConnection();
+
 			stmt = con.prepareStatement(CHECK_REG);
 			stmt.setString(1, uuid.replaceAll("-", ""));
 			result = stmt.executeQuery();
@@ -107,6 +110,7 @@ public abstract class SQL implements DataManager {
 
 		try {
 			con = datasrc.getConnection();
+
 			stmt = con.prepareStatement(INSERT_LOGIN);
 			stmt.setString(1, login.uuid.replaceAll("-", ""));
 			stmt.setString(2, login.password);
@@ -128,6 +132,7 @@ public abstract class SQL implements DataManager {
 
 		try {
 			con = datasrc.getConnection();
+
 			stmt = con.prepareStatement(UPDATE_PASS);
 			stmt.setString(1, login.password);
 			stmt.setInt(2, login.encryption);
@@ -150,6 +155,7 @@ public abstract class SQL implements DataManager {
 
 		try {
 			con = datasrc.getConnection();
+
 			stmt = con.prepareStatement(SELECT_LOGIN);
 			stmt.setString(1, uuid.replaceAll("-", ""));
 			result = stmt.executeQuery();
@@ -174,6 +180,7 @@ public abstract class SQL implements DataManager {
 
 		try {
 			con = datasrc.getConnection();
+
 			stmt = con.prepareStatement(SELECT_USERS);
 			return stmt.executeQuery();
 		} catch (SQLException e) {
