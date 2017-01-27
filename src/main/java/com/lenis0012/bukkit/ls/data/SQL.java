@@ -48,7 +48,6 @@ public abstract class SQL implements DataManager {
 
 		config.setConnectionTestQuery(PING_CONN);
 		config.setThreadFactory(factory);
-		config.setAutoCommit(false);
 
 		datasrc = new HikariDataSource(config);
 
@@ -118,10 +117,8 @@ public abstract class SQL implements DataManager {
 			stmt.setInt(3, login.encryption);
 
 			stmt.executeUpdate();
-			con.commit();
 		} catch (SQLException e) {
 			logger.log(Level.SEVERE, "Failed to create user", e);
-			con.rollback();
 		} finally {
 			closeQuietly(stmt);
 			closeQuietly(con);
@@ -142,10 +139,8 @@ public abstract class SQL implements DataManager {
 			stmt.setString(3, login.uuid.replaceAll("-", ""));
 
 			stmt.executeUpdate();
-			con.commit();
 		} catch (SQLException e) {
 			logger.log(Level.SEVERE, "Failed to update user", e);
-			con.rollback();
 		} finally {
 			closeQuietly(stmt);
 			closeQuietly(con);
