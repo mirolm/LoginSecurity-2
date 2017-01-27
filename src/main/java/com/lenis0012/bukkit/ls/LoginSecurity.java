@@ -116,9 +116,6 @@ public class LoginSecurity extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		if (data != null) {
-			data.closeConn();
-		}
 		if (thread != null) {
 			thread.stopMsgTask();
 			thread.stopLockTask();
