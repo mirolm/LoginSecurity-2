@@ -18,7 +18,7 @@ import com.lenis0012.bukkit.ls.LoginSecurity;
 public abstract class SQL implements DataManager {
 	private Logger logger;
 	private HikariDataSource datasrc;
-	
+
         private String PING_CONN = "SELECT 1";
 
 	private String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS <TABLE> ("
@@ -49,17 +49,17 @@ public abstract class SQL implements DataManager {
 
 		config.setConnectionTestQuery(PING_CONN);
 		config.setThreadFactory(threadFactory);
-		
+
 		this.datasrc = new HikariDataSource(config);
-		
+
 		createTables();
 	}
-	
+
 	@Override
 	public void close() {
 		closeQuietly(datasrc);
 	}
-	
+
 	private void createTables() {
 		Connection con = null;
 		PreparedStatement stmt = null;
