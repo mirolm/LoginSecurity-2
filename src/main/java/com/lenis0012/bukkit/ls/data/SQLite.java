@@ -9,14 +9,14 @@ public class SQLite extends SQL {
 
 		String table = "users";
         
-		HikariConfig config = new HikariConfig();
+		HikariConfig dbConfig = new HikariConfig();
 		
-        	config.setDriverClassName("org.sqlite.JDBC");
-	        config.setUsername("");
-        	config.setPassword("");
-            	config.setMaximumPoolSize(1);
-        	config.setJdbcUrl("jdbc:sqlite://" + file.getAbsolutePath());
+        	dbConfig.setDriverClassName("org.sqlite.JDBC");
+	        dbConfig.setUsername("");
+        	dbConfig.setPassword("");
+            	dbConfig.setMaximumPoolSize(1);
+        	dbConfig.setJdbcUrl("jdbc:sqlite://" + file.getAbsolutePath());
 
-		initConn(table, config);
+		initConn(table, dbConfig);
 	}
 }
