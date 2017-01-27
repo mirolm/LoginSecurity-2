@@ -63,7 +63,7 @@ public abstract class SQL implements DataManager {
 		config.setConnectionTestQuery(PING_CONN);
 		config.setThreadFactory(threadFactory);
 		
-		this.dataSource = new HikariDataSource(config);
+		this.datasrc = new HikariDataSource(config);
 		
 		createTables();
 	}
