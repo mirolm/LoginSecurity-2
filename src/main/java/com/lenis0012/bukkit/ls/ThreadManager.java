@@ -14,10 +14,9 @@ import org.bukkit.scheduler.BukkitTask;
 public class ThreadManager {
 
 	private LoginSecurity plugin;
-	private BukkitTask main, msg, lck, to;
+	private BukkitTask msg, lck, to;
 	private final ConcurrentMap<String, Integer> lockout = Maps.newConcurrentMap();
 	private final ConcurrentMap<String, Integer> timeout = Maps.newConcurrentMap();
-	private long nextRefresh;
 
 	public ThreadManager(LoginSecurity plugin) {
 		this.plugin = plugin;
@@ -29,34 +28,6 @@ public class ThreadManager {
 
 	public synchronized ConcurrentMap<String, Integer> getTimeout() {
 		return this.timeout;
-	}
-
-	public void startMainTask() {
-		this.nextRefresh = System.currentTimeMillis() + 300000;
-		main = plugin.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
-			@Override
-			public void run() {
-				long time = System.currentTimeMillis();
-				if (time >= nextRefresh) {
-					if (plugin != null) {
-						if (plugin.data != null) {
-							if (!plugin.data.pingConn()) {
-								plugin.data.openConn();
-							}
-						}
-					}
-
-					nextRefresh = System.currentTimeMillis() + 300000;
-				}
-			}
-		}, 200L, 200L);
-	}
-
-	public void stopMainTask() {
-		if (this.main != null) {
-			this.main.cancel();
-			this.main = null;
-		}
 	}
 
 	public void startMsgTask() {
