@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -43,15 +42,15 @@ public abstract class SQL implements DataManager {
 		SELECT_LOGIN = SELECT_LOGIN.replace("<TABLE>", table);
 		SELECT_USERS = SELECT_USERS.replace("<TABLE>", table);
 
-		ThreadFactory threadFactory = new ThreadFactoryBuilder()
+		ThreadFactory factory = new ThreadFactoryBuilder()
                 	.setNameFormat("LoginSecurity Database Pool Thread #%1$d")
                 	.setDaemon(true)
 			.build();
 
 		config.setConnectionTestQuery(PING_CONN);
-		config.setThreadFactory(threadFactory);
+		config.setThreadFactory(factory);
 
-		this.datasrc = new HikariDataSource(config);
+		datasrc = new HikariDataSource(config);
 
 		createTables();
 	}
