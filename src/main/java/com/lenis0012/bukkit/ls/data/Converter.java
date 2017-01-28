@@ -18,7 +18,7 @@ public class Converter {
 
 	public Converter(FileType type, String name) {
 		this.type = type;
-		this.file = name;
+		this.name = name;
 	}
 
 	public void convert() {
