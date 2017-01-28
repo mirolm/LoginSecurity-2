@@ -43,8 +43,7 @@ public abstract class SQL implements DataManager {
 
 		ThreadFactory factory = new ThreadFactoryBuilder()
                 	.setNameFormat("LoginSecurity Database Pool Thread #%1$d")
-                	.setDaemon(true)
-			.build();
+                	.setDaemon(true).build();
 
 		config.setConnectionTestQuery(PING_CONN);
 		config.setThreadFactory(factory);
