@@ -14,11 +14,11 @@ public class Converter {
 	}
 
 	private final FileType type;
-	private final String file;
+	private final String name;
 
-	public Converter(FileType type, String file) {
+	public Converter(FileType type, String name) {
 		this.type = type;
-		this.file = file;
+		this.file = name;
 	}
 
 	public void convert() {
@@ -29,7 +29,7 @@ public class Converter {
 			SQLite manager = null;
 
 			try {
-				manager = new SQLite(file);
+				manager = new SQLite(name);
 				ResultSet result = manager.getAllUsers();
 
 				while(result.next()) {
