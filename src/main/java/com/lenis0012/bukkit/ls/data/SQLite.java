@@ -22,7 +22,7 @@ public class SQLite extends SQL {
 		init(table, dbcfg);
 	}
 	
-	private static String getFilePath(String name) {
+	private String getFilePath(String name) {
 		LoginSecurity plugin = LoginSecurity.instance;
 
 		return new File(plugin.getDataFolder(), name)
