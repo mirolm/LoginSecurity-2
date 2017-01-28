@@ -17,7 +17,7 @@ public class SQLite extends SQL {
 		HikariConfig dbcfg = new HikariConfig();
 		
         	dbcfg.setDriverClassName("org.sqlite.JDBC");
-        	dbcfg.setJdbcUrl("jdbc:sqlite://" + path);
+        	dbcfg.setJdbcUrl("jdbc:sqlite:" + path);
 	        dbcfg.setUsername("");
         	dbcfg.setPassword("");
 
