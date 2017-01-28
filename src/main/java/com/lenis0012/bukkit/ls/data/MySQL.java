@@ -29,7 +29,7 @@ public class MySQL extends SQL {
         	prop.setProperty("prepStmtCacheSqlLimit", "2048");
 		
         	dbcfg.setDriverClassName("com.mysql.jdbc.Driver");
-		dbcfg.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + database);
+		dbcfg.setJdbcUrl("jdbc:mysql:" + "//" + host + ":" + port + "/" + database);
 		dbcfg.setUsername(user);
         	dbcfg.setPassword(pass);
 
