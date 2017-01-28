@@ -27,7 +27,9 @@ public class SQLite extends SQL {
 	}
 	
 	private String getFilePath(String name) {
-		File file = new File(plugin.getDataFolder(), name);
-		return file.toPath().normalize().toString();
+		return new File(plugin.getDataFolder(), name)
+			.toPath()
+			.normalize()
+			.toString();
 	}
 }
