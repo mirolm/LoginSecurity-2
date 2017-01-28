@@ -33,7 +33,7 @@ public class MySQL extends SQL {
 		dbcfg.setUsername(user);
         	dbcfg.setPassword(pass);
 
-		dbcfg.setMaximumPoolSize(10);
+		dbcfg.setMaximumPoolSize(6);
 		dbcfg.setDataSourceProperties(prop);
 
 		init(table, dbcfg);
