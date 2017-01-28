@@ -1,6 +1,5 @@
 package com.lenis0012.bukkit.ls.data;
 
-import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Set;
@@ -15,9 +14,9 @@ public class Converter {
 	}
 
 	private final FileType type;
-	private final File file;
+	private final String file;
 
-	public Converter(FileType type, File file) {
+	public Converter(FileType type, String file) {
 		this.type = type;
 		this.file = file;
 	}
