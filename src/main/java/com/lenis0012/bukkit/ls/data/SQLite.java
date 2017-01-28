@@ -9,7 +9,7 @@ public class SQLite extends SQL {
 	private LoginSecurity plugin;
 	
 	public SQLite(String name) {
-		plugin; = LoginSecurity.instance;
+		plugin = LoginSecurity.instance;
 		
 		String table = "users";
 		String path = getFilePath(name);
