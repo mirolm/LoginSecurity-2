@@ -134,7 +134,8 @@ public class LoginSecurity extends JavaPlugin {
 	}
 
 	private void checkConverter() {
-		if (data instanceof MySQL) {
+		File file = new File(this.getDataFolder(), "users.db");
+ 		if (file.exists() && data instanceof MySQL) {
 			Converter conv = new Converter(FileType.SQLite, "users.db");
 			conv.convert();
 		}
