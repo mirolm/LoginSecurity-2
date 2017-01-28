@@ -3,10 +3,16 @@ package com.lenis0012.bukkit.ls.data;
 import java.io.File;
 import com.zaxxer.hikari.HikariConfig;
 
+import com.lenis0012.bukkit.ls.LoginSecurity;
+
 public class SQLite extends SQL {
-	public SQLite(File file) {
+	private LoginSecurity plugin;
+	
+	public SQLite(String name) {
+		plugin; = LoginSecurity.instance;
+		
 		String table = "users";
-		String path = file.toPath().normalize().toString();
+		String path = getFilePath(name);
 		
 		HikariConfig dbcfg = new HikariConfig();
 		
@@ -18,5 +24,10 @@ public class SQLite extends SQL {
 		dbcfg.setMaximumPoolSize(1);
 
 		init(table, dbcfg);
+	}
+	
+	private String getFilePath(String name) {
+		File file = new File(plugin.getDataFolder(), name);
+		return file.toPath().normalize().toString();
 	}
 }
