@@ -6,11 +6,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.lenis0012.bukkit.ls.LoginSecurity;
 
 public class SQLite extends SQL {
-	private LoginSecurity plugin;
-	
 	public SQLite(String name) {
-		plugin = LoginSecurity.instance;
-		
 		String table = "users";
 		String path = getFilePath(name);
 		
@@ -26,7 +22,9 @@ public class SQLite extends SQL {
 		init(table, dbcfg);
 	}
 	
-	private String getFilePath(String name) {
+	private static String getFilePath(String name) {
+		LoginSecurity plugin = LoginSecurity.instance;
+
 		return new File(plugin.getDataFolder(), name)
 			.toPath().normalize()
 			.toString();
