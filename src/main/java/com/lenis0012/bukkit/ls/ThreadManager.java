@@ -48,7 +48,7 @@ public class ThreadManager {
 			to.cancel();
 		}
 	}
-	
+
 	private void startMsgTask() {
 		msg = plugin.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
 			@Override
