@@ -100,9 +100,7 @@ public class LoginSecurity extends JavaPlugin {
 		}
 
 		// Threads
-		thread.startTimeoutTask();
-		thread.startMsgTask();
-		thread.startLockTask();
+		thread.start();
 
 		//convert everything
 		this.checkConverter();
@@ -119,9 +117,7 @@ public class LoginSecurity extends JavaPlugin {
 		}
 		
 		if (thread != null) {
-			thread.stopMsgTask();
-			thread.stopLockTask();
-			thread.stopTimeoutTask();
+			thread.stop();
 		}
 	}
 
