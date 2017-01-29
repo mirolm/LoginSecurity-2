@@ -37,7 +37,6 @@ import com.lenis0012.bukkit.ls.data.SQLite;
 import com.lenis0012.bukkit.ls.encryption.EncryptionType;
 
 public class LoginSecurity extends JavaPlugin {
-
 	public DataManager data;
 	public static LoginSecurity instance;
 	public final ConcurrentMap<String, Boolean> authList = Maps.newConcurrentMap();
