@@ -12,7 +12,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
 public class ThreadManager {
-
 	private LoginSecurity plugin;
 	private BukkitTask msg, lck, to;
 	private final ConcurrentMap<String, Integer> lockout = Maps.newConcurrentMap();
