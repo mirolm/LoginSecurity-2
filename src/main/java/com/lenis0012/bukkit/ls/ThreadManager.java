@@ -30,8 +30,29 @@ public class ThreadManager {
 		return this.timeout;
 	}
 
-	public void startMsgTask() {
+	public void start() {
+		startMsgTask();
+		startLockTask();
+		startTimeoutTask();
+	}
+
+	public void stop() {
+		if (msg != null) {
+			msg.cancel();
+		}
+
+		if (lck != null) {
+			lck.cancel();
+		}
+
+		if (to != null) {
+			to.cancel();
+		}
+	}
+	
+	private void startMsgTask() {
 		msg = plugin.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
+			@Override
 			public void run() {
 				for (Player player : Bukkit.getServer().getOnlinePlayers()) {
 					String uuid = player.getUniqueId().toString();
@@ -48,16 +69,9 @@ public class ThreadManager {
 		}, 200L, 200L);
 	}
 
-	public void stopMsgTask() {
-		if (msg != null) {
-			msg.cancel();
-		}
-
-		msg = null;
-	}
-
-	public void startLockTask() {
+	private void startLockTask() {
 		lck = plugin.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
+			@Override
 			public void run() {
 				Iterator<String> it = getLockout().keySet().iterator();
 				while (it.hasNext()) {
@@ -74,15 +88,7 @@ public class ThreadManager {
 		}, 1200L, 1200L);
 	}
 
-	public void stopLockTask() {
-		if (lck != null) {
-			lck.cancel();
-		}
-
-		lck = null;
-	}
-
-	public void startTimeoutTask() {
+	private void startTimeoutTask() {
 		to = plugin.getServer().getScheduler().runTaskTimer(plugin, new Runnable() {
 			@Override
 			public void run() {
@@ -103,13 +109,5 @@ public class ThreadManager {
 				}
 			}
 		}, 20, 20);
-	}
-
-	public void stopTimeoutTask() {
-		if (to != null) {
-			to.cancel();
-		}
-
-		to = null;
 	}
 }
