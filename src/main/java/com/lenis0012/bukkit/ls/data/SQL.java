@@ -82,6 +82,7 @@ public abstract class SQL implements DataManager {
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet result = null;
+		boolean exists;
 
 		try {
 			con = datasrc.getConnection();
@@ -90,9 +91,11 @@ public abstract class SQL implements DataManager {
 			stmt.setString(1, uuid.replaceAll("-", ""));
 
 			result = stmt.executeQuery();
+			exists = result.next();
+			
 			con.commit();
 
-			return result.next();
+			return exists;
 		} catch(SQLException e) {
 			con.rollback();
 			logger.log(Level.SEVERE, "Failed to check user", e);
@@ -158,6 +161,7 @@ public abstract class SQL implements DataManager {
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet result = null;
+		LoginData login = null;
 
 		try {
 			con = datasrc.getConnection();
@@ -166,11 +170,13 @@ public abstract class SQL implements DataManager {
 			stmt.setString(1, uuid.replaceAll("-", ""));
 
 			result = stmt.executeQuery();			
-			con.commit();
-
 			if(result.next()) {
-				return parseData(result);
+				login = parseData(result);
 			}
+
+			con.commit();
+			
+			return login;
 		} catch (SQLException e) {
 			con.rollback();
 			logger.log(Level.SEVERE, "Failed to get user", e);
