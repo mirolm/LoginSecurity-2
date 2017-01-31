@@ -42,15 +42,8 @@ public class Converter {
 						plugin.data.regUser(login);
 					}
 				}
-				
-				conn.commit();
 			} catch(Exception e) {
-				try {
-					conn.rollback();
-					logger.log(Level.WARNING, "Failed to convert from SQLite to MySQL");
-				} catch(Exception r) {
-					// meeh
-				}
+				logger.log(Level.WARNING, "Failed to convert from SQLite to MySQL");
 			} finally {
 				manager.closeQuietly(result);
 				manager.closeQuietly(conn);
