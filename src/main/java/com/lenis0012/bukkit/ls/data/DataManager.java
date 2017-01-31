@@ -9,7 +9,7 @@ public interface DataManager {
  	 * Close Connection Pool
  	 */
  	public void close();
-	
+
 	/**
  	 * Get Connection from Pool
  	 */
