@@ -68,6 +68,16 @@
               <include>org.slf4j:slf4j-simple</include>
             </includes>
           </artifactSet>
+          <relocations>
+            <relocation>
+              <pattern>com.zaxxer.hikari</pattern>
+              <shadedPattern>com.lenis0012.bukkit.ls.libs.hikari</shadedPattern>
+            </relocation>
+            <relocation>
+              <pattern>org.slf4j.impl</pattern>
+              <shadedPattern>com.lenis0012.bukkit.ls.libs.slf4j</shadedPattern>
+            </relocation>
+          </relocations>
         </configuration>
         <executions>
           <execution>
