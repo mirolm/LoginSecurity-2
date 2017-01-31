@@ -28,6 +28,7 @@ public class Converter {
 		
 		if(type == FileType.SQLite && !(plugin.data instanceof SQLite)) {
 			SQLite manager = null;
+			Connection conn = null;
 
 			try {
 				manager = new SQLite(name);
