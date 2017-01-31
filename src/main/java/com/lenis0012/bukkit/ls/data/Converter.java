@@ -29,6 +29,7 @@ public class Converter {
 			SQLite manager = null;
 			Connection conn = null;
 			ResultSet result = null;
+			LoginData login = null;
 
 			try {
 				manager = new SQLite(name);
@@ -36,7 +37,7 @@ public class Converter {
 				result = manager.getAllUsers(conn);
 
 				while(result.next()) {
-					LoginData login = manager.parseData(result);
+					login = manager.parseData(result);
 
 					if(!plugin.data.checkUser(login.uuid)) {
 						plugin.data.regUser(login);
