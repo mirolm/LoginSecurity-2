@@ -2,7 +2,6 @@ package com.lenis0012.bukkit.ls.data;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Set;
 import java.util.logging.Logger;
 import java.util.logging.Level;
@@ -45,11 +44,11 @@ public class Converter {
 				}
 				
 				conn.commit();
-			} catch(SQLException e) {
+			} catch(Exception e) {
 				try {
 					conn.rollback();
 					logger.log(Level.WARNING, "Failed to convert from SQLite to MySQL");
-				} catch(SQLException r) {
+				} catch(Exception r) {
 					// meeh
 				}
 			} finally {
