@@ -50,7 +50,7 @@ public interface DataManager {
 	 *
 	 * @return All registered users
 	 */
-	public ResultSet getAllUsers();
+	public ResultSet getAllUsers(Connection con);
 
 	/**
 	 * Parse single user row
