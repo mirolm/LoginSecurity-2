@@ -214,7 +214,7 @@ public abstract class SQL implements DataManager {
 	}
 
 	@Override
-        private void closeQuietly(AutoCloseable closeable) {
+        public void closeQuietly(AutoCloseable closeable) {
 		try {
 			if (closeable != null) {
 				closeable.close();
