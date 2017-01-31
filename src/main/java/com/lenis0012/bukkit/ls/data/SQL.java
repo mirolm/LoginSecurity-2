@@ -75,6 +75,7 @@ public abstract class SQL implements DataManager {
 				con.rollback();
 				logger.log(Level.SEVERE, "Failed to create tables", e);
 			} catch(SQLException r) {
+				// meeh
 			}
 		} finally {
 			closeQuietly(stmt);
@@ -102,8 +103,12 @@ public abstract class SQL implements DataManager {
 
 			return exists;
 		} catch(SQLException e) {
-			con.rollback();
-			logger.log(Level.SEVERE, "Failed to check user", e);
+			try {
+				con.rollback();
+				logger.log(Level.SEVERE, "Failed to check user", e);
+			} catch(SQLException r) {
+				// meeh
+			}
 		} finally {
 			closeQuietly(result);
 			closeQuietly(stmt);
@@ -129,8 +134,12 @@ public abstract class SQL implements DataManager {
 			stmt.executeUpdate();
 			con.commit();
 		} catch (SQLException e) {
-			con.rollback();
-			logger.log(Level.SEVERE, "Failed to create user", e);
+			try {
+				con.rollback();
+				logger.log(Level.SEVERE, "Failed to create user", e);
+			} catch(SQLException r) {
+				// meeh
+			}
 		} finally {
 			closeQuietly(stmt);
 			closeQuietly(con);
@@ -153,8 +162,12 @@ public abstract class SQL implements DataManager {
 			stmt.executeUpdate();
 			con.commit();
 		} catch (SQLException e) {
-			con.rollback();
-			logger.log(Level.SEVERE, "Failed to update user", e);
+			try {
+				con.rollback();
+				logger.log(Level.SEVERE, "Failed to update user", e);
+			} catch(SQLException r) {
+				// meeh
+			}
 		} finally {
 			closeQuietly(stmt);
 			closeQuietly(con);
@@ -183,8 +196,12 @@ public abstract class SQL implements DataManager {
 			
 			return login;
 		} catch (SQLException e) {
-			con.rollback();
-			logger.log(Level.SEVERE, "Failed to get user", e);
+			try {
+				con.rollback();
+				logger.log(Level.SEVERE, "Failed to get user", e);
+			} catch(SQLException r) {
+				// meeh
+			}
 		} finally {
 			closeQuietly(result);
 			closeQuietly(stmt);
