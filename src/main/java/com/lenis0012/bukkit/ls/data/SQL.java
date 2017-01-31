@@ -90,6 +90,7 @@ public abstract class SQL implements DataManager {
 			return result.next();
 		} catch(Exception e) {
 			logger.log(Level.SEVERE, "Failed to check user");
+			return = false;
 		} finally {
 			closeQuietly(result);
 			closeQuietly(stmt);
@@ -161,13 +162,12 @@ public abstract class SQL implements DataManager {
 			}
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, "Failed to get user");
+			return null;
 		} finally {
 			closeQuietly(result);
 			closeQuietly(stmt);
 			closeQuietly(con);
 		}
-
-		return null;
 	}
 
 	@Override
@@ -186,15 +186,11 @@ public abstract class SQL implements DataManager {
 	@Override
 	public LoginData parseData(ResultSet data) {
 		try {
-			if (data.next()) {
-				String uuid = data.getString("unique_user_id");
-				String password = data.getString("password");
-				int encryption = data.getInt("encryption");
+			String uuid = data.getString("unique_user_id");
+			String password = data.getString("password");
+			int encryption = data.getInt("encryption");
 
-				return new LoginData(uuid, password, encryption);
-			} else {
-				return null;
-			}
+			return new LoginData(uuid, password, encryption);
 		} catch (Exception e) {
 			return null;
 		}
