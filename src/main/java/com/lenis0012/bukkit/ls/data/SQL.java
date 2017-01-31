@@ -90,7 +90,6 @@ public abstract class SQL implements DataManager {
 			return result.next();
 		} catch(Exception e) {
 			logger.log(Level.SEVERE, "Failed to check user");
-			return false;
 		} finally {
 			closeQuietly(result);
 			closeQuietly(stmt);
@@ -155,7 +154,11 @@ public abstract class SQL implements DataManager {
 			stmt.setString(1, uuid.replaceAll("-", ""));
 
 			result = stmt.executeQuery();
-			return parseData(result);
+			if (result.next()) {
+				return parseData(result);
+			} else {
+				return null; 
+			}
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, "Failed to get user");
 		} finally {
