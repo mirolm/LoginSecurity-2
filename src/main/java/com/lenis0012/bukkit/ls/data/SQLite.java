@@ -1,8 +1,8 @@
 package com.lenis0012.bukkit.ls.data;
 
 import java.io.File;
-import com.zaxxer.hikari.HikariConfig;
 
+import com.zaxxer.hikari.HikariConfig;
 import com.lenis0012.bukkit.ls.LoginSecurity;
 
 public class SQLite extends SQL {
