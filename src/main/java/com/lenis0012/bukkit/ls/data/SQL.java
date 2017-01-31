@@ -90,7 +90,7 @@ public abstract class SQL implements DataManager {
 			return result.next();
 		} catch(Exception e) {
 			logger.log(Level.SEVERE, "Failed to check user");
-			return = false;
+			return false;
 		} finally {
 			closeQuietly(result);
 			closeQuietly(stmt);
