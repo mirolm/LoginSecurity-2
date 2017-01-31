@@ -71,8 +71,12 @@ public abstract class SQL implements DataManager {
 			stmt.executeUpdate();
 			con.commit();
 		} catch(SQLException e) {
-			con.rollback();
-			logger.log(Level.SEVERE, "Failed to create tables", e);
+			try {
+				con.rollback();
+				logger.log(Level.SEVERE, "Failed to create tables", e);
+			} catch(SQLException e) {
+				null;
+			}
 		} finally {
 			closeQuietly(stmt);
 			closeQuietly(con);
