@@ -29,11 +29,12 @@ public class Converter {
 		if(type == FileType.SQLite && !(plugin.data instanceof SQLite)) {
 			SQLite manager = null;
 			Connection conn = null;
+			ResultSet result = null;
 
 			try {
 				manager = new SQLite(name);
 				conn = manager.getConnection();
-				ResultSet result = manager.getAllUsers(conn);
+				result = manager.getAllUsers(conn);
 
 				while(result.next()) {
 					LoginData login = manager.parseData(result);
