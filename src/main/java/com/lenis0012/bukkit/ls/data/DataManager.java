@@ -13,7 +13,7 @@ public interface DataManager {
 	/**
  	 * Get Connection from Pool
  	 */
- 	public Connection getConnection();
+ 	public Connection getConn();
 
 	/**
 	 * Check if player is registered
