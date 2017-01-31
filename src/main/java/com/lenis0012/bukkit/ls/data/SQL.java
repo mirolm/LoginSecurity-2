@@ -37,7 +37,6 @@ public abstract class SQL implements DataManager {
 		SELECT_USERS = SELECT_USERS.replace("<TABLE>", table);
 
 		datasrc = new HikariDataSource(config);
-		datasrc.setAutoCommit(false);
 
 		createTables();
 	}
@@ -67,14 +66,8 @@ public abstract class SQL implements DataManager {
 			stmt.setQueryTimeout(30);
 
 			stmt.executeUpdate();
-			con.commit();
 		} catch(Exception e) {
-			try {
-				con.rollback();
-				logger.log(Level.SEVERE, "Failed to create tables");
-			} catch(Exception r) {
-				// meeh
-			}
+			logger.log(Level.SEVERE, "Failed to create tables");
 		} finally {
 			closeQuietly(stmt);
 			closeQuietly(con);
@@ -86,7 +79,6 @@ public abstract class SQL implements DataManager {
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet result = null;
-		boolean exists;
 
 		try {
 			con = datasrc.getConnection();
@@ -95,25 +87,15 @@ public abstract class SQL implements DataManager {
 			stmt.setString(1, uuid.replaceAll("-", ""));
 
 			result = stmt.executeQuery();
-			exists = result.next();
-			
-			con.commit();
-
-			return exists;
+			return = result.next();
 		} catch(Exception e) {
-			try {
-				con.rollback();
-				logger.log(Level.SEVERE, "Failed to check user");
-			} catch(Exception r) {
-				// meeh
-			}
+			logger.log(Level.SEVERE, "Failed to check user");
+			return false;
 		} finally {
 			closeQuietly(result);
 			closeQuietly(stmt);
 			closeQuietly(con);
 		}
-
-		return false;
 	}
 
 	@Override
@@ -130,14 +112,8 @@ public abstract class SQL implements DataManager {
 			stmt.setInt(3, login.encryption);
 
 			stmt.executeUpdate();
-			con.commit();
 		} catch (Exception e) {
-			try {
-				con.rollback();
-				logger.log(Level.SEVERE, "Failed to create user");
-			} catch(Exception r) {
-				// meeh
-			}
+			logger.log(Level.SEVERE, "Failed to create user");
 		} finally {
 			closeQuietly(stmt);
 			closeQuietly(con);
@@ -158,14 +134,8 @@ public abstract class SQL implements DataManager {
 			stmt.setString(3, login.uuid.replaceAll("-", ""));
 
 			stmt.executeUpdate();
-			con.commit();
 		} catch (Exception e) {
-			try {
-				con.rollback();
-				logger.log(Level.SEVERE, "Failed to update user");
-			} catch(Exception r) {
-				// meeh
-			}
+			logger.log(Level.SEVERE, "Failed to update user");
 		} finally {
 			closeQuietly(stmt);
 			closeQuietly(con);
@@ -177,7 +147,6 @@ public abstract class SQL implements DataManager {
 		Connection con = null;
 		PreparedStatement stmt = null;
 		ResultSet result = null;
-		LoginData login = null;
 
 		try {
 			con = datasrc.getConnection();
@@ -187,26 +156,16 @@ public abstract class SQL implements DataManager {
 
 			result = stmt.executeQuery();
 			if(result.next()) {
-				login = parseData(result);
+				return = parseData(result);
 			}
-
-			con.commit();
-			
-			return login;
 		} catch (Exception e) {
-			try {
-				con.rollback();
-				logger.log(Level.SEVERE, "Failed to get user");
-			} catch(Exception r) {
-				// meeh
-			}
+			logger.log(Level.SEVERE, "Failed to get user");
+			return null;
 		} finally {
 			closeQuietly(result);
 			closeQuietly(stmt);
 			closeQuietly(con);
 		}
-
-		return null;
 	}
 
 	@Override
