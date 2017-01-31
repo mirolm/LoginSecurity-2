@@ -1,5 +1,6 @@
 package com.lenis0012.bukkit.ls.data;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Set;
@@ -30,7 +31,8 @@ public class Converter {
 
 			try {
 				manager = new SQLite(name);
-				ResultSet result = manager.getAllUsers();
+				conn = manager.getConnection();
+				ResultSet result = manager.getAllUsers(conn);
 
 				while(result.next()) {
 					LoginData login = manager.parseData(result);
@@ -39,9 +41,14 @@ public class Converter {
 						plugin.data.regUser(login);
 					}
 				}
+				
+				conn.commit();
 			} catch(SQLException e) {
+				conn.rollback();
 				logger.log(Level.WARNING, "Failed to convert from SQLite to MySQL");
 			} finally {
+				manager.closeQuietly(result);
+				manager.closeQuietly(conn);
 				manager.close();
 			}
 		}
