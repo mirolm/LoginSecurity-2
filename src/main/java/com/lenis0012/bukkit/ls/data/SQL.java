@@ -27,8 +27,6 @@ public abstract class SQL implements DataManager {
         private String SELECT_USERS = "SELECT unique_user_id, password, encryption FROM <TABLE>";
 
 	public void init(String table, HikariConfig config) {
-		logger = LoginSecurity.instance.getLogger();
-
 		CREATE_TABLE = CREATE_TABLE.replace("<TABLE>", table);
 		CHECK_REG = CHECK_REG.replace("<TABLE>", table);
 		INSERT_LOGIN = INSERT_LOGIN.replace("<TABLE>", table);
@@ -36,6 +34,7 @@ public abstract class SQL implements DataManager {
 		SELECT_LOGIN = SELECT_LOGIN.replace("<TABLE>", table);
 		SELECT_USERS = SELECT_USERS.replace("<TABLE>", table);
 
+		logger = LoginSecurity.instance.getLogger();
 		datasrc = new HikariDataSource(config);
 
 		createTables();
