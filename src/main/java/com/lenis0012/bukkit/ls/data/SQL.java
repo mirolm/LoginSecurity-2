@@ -37,6 +37,7 @@ public abstract class SQL implements DataManager {
 		SELECT_USERS = SELECT_USERS.replace("<TABLE>", table);
 
 		datasrc = new HikariDataSource(config);
+		datasrc.setAutoCommit(false);
 
 		createTables();
 	}
@@ -48,7 +49,11 @@ public abstract class SQL implements DataManager {
 
 	@Override
 	public Connection getConn() {
-		return datasrc.getConnection();
+		try {
+ 			return datasrc.getConnection();
+ 		} catch(Exception e) {
+ 			return null;
+ 		}
 	}
 
 	private void createTables() {
