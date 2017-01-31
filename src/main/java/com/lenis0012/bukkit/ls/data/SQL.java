@@ -185,7 +185,7 @@ public abstract class SQL implements DataManager {
 			stmt = con.prepareStatement(SELECT_LOGIN);
 			stmt.setString(1, uuid.replaceAll("-", ""));
 
-			result = stmt.executeQuery();			
+			result = stmt.executeQuery();
 			if(result.next()) {
 				login = parseData(result);
 			}
