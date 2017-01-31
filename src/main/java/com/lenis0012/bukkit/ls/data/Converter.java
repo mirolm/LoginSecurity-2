@@ -33,7 +33,7 @@ public class Converter {
 
 			try {
 				manager = new SQLite(name);
-				conn = manager.getConnection();
+				conn = manager.getConn();
 				result = manager.getAllUsers(conn);
 
 				while(result.next()) {
