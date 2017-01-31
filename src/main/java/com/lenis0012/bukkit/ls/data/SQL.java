@@ -53,7 +53,7 @@ public abstract class SQL implements DataManager {
 	public Connection getConn() {
 		try {
 			return datasrc.getConnection();
-		} catch {
+		} catch(Exception e) {
 			return null;
 		}
 	}
