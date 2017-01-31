@@ -50,7 +50,7 @@ public abstract class SQL implements DataManager {
 	}
 
 	@Override
-	public Connection getConnection() {
+	public Connection getConn() {
 		try {
 			return datasrc.getConnection();
 		} catch {
