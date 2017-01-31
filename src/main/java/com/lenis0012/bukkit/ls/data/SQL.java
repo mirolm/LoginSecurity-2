@@ -155,17 +155,16 @@ public abstract class SQL implements DataManager {
 			stmt.setString(1, uuid.replaceAll("-", ""));
 
 			result = stmt.executeQuery();
-			if(result.next()) {
-				return parseData(result);
-			}
+			return parseData(result);
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, "Failed to get user");
-			return null;
 		} finally {
 			closeQuietly(result);
 			closeQuietly(stmt);
 			closeQuietly(con);
 		}
+
+		return null;
 	}
 
 	@Override
@@ -184,11 +183,15 @@ public abstract class SQL implements DataManager {
 	@Override
 	public LoginData parseData(ResultSet data) {
 		try {
-			String uuid = data.getString("unique_user_id");
-			String password = data.getString("password");
-			int encryption = data.getInt("encryption");
+			if (data.next()) {
+				String uuid = data.getString("unique_user_id");
+				String password = data.getString("password");
+				int encryption = data.getInt("encryption");
 
-			return new LoginData(uuid, password, encryption);
+				return new LoginData(uuid, password, encryption);
+			} else {
+				return null;
+			}
 		} catch (Exception e) {
 			return null;
 		}
