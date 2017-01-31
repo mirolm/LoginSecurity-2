@@ -51,7 +51,11 @@ public abstract class SQL implements DataManager {
 
 	@Override
 	public Connection getConnection() {
-		return datasrc.getConnection();
+		try {
+			return datasrc.getConnection();
+		} catch {
+			return null;
+		}
 	}
 
 	private void createTables() {
