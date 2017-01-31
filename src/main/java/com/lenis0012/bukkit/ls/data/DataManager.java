@@ -1,5 +1,6 @@
 package com.lenis0012.bukkit.ls.data;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 
 public interface DataManager {
@@ -9,6 +10,11 @@ public interface DataManager {
  	 */
  	public void close();
 	
+	/**
+ 	 * Get Connection from Pool
+ 	 */
+ 	public Connection getConnection();
+
 	/**
 	 * Check if player is registered
 	 *
@@ -53,4 +59,9 @@ public interface DataManager {
 	 * @return LoginData
 	 */
 	public LoginData parseData(ResultSet data);
+
+	/**
+ 	 * Close Database Object
+ 	 */
+ 	private void closeQuietly(AutoCloseable closeable);
 }
