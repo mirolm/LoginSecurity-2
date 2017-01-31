@@ -17,15 +17,9 @@ public class MySQL extends SQL {
 		HikariConfig dbcfg = new HikariConfig();
 		Properties prop = new Properties();
 		
-		prop.setProperty("characterEncoding", "utf8");
-        	prop.setProperty("encoding","UTF-8");
-        	prop.setProperty("useUnicode", "true");
-		
-        	prop.setProperty("rewriteBatchedStatements", "true");
-        	prop.setProperty("jdbcCompliantTruncation", "false");
-
-        	prop.setProperty("cachePrepStmts", "true");
-        	prop.setProperty("prepStmtCacheSize", "275");
+		prop.setProperty("useConfigs", "maxPerformance");
+		prop.setProperty("useServerPrepStmts", "true");
+		prop.setProperty("prepStmtCacheSize", "250");
         	prop.setProperty("prepStmtCacheSqlLimit", "2048");
 		
         	dbcfg.setDriverClassName("com.mysql.jdbc.Driver");
