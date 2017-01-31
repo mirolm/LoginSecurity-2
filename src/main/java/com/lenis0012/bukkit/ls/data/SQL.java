@@ -24,7 +24,6 @@ public abstract class SQL implements DataManager {
 					+ "password VARCHAR(300) NOT NULL,"
 					+ "encryption INT)";
 
-        private String PING_CONN = "SELECT 1";
         private String CHECK_REG = "SELECT 1 FROM <TABLE> WHERE unique_user_id = ?";
         private String INSERT_LOGIN = "INSERT INTO <TABLE>(unique_user_id, password, encryption) VALUES(?, ?, ?)";
         private String UPDATE_PASS = "UPDATE <TABLE> SET password = ?, encryption = ? WHERE unique_user_id = ?";
@@ -41,14 +40,8 @@ public abstract class SQL implements DataManager {
 		SELECT_LOGIN = SELECT_LOGIN.replace("<TABLE>", table);
 		SELECT_USERS = SELECT_USERS.replace("<TABLE>", table);
 
-		ThreadFactory factory = new ThreadFactoryBuilder()
-                	.setNameFormat("LoginSecurity Database Pool Thread #%1$d")
-                	.setDaemon(true).build();
-
-		config.setConnectionTestQuery(PING_CONN);
-		config.setThreadFactory(factory);
-
 		datasrc = new HikariDataSource(config);
+		datasrc.setAutoCommit(false);		
 
 		createTables();
 	}
@@ -56,6 +49,11 @@ public abstract class SQL implements DataManager {
 	@Override
 	public void close() {
 		closeQuietly(datasrc);
+	}
+
+	@Override
+	public Connection getConnection() {
+		return = datasrc.getConnection();
 	}
 
 	private void createTables() {
@@ -69,7 +67,9 @@ public abstract class SQL implements DataManager {
 			stmt.setQueryTimeout(30);
 
 			stmt.executeUpdate();
+			con.commit();
 		} catch(SQLException e) {
+			con.rollback();
 			logger.log(Level.SEVERE, "Failed to create tables", e);
 		} finally {
 			closeQuietly(stmt);
@@ -90,8 +90,11 @@ public abstract class SQL implements DataManager {
 			stmt.setString(1, uuid.replaceAll("-", ""));
 
 			result = stmt.executeQuery();
+			con.commit();
+
 			return result.next();
 		} catch(SQLException e) {
+			con.rollback();
 			logger.log(Level.SEVERE, "Failed to check user", e);
 		} finally {
 			closeQuietly(result);
@@ -116,7 +119,9 @@ public abstract class SQL implements DataManager {
 			stmt.setInt(3, login.encryption);
 
 			stmt.executeUpdate();
+			con.commit();
 		} catch (SQLException e) {
+			con.rollback();
 			logger.log(Level.SEVERE, "Failed to create user", e);
 		} finally {
 			closeQuietly(stmt);
@@ -138,7 +143,9 @@ public abstract class SQL implements DataManager {
 			stmt.setString(3, login.uuid.replaceAll("-", ""));
 
 			stmt.executeUpdate();
+			con.commit();
 		} catch (SQLException e) {
+			con.rollback();
 			logger.log(Level.SEVERE, "Failed to update user", e);
 		} finally {
 			closeQuietly(stmt);
@@ -158,11 +165,14 @@ public abstract class SQL implements DataManager {
 			stmt = con.prepareStatement(SELECT_LOGIN);
 			stmt.setString(1, uuid.replaceAll("-", ""));
 
-			result = stmt.executeQuery();
+			result = stmt.executeQuery();			
+			con.commit();
+
 			if(result.next()) {
 				return parseData(result);
 			}
 		} catch (SQLException e) {
+			con.rollback();
 			logger.log(Level.SEVERE, "Failed to get user", e);
 		} finally {
 			closeQuietly(result);
@@ -174,13 +184,10 @@ public abstract class SQL implements DataManager {
 	}
 
 	@Override
-	public ResultSet getAllUsers() {
-		Connection con = null;
+	public ResultSet getAllUsers(Connection con) {
 		PreparedStatement stmt = null;
 
 		try {
-			con = datasrc.getConnection();
-
 			stmt = con.prepareStatement(SELECT_USERS);
 
 			return stmt.executeQuery();
@@ -202,6 +209,7 @@ public abstract class SQL implements DataManager {
 		}
 	}
 
+	@Override
         private void closeQuietly(AutoCloseable closeable) {
 		try {
 			if (closeable != null) {
