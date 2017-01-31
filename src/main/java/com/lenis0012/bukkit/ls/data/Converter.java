@@ -46,8 +46,12 @@ public class Converter {
 				
 				conn.commit();
 			} catch(SQLException e) {
-				conn.rollback();
-				logger.log(Level.WARNING, "Failed to convert from SQLite to MySQL");
+				try {
+					conn.rollback();
+					logger.log(Level.WARNING, "Failed to convert from SQLite to MySQL");
+				} catch(SQLException r) {
+					// meeh
+				}
 			} finally {
 				manager.closeQuietly(result);
 				manager.closeQuietly(conn);
