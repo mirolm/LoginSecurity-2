@@ -63,5 +63,5 @@ public interface DataManager {
 	/**
  	 * Close Database Object
  	 */
- 	private void closeQuietly(AutoCloseable closeable);
+ 	public void closeQuietly(AutoCloseable closeable);
 }
