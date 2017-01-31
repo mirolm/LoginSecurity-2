@@ -1,10 +1,8 @@
 package com.lenis0012.bukkit.ls.data;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
@@ -70,11 +68,11 @@ public abstract class SQL implements DataManager {
 
 			stmt.executeUpdate();
 			con.commit();
-		} catch(SQLException e) {
+		} catch(Exception e) {
 			try {
 				con.rollback();
-				logger.log(Level.SEVERE, "Failed to create tables", e);
-			} catch(SQLException r) {
+				logger.log(Level.SEVERE, "Failed to create tables");
+			} catch(Exception r) {
 				// meeh
 			}
 		} finally {
@@ -102,11 +100,11 @@ public abstract class SQL implements DataManager {
 			con.commit();
 
 			return exists;
-		} catch(SQLException e) {
+		} catch(Exception e) {
 			try {
 				con.rollback();
-				logger.log(Level.SEVERE, "Failed to check user", e);
-			} catch(SQLException r) {
+				logger.log(Level.SEVERE, "Failed to check user");
+			} catch(Exception r) {
 				// meeh
 			}
 		} finally {
@@ -133,11 +131,11 @@ public abstract class SQL implements DataManager {
 
 			stmt.executeUpdate();
 			con.commit();
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			try {
 				con.rollback();
-				logger.log(Level.SEVERE, "Failed to create user", e);
-			} catch(SQLException r) {
+				logger.log(Level.SEVERE, "Failed to create user");
+			} catch(Exception r) {
 				// meeh
 			}
 		} finally {
@@ -161,11 +159,11 @@ public abstract class SQL implements DataManager {
 
 			stmt.executeUpdate();
 			con.commit();
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			try {
 				con.rollback();
-				logger.log(Level.SEVERE, "Failed to update user", e);
-			} catch(SQLException r) {
+				logger.log(Level.SEVERE, "Failed to update user");
+			} catch(Exception r) {
 				// meeh
 			}
 		} finally {
@@ -195,11 +193,11 @@ public abstract class SQL implements DataManager {
 			con.commit();
 			
 			return login;
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			try {
 				con.rollback();
-				logger.log(Level.SEVERE, "Failed to get user", e);
-			} catch(SQLException r) {
+				logger.log(Level.SEVERE, "Failed to get user");
+			} catch(Exception r) {
 				// meeh
 			}
 		} finally {
@@ -219,7 +217,7 @@ public abstract class SQL implements DataManager {
 			stmt = con.prepareStatement(SELECT_USERS);
 
 			return stmt.executeQuery();
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			return null;
 		}
 	}
@@ -232,7 +230,7 @@ public abstract class SQL implements DataManager {
 			int encryption = data.getInt("encryption");
 
 			return new LoginData(uuid, password, encryption);
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			return null;
 		}
 	}
@@ -244,7 +242,7 @@ public abstract class SQL implements DataManager {
 				closeable.close();
 	                }
                 } catch (Exception e) {
-                        logger.log(Level.SEVERE, "Failed to close", e);
+                        logger.log(Level.SEVERE, "Failed to close");
                 }
         }
 }
