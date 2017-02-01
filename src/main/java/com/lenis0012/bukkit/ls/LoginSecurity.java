@@ -1,7 +1,6 @@
 package com.lenis0012.bukkit.ls;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Logger;
@@ -194,9 +193,8 @@ public class LoginSecurity extends JavaPlugin {
 		
 		try {
 			conf.save(getLangFile());
-		} catch(IOException e) {
+		} catch(Exception e) {
 			logger.log(Level.WARNING, "Failed to save lang.yml.");
-			e.printStackTrace();
 		}
 	}
 
