@@ -1,7 +1,6 @@
 package com.lenis0012.bukkit.ls;
 
 import java.io.File;
-import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Logger;
 import java.util.logging.Level;
