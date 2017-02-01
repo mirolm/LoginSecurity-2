@@ -45,7 +45,6 @@ public class LoginSecurity extends JavaPlugin {
 	public int timeDelay, countFail, minFail;
 	public ThreadManager thread;
 	public EncryptionType hasher;
-	public final ConcurrentMap<String, CommandExecutor> commandMap = Maps.newConcurrentMap();
 	public static int PHP_VERSION;
 	public static String encoder;
 	public static YamlConfiguration LANG;
@@ -137,17 +136,9 @@ public class LoginSecurity extends JavaPlugin {
 	}
 
 	public void registerCommands() {
-		this.commandMap.clear();
-		this.commandMap.put("login", new LoginCommand());
-		this.commandMap.put("register", new RegisterCommand());
-		this.commandMap.put("changepass", new ChangePassCommand());
-
-		for (Entry<String, CommandExecutor> entry : this.commandMap.entrySet()) {
-			String cmd = entry.getKey();
-			CommandExecutor ex = entry.getValue();
-
-			this.getCommand(cmd).setExecutor(ex);
-		}
+		getCommand("login").setExecutor(new LoginCommand());
+		getCommand("register").setExecutor(new RegisterCommand());
+		getCommand("changepass").setExecutor(new ChangePassCommand());
 	}
 
 	public boolean checkFailed(String uuid) {
