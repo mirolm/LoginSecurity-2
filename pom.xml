@@ -31,7 +31,7 @@
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
+      <artifactId>slf4j-jdk14</artifactId>
       <version>1.7.21</version>
       <scope>compile</scope>
     </dependency>
@@ -65,7 +65,7 @@
           <artifactSet>
             <includes>
               <include>com.zaxxer:HikariCP</include>
-              <include>org.slf4j:slf4j-log4j12</include>
+              <include>org.slf4j:slf4j-jdk14</include>
             </includes>
           </artifactSet>
          <relocations>
