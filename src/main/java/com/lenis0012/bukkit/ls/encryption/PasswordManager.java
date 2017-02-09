@@ -21,6 +21,6 @@ public class PasswordManager {
 	
 	public static boolean validPass(String password) {
 		// 6+ chars long, letters and number or symbol
-		return password.matches("^(?=.*[a-zA-Z])(?=.*([0-9]|[!@#\\$%\\^&\\*])).{6,}+$");	
+		return password.matches("^(?=.*[a-zA-Z])(?=.*([0-9]|[!@#$%\\^&*])).{6,}+$");
 	}
 }
