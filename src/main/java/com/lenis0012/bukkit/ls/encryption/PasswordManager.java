@@ -5,15 +5,19 @@ import com.lenis0012.bukkit.ls.data.DataManager;
 import com.lenis0012.bukkit.ls.data.LoginData;
 
 public class PasswordManager {
-	public static boolean checkPass(String uuid, String password) {
-		LoginSecurity plugin = LoginSecurity.instance;
-		DataManager data = plugin.data;
+    public static boolean checkPass(String uuid, String password) {
+        LoginSecurity plugin = LoginSecurity.instance;
+        DataManager data = plugin.data;
 
-		LoginData login = data.getUser(uuid);		
-		EncryptionType etype = EncryptionType.fromInt(login.encryption);
+        LoginData login = data.getUser(uuid);
+        EncryptionType etype = EncryptionType.fromInt(login.encryption);
 
-		return etype.checkPass(password, login.password);
-	}
+        if (etype != null) {
+            return etype.checkPass(password, login.password);
+        } else {
+            return false;
+        }
+ 	}
 	
 	public static boolean validPass(String password) {
 		// 6+ chars long, letters and number or symbol
