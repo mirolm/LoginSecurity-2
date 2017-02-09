@@ -2,15 +2,14 @@ package com.lenis0012.bukkit.ls.data;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.util.Set;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
 import com.lenis0012.bukkit.ls.LoginSecurity;
 
 public class Converter {
-	public static enum FileType {
-		SQLite;
+	public enum FileType {
+		SQLite
 	}
 
 	private final FileType type;
@@ -26,13 +25,14 @@ public class Converter {
 		Logger logger = plugin.getLogger();
 		
 		if(type == FileType.SQLite && !(plugin.data instanceof SQLite)) {
-			SQLite manager = null;
+			SQLite manager;
 			Connection conn = null;
 			ResultSet result = null;
-			LoginData login = null;
+			LoginData login;
+
+			manager = new SQLite(name);
 
 			try {
-				manager = new SQLite(name);
 				conn = manager.getConn();
 				result = manager.getAllUsers(conn);
 

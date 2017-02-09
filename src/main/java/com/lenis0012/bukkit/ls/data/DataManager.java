@@ -8,12 +8,12 @@ public interface DataManager {
 	/**
  	 * Close Connection Pool
  	 */
- 	public void close();
+	void close();
 
 	/**
  	 * Get Connection from Pool
  	 */
- 	public Connection getConn();
+	Connection getConn();
 
 	/**
 	 * Check if player is registered
@@ -21,21 +21,21 @@ public interface DataManager {
 	 * @param uuid PlayerUUID
 	 * @return user registered
 	 */
-	public boolean checkUser(String uuid);
+	boolean checkUser(String uuid);
 
 	/**
 	 * Register a user
 	 *
 	 * @param login LoginData
 	 */
-	public void regUser(LoginData login);
+	void regUser(LoginData login);
 
 	/**
 	 * Update player data
 	 *
 	 * @param login LoginData
 	 */
-	public void updateUser(LoginData login);
+	void updateUser(LoginData login);
 
 	/**
 	 * Get user stored data
@@ -43,14 +43,14 @@ public interface DataManager {
 	 * @param uuid PlayerUUID
 	 * @return LoginData
 	 */
-	public LoginData getUser(String uuid);
+	LoginData getUser(String uuid);
 
 	/**
 	 * Get all users data
 	 *
 	 * @return All registered users
 	 */
-	public ResultSet getAllUsers(Connection con);
+	ResultSet getAllUsers(Connection con);
 
 	/**
 	 * Parse single user row
@@ -58,10 +58,10 @@ public interface DataManager {
 	 * @param data ResultSet
 	 * @return LoginData
 	 */
-	public LoginData parseData(ResultSet data);
+	LoginData parseData(ResultSet data);
 
 	/**
  	 * Close Database Object
  	 */
- 	public void closeQuietly(AutoCloseable closeable);
+	void closeQuietly(AutoCloseable closeable);
 }

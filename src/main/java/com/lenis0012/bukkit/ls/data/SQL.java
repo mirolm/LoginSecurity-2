@@ -171,7 +171,7 @@ public abstract class SQL implements DataManager {
 
 	@Override
 	public ResultSet getAllUsers(Connection con) {
-		PreparedStatement stmt = null;
+		PreparedStatement stmt;
 
 		try {
 			stmt = con.prepareStatement(SELECT_USERS);
@@ -197,12 +197,12 @@ public abstract class SQL implements DataManager {
 
 	@Override
         public void closeQuietly(AutoCloseable closeable) {
-		try {
-			if (closeable != null) {
-				closeable.close();
-	                }
-                } catch (Exception e) {
-                        logger.log(Level.SEVERE, "Failed to close");
-                }
+		    try {
+			    if (closeable != null) {
+				    closeable.close();
+			    }
+			} catch (Exception e) {
+		    	logger.log(Level.SEVERE, "Failed to close");
+			}
         }
 }

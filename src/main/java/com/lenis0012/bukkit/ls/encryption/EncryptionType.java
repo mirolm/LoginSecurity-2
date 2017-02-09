@@ -12,7 +12,7 @@ public enum EncryptionType {
 	private Encryptor cryp;
 	private int type;
 	
-	private EncryptionType(int type, Encryptor cryp) {
+	EncryptionType(int type, Encryptor cryp) {
 		this.cryp = cryp;
 		this.type = type;
 	}

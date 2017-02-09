@@ -8,13 +8,10 @@ import java.util.UUID;
 
 import com.google.common.collect.Maps;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Filter;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
@@ -27,7 +24,6 @@ import com.lenis0012.bukkit.ls.commands.RegisterCommand;
 import com.lenis0012.bukkit.ls.data.Converter;
 import com.lenis0012.bukkit.ls.data.Converter.FileType;
 import com.lenis0012.bukkit.ls.data.DataManager;
-import com.lenis0012.bukkit.ls.data.LoginData;
 import com.lenis0012.bukkit.ls.data.MySQL;
 import com.lenis0012.bukkit.ls.data.SQLite;
 import com.lenis0012.bukkit.ls.encryption.EncryptionType;
@@ -43,8 +39,8 @@ public class LoginSecurity extends JavaPlugin {
 	public EncryptionType hasher;
 	public static int PHP_VERSION;
 	public static String encoder;
-	public static YamlConfiguration LANG;
-	public static File LANG_FILE;
+	private static YamlConfiguration LANG;
+	private static File LANG_FILE;
 
 	@Override
 	public void onEnable() {
@@ -131,7 +127,7 @@ public class LoginSecurity extends JavaPlugin {
 		}
 	}
 
-	public void registerCommands() {
+	private void registerCommands() {
 		getCommand("login").setExecutor(new LoginCommand());
 		getCommand("register").setExecutor(new RegisterCommand());
 		getCommand("changepass").setExecutor(new ChangePassCommand());
@@ -166,14 +162,14 @@ public class LoginSecurity extends JavaPlugin {
 		player.setRemainingAir(player.getMaximumAir());
 	}
 
-	public void setFilter() {
+	private void setFilter() {
 		org.apache.logging.log4j.core.Logger logger; 
 		
 		logger = (org.apache.logging.log4j.core.Logger) LogManager.getRootLogger();
 		logger.addFilter(new LoggingFilter());
 	}
 	
-	public void loadLang() {
+	private void loadLang() {
 		Logger logger = this.getLogger();
 
 		File lang = new File(getDataFolder(), "lang.yml");
@@ -200,7 +196,7 @@ public class LoginSecurity extends JavaPlugin {
 		return LANG;
 	}
 
-	public File getLangFile() {
+	private File getLangFile() {
 		return LANG_FILE;
 	}
 }
