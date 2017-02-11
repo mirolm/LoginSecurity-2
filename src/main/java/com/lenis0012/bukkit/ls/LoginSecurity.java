@@ -41,8 +41,6 @@ public class LoginSecurity extends JavaPlugin {
 	public EncryptionType hasher;
 	public static int PHP_VERSION;
 	public static String encoder;
-	private static YamlConfiguration LANG;
-	private static File LANG_FILE;
 
 	@Override
 	public void onEnable() {
@@ -172,7 +170,8 @@ public class LoginSecurity extends JavaPlugin {
 		logger = (org.apache.logging.log4j.core.Logger) LogManager.getRootLogger();
 		logger.addFilter(new LoggingFilter());
 	}
-	
+
+	/* TODO this is pretty ugly...make like changeskin with saveResouce and load items into map... */
 	private void loadLang() {
 		Logger logger = this.getLogger();
 
@@ -184,23 +183,13 @@ public class LoginSecurity extends JavaPlugin {
 				conf.set(item.getPath(), item.getDefault());
 			}
 		}
-		
+
 		Lang.setFile(conf);
-		LoginSecurity.LANG = conf;
-		LoginSecurity.LANG_FILE = lang;
-		
+
 		try {
-			conf.save(getLangFile());
+			conf.save(lang);
 		} catch(Exception e) {
 			logger.log(Level.WARNING, "Failed to save lang.yml.");
 		}
-	}
-
-	public YamlConfiguration getLang() {
-		return LANG;
-	}
-
-	private File getLangFile() {
-		return LANG_FILE;
 	}
 }
