@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import java.util.UUID;
 
 import com.google.common.collect.Maps;
+import com.lenis0012.bukkit.ls.util.Lang;
 import org.apache.logging.log4j.LogManager;
 
 import org.bukkit.configuration.file.FileConfiguration;
@@ -27,10 +28,11 @@ import com.lenis0012.bukkit.ls.data.DataManager;
 import com.lenis0012.bukkit.ls.data.MySQL;
 import com.lenis0012.bukkit.ls.data.SQLite;
 import com.lenis0012.bukkit.ls.encryption.EncryptionType;
+import com.lenis0012.bukkit.ls.encryption.PasswordManager;
 
 public class LoginSecurity extends JavaPlugin {
 	public DataManager data;
-	public static LoginSecurity instance;
+	public PasswordManager passmgr;
 	public final ConcurrentMap<String, Boolean> authList = Maps.newConcurrentMap();
 	public final ConcurrentMap<String, Integer> failList = Maps.newConcurrentMap();
 	public boolean required;
@@ -47,7 +49,8 @@ public class LoginSecurity extends JavaPlugin {
 		//setup quickcalls
 		FileConfiguration config = this.getConfig();
 		PluginManager pm = this.getServer().getPluginManager();
-		
+
+
 		// load translation
 		loadLang();
 
@@ -73,9 +76,10 @@ public class LoginSecurity extends JavaPlugin {
 		saveConfig();
 
 		//intalize fields
-		instance = (LoginSecurity) pm.getPlugin("LoginSecurity");
+		passmgr = new PasswordManager(this);
 		data = this.getDataManager(config);
 		thread = new ThreadManager(this);
+
 		required = config.getBoolean("settings.password-required");
 		timeDelay = config.getInt("settings.timeout", 60);
 		countFail = config.getInt("settings.failed.count", 3);
@@ -113,24 +117,24 @@ public class LoginSecurity extends JavaPlugin {
 
 	private DataManager getDataManager(FileConfiguration config) {
 		if (config.getBoolean("MySQL.use")) {
-			return new MySQL(config);
+			return new MySQL(config, this);
 		} else {
-			return new SQLite("users.db");
+			return new SQLite("users.db", this);
 		}
 	}
 
 	private void checkConverter() {
 		File file = new File(this.getDataFolder(), "users.db");
  		if (file.exists() && data instanceof MySQL) {
-			Converter conv = new Converter(FileType.SQLite, "users.db");
+			Converter conv = new Converter(FileType.SQLite, "users.db", this);
 			conv.convert();
 		}
 	}
 
 	private void registerCommands() {
-		getCommand("login").setExecutor(new LoginCommand());
-		getCommand("register").setExecutor(new RegisterCommand());
-		getCommand("changepass").setExecutor(new ChangePassCommand());
+		getCommand("login").setExecutor(new LoginCommand(this));
+		getCommand("register").setExecutor(new RegisterCommand(this));
+		getCommand("changepass").setExecutor(new ChangePassCommand(this));
 	}
 
 	public boolean checkFailed(String uuid) {

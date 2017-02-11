@@ -6,16 +6,21 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.lenis0012.bukkit.ls.Lang;
+import com.lenis0012.bukkit.ls.util.Lang;
 import com.lenis0012.bukkit.ls.LoginSecurity;
-import com.lenis0012.bukkit.ls.encryption.PasswordManager;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
 public class LoginCommand implements CommandExecutor {
+	private final LoginSecurity plugin;
+
+	public LoginCommand(LoginSecurity plugin) {
+		this.plugin = plugin;
+	}
+
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		LoginSecurity plugin = LoginSecurity.instance;
 		Logger logger = plugin.getLogger();
 		
 		if(!(sender instanceof Player)) {
@@ -40,7 +45,7 @@ public class LoginCommand implements CommandExecutor {
 			player.sendMessage(ChatColor.RED + Lang.USAGE.toString() + cmd.getUsage());
 			return true;
 		}
-		if(PasswordManager.checkPass(uuid, args[0])) {
+		if(plugin.passmgr.checkPass(uuid, args[0])) {
 			plugin.authList.remove(uuid);
 			plugin.failList.remove(fuuid);
 			plugin.thread.getTimeout().remove(uuid);
@@ -48,7 +53,7 @@ public class LoginCommand implements CommandExecutor {
 
 			player.sendMessage(ChatColor.GREEN + Lang.LOGIN.toString());
 
-			if(!PasswordManager.validPass(args[0])) {
+			if(!plugin.passmgr.validPass(args[0])) {
 				player.sendMessage(ChatColor.RED + Lang.WEAK_PSW.toString());
 				logger.log(Level.INFO, "{0} uses weak password", player.getName());
 			}

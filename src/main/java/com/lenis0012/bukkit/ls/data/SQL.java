@@ -14,6 +14,7 @@ import com.lenis0012.bukkit.ls.LoginSecurity;
 public abstract class SQL implements DataManager {
 	private Logger logger;
 	private HikariDataSource datasrc;
+	protected LoginSecurity plugin;
 
 	private String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS <TABLE> ("
 					+ "unique_user_id VARCHAR(130) NOT NULL UNIQUE,"
@@ -34,7 +35,7 @@ public abstract class SQL implements DataManager {
 		SELECT_LOGIN = SELECT_LOGIN.replace("<TABLE>", table);
 		SELECT_USERS = SELECT_USERS.replace("<TABLE>", table);
 
-		logger = LoginSecurity.instance.getLogger();
+		logger = plugin.getLogger();
 		datasrc = new HikariDataSource(config);
 
 		createTables();

@@ -6,18 +6,21 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.lenis0012.bukkit.ls.Lang;
+import com.lenis0012.bukkit.ls.util.Lang;
 import com.lenis0012.bukkit.ls.LoginSecurity;
 import com.lenis0012.bukkit.ls.data.LoginData;
-import com.lenis0012.bukkit.ls.encryption.PasswordManager;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
 public class RegisterCommand implements CommandExecutor {
+	private final LoginSecurity plugin;
+
+	public RegisterCommand(LoginSecurity plugin) {
+		this.plugin = plugin;
+	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		LoginSecurity plugin = LoginSecurity.instance;
 		Logger logger = plugin.getLogger();
 		
 		if (!(sender instanceof Player)) {
@@ -36,7 +39,7 @@ public class RegisterCommand implements CommandExecutor {
 			player.sendMessage(ChatColor.RED + Lang.USAGE.toString() + cmd.getUsage());
 			return true;
 		}
-		if (!PasswordManager.validPass(args[0])) {
+		if (!plugin.passmgr.validPass(args[0])) {
 			player.sendMessage(ChatColor.RED + Lang.VERIFY_PSW.toString());
 			logger.log(Level.WARNING, "{0} failed to register", player.getName());
 			return true;

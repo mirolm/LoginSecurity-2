@@ -14,14 +14,15 @@ public class Converter {
 
 	private final FileType type;
 	private final String name;
+	private final LoginSecurity plugin;
 
-	public Converter(FileType type, String name) {
+	public Converter(FileType type, String name, LoginSecurity plugin) {
 		this.type = type;
 		this.name = name;
+		this.plugin = plugin;
 	}
 
 	public void convert() {
-		LoginSecurity plugin = LoginSecurity.instance;
 		Logger logger = plugin.getLogger();
 		
 		if(type == FileType.SQLite && !(plugin.data instanceof SQLite)) {
@@ -30,7 +31,7 @@ public class Converter {
 			ResultSet result = null;
 			LoginData login;
 
-			manager = new SQLite(name);
+			manager = new SQLite(name, plugin);
 
 			try {
 				conn = manager.getConn();

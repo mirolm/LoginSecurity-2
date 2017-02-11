@@ -6,13 +6,14 @@ import java.util.UUID;
 
 import com.google.common.collect.Maps;
 
+import com.lenis0012.bukkit.ls.util.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
 public class ThreadManager {
-	private LoginSecurity plugin;
+	private final LoginSecurity plugin;
 	private BukkitTask msg, lck, to;
 	private final ConcurrentMap<String, Integer> lockout = Maps.newConcurrentMap();
 	private final ConcurrentMap<String, Integer> timeout = Maps.newConcurrentMap();

@@ -3,6 +3,7 @@ package com.lenis0012.bukkit.ls;
 import java.util.Arrays;
 import java.util.List;
 
+import com.lenis0012.bukkit.ls.util.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -35,7 +36,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 public class LoginListener implements Listener {
-	private LoginSecurity plugin;
+	private final LoginSecurity plugin;
 	private static final List<String> ALLOWED_COMMANDS = Arrays.asList("/login ", "/log ", "/l ", "/register ", "/reg ");
 
 	public LoginListener(LoginSecurity i) {
