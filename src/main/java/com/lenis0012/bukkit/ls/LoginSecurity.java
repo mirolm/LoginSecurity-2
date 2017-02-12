@@ -16,7 +16,6 @@ import com.lenis0012.bukkit.ls.util.Config;
 import com.lenis0012.bukkit.ls.util.LoggingFilter;
 import org.apache.logging.log4j.LogManager;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -38,12 +37,6 @@ public class LoginSecurity extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-		//setup quickcalls
-		PluginManager pm = this.getServer().getPluginManager();
-
-		//filter logs
-		setFilter();
-
 		//intalize fields
         conf = new Config(this);
         lang = new Lang(this);
@@ -52,17 +45,26 @@ public class LoginSecurity extends JavaPlugin {
         passmgr = new PasswordManager(this);
 		thread = new ThreadManager(this);
 
-
 		// Threads
 		thread.start();
 
 		//convert everything
-		this.checkConverter();
+		checkConverter();
 
 		//register events
-		pm.registerEvents(new LoginListener(this), this);
-		this.registerCommands();
-	}
+        getServer().getPluginManager().registerEvents(new LoginListener(this), this);
+
+        //register commands
+        getCommand("login").setExecutor(new LoginCommand(this));
+        getCommand("register").setExecutor(new RegisterCommand(this));
+        getCommand("changepass").setExecutor(new ChangePassCommand(this));
+
+        //register filter
+        org.apache.logging.log4j.core.Logger logger;
+
+        logger = (org.apache.logging.log4j.core.Logger) LogManager.getRootLogger();
+        logger.addFilter(new LoggingFilter());
+    }
 
 	@Override
 	public void onDisable() {
@@ -89,12 +91,6 @@ public class LoginSecurity extends JavaPlugin {
 			Converter conv = new Converter(FileType.SQLite, "users.db", this);
 			conv.convert();
 		}
-	}
-
-	private void registerCommands() {
-		getCommand("login").setExecutor(new LoginCommand(this));
-		getCommand("register").setExecutor(new RegisterCommand(this));
-		getCommand("changepass").setExecutor(new ChangePassCommand(this));
 	}
 
 	public boolean checkFailed(String uuid) {
@@ -124,12 +120,5 @@ public class LoginSecurity extends JavaPlugin {
 
 		// ensure that player does not drown after logging in
 		player.setRemainingAir(player.getMaximumAir());
-	}
-
-	private void setFilter() {
-		org.apache.logging.log4j.core.Logger logger; 
-		
-		logger = (org.apache.logging.log4j.core.Logger) LogManager.getRootLogger();
-		logger.addFilter(new LoggingFilter());
 	}
 }
