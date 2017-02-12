@@ -2,13 +2,13 @@ package com.lenis0012.bukkit.ls.data;
 
 import java.util.Properties;
 
-import com.lenis0012.bukkit.ls.LoginSecurity;
+import org.bukkit.plugin.Plugin;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import com.zaxxer.hikari.HikariConfig;
 
 public class MySQL extends SQL {
-	public MySQL(FileConfiguration config, LoginSecurity plugin) {
+	public MySQL(FileConfiguration config, Plugin plugin) {
 		this.plugin = plugin;
 
 		String host = config.getString("MySQL.host", "localhost");

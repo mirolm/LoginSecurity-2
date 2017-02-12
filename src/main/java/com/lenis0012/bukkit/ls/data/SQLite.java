@@ -3,10 +3,10 @@ package com.lenis0012.bukkit.ls.data;
 import java.io.File;
 
 import com.zaxxer.hikari.HikariConfig;
-import com.lenis0012.bukkit.ls.LoginSecurity;
+import org.bukkit.plugin.Plugin;
 
 public class SQLite extends SQL {
-	public SQLite(String name, LoginSecurity plugin) {
+	public SQLite(String name, Plugin plugin) {
 		this.plugin = plugin;
 
 		String table = "users";
