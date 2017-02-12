@@ -1,15 +1,14 @@
 package com.lenis0012.bukkit.ls.commands;
 
+import com.lenis0012.bukkit.ls.LoginSecurity;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.lenis0012.bukkit.ls.util.Lang;
-import com.lenis0012.bukkit.ls.LoginSecurity;
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class LoginCommand implements CommandExecutor {
 	private final LoginSecurity plugin;
@@ -33,16 +32,16 @@ public class LoginCommand implements CommandExecutor {
 		String fuuid = plugin.getFullUUID(uuid, addr);
 
 		if(!plugin.authList.containsKey(uuid)) {
-			player.sendMessage(ChatColor.RED + Lang.ALREADY_LOGIN.toString());
+			player.sendMessage(ChatColor.RED + plugin.lang.get("already_login"));
 			return true;
 		}
 		if(!plugin.data.checkUser(uuid)) {
-			player.sendMessage(ChatColor.RED + Lang.NO_PSW_SET.toString());
+			player.sendMessage(ChatColor.RED + plugin.lang.get("no_psw_set"));
 			return true;
 		}
 		if(args.length < 1) {
-			player.sendMessage(ChatColor.RED + Lang.INVALID_ARGS.toString());
-			player.sendMessage(ChatColor.RED + Lang.USAGE.toString() + cmd.getUsage());
+			player.sendMessage(ChatColor.RED + plugin.lang.get("invalid_args"));
+			player.sendMessage(ChatColor.RED + plugin.lang.get("usage") + cmd.getUsage());
 			return true;
 		}
 		if(plugin.passmgr.checkPass(uuid, args[0])) {
@@ -51,10 +50,10 @@ public class LoginCommand implements CommandExecutor {
 			plugin.thread.getTimeout().remove(uuid);
 			plugin.rehabPlayer(player);
 
-			player.sendMessage(ChatColor.GREEN + Lang.LOGIN.toString());
+			player.sendMessage(ChatColor.GREEN + plugin.lang.get("login"));
 
 			if(!plugin.passmgr.validPass(args[0])) {
-				player.sendMessage(ChatColor.RED + Lang.WEAK_PSW.toString());
+				player.sendMessage(ChatColor.RED + plugin.lang.get("weak_psw"));
 				logger.log(Level.INFO, "{0} uses weak password", player.getName());
 			}
 
@@ -63,9 +62,9 @@ public class LoginCommand implements CommandExecutor {
 			if (plugin.checkFailed(fuuid)) {
 			        plugin.failList.remove(fuuid);
 				plugin.thread.getLockout().put(fuuid, plugin.minFail);
-				player.kickPlayer(Lang.FAIL_COUNT.toString());
+				player.kickPlayer(plugin.lang.get("fail_count"));
 			} else {
-				player.sendMessage(ChatColor.RED + Lang.INVALID_PSW.toString());
+				player.sendMessage(ChatColor.RED + plugin.lang.get("invalid_psw"));
 				logger.log(Level.WARNING, "{0} entered an incorrect password", player.getName());
 			}
 		}

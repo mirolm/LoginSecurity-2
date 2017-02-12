@@ -1,24 +1,6 @@
 package com.lenis0012.bukkit.ls;
 
-import java.io.File;
-import java.util.concurrent.ConcurrentMap;
-import java.util.logging.Logger;
-import java.util.logging.Level;
-import java.util.UUID;
-
 import com.google.common.collect.Maps;
-import com.lenis0012.bukkit.ls.util.Lang;
-import org.apache.logging.log4j.LogManager;
-
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-
-import com.lenis0012.bukkit.ls.util.LoggingFilter;
 import com.lenis0012.bukkit.ls.commands.ChangePassCommand;
 import com.lenis0012.bukkit.ls.commands.LoginCommand;
 import com.lenis0012.bukkit.ls.commands.RegisterCommand;
@@ -29,10 +11,24 @@ import com.lenis0012.bukkit.ls.data.MySQL;
 import com.lenis0012.bukkit.ls.data.SQLite;
 import com.lenis0012.bukkit.ls.encryption.EncryptionType;
 import com.lenis0012.bukkit.ls.encryption.PasswordManager;
+import com.lenis0012.bukkit.ls.util.Lang;
+import com.lenis0012.bukkit.ls.util.LoggingFilter;
+import org.apache.logging.log4j.LogManager;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
+import java.io.File;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentMap;
 
 public class LoginSecurity extends JavaPlugin {
 	public DataManager data;
 	public PasswordManager passmgr;
+	public Lang lang;
 	public final ConcurrentMap<String, Boolean> authList = Maps.newConcurrentMap();
 	public final ConcurrentMap<String, Integer> failList = Maps.newConcurrentMap();
 	public boolean required;
@@ -47,10 +43,6 @@ public class LoginSecurity extends JavaPlugin {
 		//setup quickcalls
 		FileConfiguration config = this.getConfig();
 		PluginManager pm = this.getServer().getPluginManager();
-
-
-		// load translation
-		loadLang();
 
 		//filter logs
 		setFilter();
@@ -77,6 +69,7 @@ public class LoginSecurity extends JavaPlugin {
 		passmgr = new PasswordManager(this);
 		data = this.getDataManager(config);
 		thread = new ThreadManager(this);
+		lang = new Lang(this);
 
 		required = config.getBoolean("settings.password-required");
 		timeDelay = config.getInt("settings.timeout", 60);
@@ -169,27 +162,5 @@ public class LoginSecurity extends JavaPlugin {
 		
 		logger = (org.apache.logging.log4j.core.Logger) LogManager.getRootLogger();
 		logger.addFilter(new LoggingFilter());
-	}
-
-	/* TODO this is pretty ugly...make like changeskin with saveResouce and load items into map... */
-	private void loadLang() {
-		Logger logger = this.getLogger();
-
-		File lang = new File(getDataFolder(), "lang.yml");
-		YamlConfiguration conf = YamlConfiguration.loadConfiguration(lang);
-		
-		for(Lang item:Lang.values()) {
-			if (conf.getString(item.getPath()) == null) {
-				conf.set(item.getPath(), item.getDefault());
-			}
-		}
-
-		Lang.setFile(conf);
-
-		try {
-			conf.save(lang);
-		} catch(Exception e) {
-			logger.log(Level.WARNING, "Failed to save lang.yml.");
-		}
 	}
 }

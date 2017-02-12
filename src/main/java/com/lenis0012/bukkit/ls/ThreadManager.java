@@ -1,16 +1,14 @@
 package com.lenis0012.bukkit.ls;
 
-import java.util.Iterator;
-import java.util.concurrent.ConcurrentMap;
-import java.util.UUID;
-
 import com.google.common.collect.Maps;
-
-import com.lenis0012.bukkit.ls.util.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
+
+import java.util.Iterator;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentMap;
 
 public class ThreadManager {
 	private final LoginSecurity plugin;
@@ -59,9 +57,9 @@ public class ThreadManager {
 					if (plugin.authList.containsKey(uuid)) {
 						boolean register = plugin.authList.get(uuid);
 						if (register) {
-							player.sendMessage(ChatColor.RED + Lang.REG_MSG.toString());
+							player.sendMessage(ChatColor.RED + plugin.lang.get("reg_msg"));
 						} else {
-							player.sendMessage(ChatColor.RED + Lang.LOG_MSG.toString());
+							player.sendMessage(ChatColor.RED + plugin.lang.get("log_msg"));
 						}
 					}
 				}
@@ -103,7 +101,7 @@ public class ThreadManager {
 						it.remove();
 						Player player = Bukkit.getPlayer(UUID.fromString(puuid));
 						if (player != null && player.isOnline()) {
-							player.kickPlayer(Lang.TIMED_OUT.toString());
+							player.kickPlayer(plugin.lang.get("timed_out"));
 						}
 					}
 				}

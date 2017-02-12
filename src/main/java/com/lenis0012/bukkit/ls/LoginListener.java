@@ -1,9 +1,5 @@
 package com.lenis0012.bukkit.ls;
 
-import java.util.Arrays;
-import java.util.List;
-
-import com.lenis0012.bukkit.ls.util.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -12,28 +8,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityTargetEvent;
-import org.bukkit.event.entity.EntityShootBowEvent;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.event.entity.PotionSplashEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
+import java.util.Arrays;
+import java.util.List;
 
 public class LoginListener implements Listener {
 	private final LoginSecurity plugin;
@@ -63,10 +46,10 @@ public class LoginListener implements Listener {
 
 		if (plugin.data.checkUser(uuid)) {
 			plugin.authList.put(uuid, false);
-			player.sendMessage(ChatColor.RED + Lang.LOG_MSG.toString());
+			player.sendMessage(ChatColor.RED + plugin.lang.get("log_msg"));
 		} else if (plugin.required) {
 			plugin.authList.put(uuid, true);
-			player.sendMessage(ChatColor.RED + Lang.REG_MSG.toString());
+			player.sendMessage(ChatColor.RED + plugin.lang.get("reg_msg"));
 		} else {
 			return;
 		}
@@ -79,7 +62,7 @@ public class LoginListener implements Listener {
 		String pname = event.getName();
 		//Check for valid user name
 		if (!pname.matches("^\\w{3,16}$")) {
-			event.disallow(Result.KICK_OTHER, Lang.INVALID_USERNAME.toString());
+			event.disallow(Result.KICK_OTHER, plugin.lang.get("invalid_username"));
 			return;
  		}
 
@@ -88,14 +71,14 @@ public class LoginListener implements Listener {
 		String fuuid = plugin.getFullUUID(uuid, addr);
 		//Check account locked due to failed logins
 		if (plugin.thread.getLockout().containsKey(fuuid)) {
-			event.disallow(Result.KICK_OTHER, Lang.ACCOUNT_LOCKED.toString());
+			event.disallow(Result.KICK_OTHER, plugin.lang.get("account_locked"));
 			return;
 		}
 
 		//Check if the player is already online
 		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 			if (uuid.equalsIgnoreCase(p.getUniqueId().toString())) {
-				event.disallow(Result.KICK_OTHER, Lang.ALREADY_ONLINE.toString());
+				event.disallow(Result.KICK_OTHER, plugin.lang.get("already_online"));
 				return;
 			}
 		}

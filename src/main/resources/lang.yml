@@ -1,0 +1,20 @@
+invalid_username: Player uses invalid username!
+already_online: A player with this name is already online!
+account_locked: Account locked try again later!
+timed_out: Login timed out.
+fail_count: Too many failed login attempts.
+reg_msg: Please register using /register <password>
+log_msg: Please login using /login <password>
+not_reg: You are not registered on the server.
+invalid_args: Not enough arguments.
+usage: 'Usage: '
+invalid_psw: Password Incorrect.
+verify_psw: Password must be at least 6 characters long alphanumeric!
+weak_psw: Password is weak please change it using /changepass <old> <new>
+required_psw: Passwords are required on this server!
+already_reg: You are already registered.
+registered: Registered successful.
+already_login: You are already logged in.
+no_psw_set: You do not have a password set.
+login: Succesfully logged in.
+psw_changed: Sucessfully changed password.

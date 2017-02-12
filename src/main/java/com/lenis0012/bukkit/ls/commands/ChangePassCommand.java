@@ -1,16 +1,15 @@
 package com.lenis0012.bukkit.ls.commands;
 
+import com.lenis0012.bukkit.ls.LoginSecurity;
+import com.lenis0012.bukkit.ls.data.LoginData;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.lenis0012.bukkit.ls.util.Lang;
-import com.lenis0012.bukkit.ls.LoginSecurity;
-import com.lenis0012.bukkit.ls.data.LoginData;
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ChangePassCommand implements CommandExecutor {
 	private final LoginSecurity plugin;
@@ -31,21 +30,21 @@ public class ChangePassCommand implements CommandExecutor {
 		String uuid = player.getUniqueId().toString();
 
 		if (!plugin.data.checkUser(uuid)) {
-			player.sendMessage(ChatColor.RED + Lang.NOT_REG.toString());
+			player.sendMessage(ChatColor.RED + plugin.lang.get("not_reg"));
 			return true;
 		}
 		if (args.length < 2) {
-			player.sendMessage(ChatColor.RED + Lang.INVALID_ARGS.toString());
-			player.sendMessage(ChatColor.RED + Lang.USAGE.toString() + cmd.getUsage());
+			player.sendMessage(ChatColor.RED + plugin.lang.get("invalid_args"));
+			player.sendMessage(ChatColor.RED + plugin.lang.get("usage") + cmd.getUsage());
 			return true;
 		}
 		if (!plugin.passmgr.checkPass(uuid, args[0])) {
-			player.sendMessage(ChatColor.RED + Lang.INVALID_PSW.toString());
+			player.sendMessage(ChatColor.RED + plugin.lang.get("invalid_psw"));
 			logger.log(Level.WARNING, "{0} failed to change password", player.getName());
 			return true;
 		}
 		if (!plugin.passmgr.validPass(args[1])) {
-			player.sendMessage(ChatColor.RED + Lang.VERIFY_PSW.toString());
+			player.sendMessage(ChatColor.RED + plugin.lang.get("verify_psw"));
 			logger.log(Level.WARNING, "{0} failed to change password", player.getName());
 			return true;
 		}
@@ -53,7 +52,7 @@ public class ChangePassCommand implements CommandExecutor {
 		LoginData login = new LoginData(uuid, plugin.hasher.hash(args[1]), plugin.hasher.getTypeId());
 		plugin.data.updateUser(login);
 
-		player.sendMessage(ChatColor.GREEN + Lang.PSW_CHANGED.toString());
+		player.sendMessage(ChatColor.GREEN + plugin.lang.get("psw_changed"));
 		logger.log(Level.INFO, "{0} sucessfully changed password", player.getName());
 
 		return true;
