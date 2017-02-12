@@ -9,12 +9,12 @@ import com.lenis0012.bukkit.ls.data.Converter.FileType;
 import com.lenis0012.bukkit.ls.data.DataManager;
 import com.lenis0012.bukkit.ls.data.MySQL;
 import com.lenis0012.bukkit.ls.data.SQLite;
-import com.lenis0012.bukkit.ls.encryption.EncryptionType;
 import com.lenis0012.bukkit.ls.encryption.PasswordManager;
+import com.lenis0012.bukkit.ls.encryption.EncryptionType;
 import com.lenis0012.bukkit.ls.util.Lang;
+import com.lenis0012.bukkit.ls.util.Config;
 import com.lenis0012.bukkit.ls.util.LoggingFilter;
 import org.apache.logging.log4j.LogManager;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -29,60 +29,29 @@ public class LoginSecurity extends JavaPlugin {
 	public DataManager data;
 	public PasswordManager passmgr;
 	public Lang lang;
+	public Config conf;
+    public ThreadManager thread;
+    public EncryptionType hasher;
+
 	public final ConcurrentMap<String, Boolean> authList = Maps.newConcurrentMap();
 	public final ConcurrentMap<String, Integer> failList = Maps.newConcurrentMap();
-	public boolean required;
-	public int timeDelay, countFail, minFail;
-	public ThreadManager thread;
-	public EncryptionType hasher;
-	public static int PHP_VERSION;
-	public static String encoder;
 
 	@Override
 	public void onEnable() {
 		//setup quickcalls
-		FileConfiguration config = this.getConfig();
 		PluginManager pm = this.getServer().getPluginManager();
 
 		//filter logs
 		setFilter();
 
-		//setup config
-		config.addDefault("settings.password-required", true);
-		config.addDefault("settings.encryption", "BCRYPT");
-		config.addDefault("settings.encoder", "UTF-8");
-		config.addDefault("settings.PHP_VERSION", 4);
-		config.addDefault("settings.timeout", 60);
-		config.addDefault("settings.failed.count", 3);
-		config.addDefault("settings.failed.minutes", 120);
-		config.addDefault("MySQL.use", false);
-		config.addDefault("MySQL.host", "localhost");
-		config.addDefault("MySQL.port", 3306);
-		config.addDefault("MySQL.database", "");
-		config.addDefault("MySQL.username", "");
-		config.addDefault("MySQL.password", "");
-		config.addDefault("MySQL.prefix", "");
-		config.options().copyDefaults(true);
-		saveConfig();
-
 		//intalize fields
-		passmgr = new PasswordManager(this);
-		data = this.getDataManager(config);
+        conf = new Config(this);
+        lang = new Lang(this);
+        hasher = EncryptionType.fromString(conf.hasher);
+        data = this.getDataManager();
+        passmgr = new PasswordManager(this);
 		thread = new ThreadManager(this);
-		lang = new Lang(this);
 
-		required = config.getBoolean("settings.password-required");
-		timeDelay = config.getInt("settings.timeout", 60);
-		countFail = config.getInt("settings.failed.count", 3);
-		minFail = config.getInt("settings.failed.minutes", 120);
-		PHP_VERSION = config.getInt("settings.PHP_VERSION", 4);
-		this.hasher = EncryptionType.fromString(config.getString("settings.encryption"));
-		String enc = config.getString("settings.encoder");
-		if (enc.equalsIgnoreCase("utf-16")) {
-			encoder = "UTF-16";
-		} else {
-			encoder = "UTF-8";
-		}
 
 		// Threads
 		thread.start();
@@ -106,9 +75,9 @@ public class LoginSecurity extends JavaPlugin {
 		}
 	}
 
-	private DataManager getDataManager(FileConfiguration config) {
-		if (config.getBoolean("MySQL.use")) {
-			return new MySQL(config, this);
+	private DataManager getDataManager() {
+		if (conf.usemysql) {
+			return new MySQL(this);
 		} else {
 			return new SQLite("users.db", this);
 		}
@@ -130,7 +99,7 @@ public class LoginSecurity extends JavaPlugin {
 
 	public boolean checkFailed(String uuid) {
 		if (failList.containsKey(uuid)) {
-			return failList.put(uuid, failList.get(uuid) + 1)  >= countFail;
+			return failList.put(uuid, failList.get(uuid) + 1)  >= conf.countFail;
 		} else {
 			failList.put(uuid, 1);
 		}
@@ -145,7 +114,7 @@ public class LoginSecurity extends JavaPlugin {
 	public void debilitatePlayer(Player player) {
 		String uuid = player.getUniqueId().toString();
 		
-		thread.getTimeout().put(uuid, timeDelay);
+		thread.getTimeout().put(uuid, conf.timeDelay);
 
 		player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 1), true);
 	}

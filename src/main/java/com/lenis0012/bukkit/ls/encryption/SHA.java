@@ -18,6 +18,6 @@ public class SHA implements Encryptor {
 
 	@Override
 	public String hash(String value) {
-		return EncryptionUtil.encrypt(value, this.type, LoginSecurity.encoder);
+		return EncryptionUtil.encrypt(value, this.type, "UTF-8");
 	}
 }

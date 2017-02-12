@@ -61,7 +61,7 @@ public class LoginCommand implements CommandExecutor {
 		} else {
 			if (plugin.checkFailed(fuuid)) {
 			        plugin.failList.remove(fuuid);
-				plugin.thread.getLockout().put(fuuid, plugin.minFail);
+				plugin.thread.getLockout().put(fuuid, plugin.conf.minFail);
 				player.kickPlayer(plugin.lang.get("fail_count"));
 			} else {
 				player.sendMessage(ChatColor.RED + plugin.lang.get("invalid_psw"));

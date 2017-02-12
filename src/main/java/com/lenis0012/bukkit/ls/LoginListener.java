@@ -22,8 +22,8 @@ public class LoginListener implements Listener {
 	private final LoginSecurity plugin;
 	private static final List<String> ALLOWED_COMMANDS = Arrays.asList("/login ", "/log ", "/l ", "/register ", "/reg ");
 
-	public LoginListener(LoginSecurity i) {
-		this.plugin = i;
+	public LoginListener(LoginSecurity plugin) {
+		this.plugin = plugin;
 	}
 
 	private boolean authEntity(Entity entity) {
@@ -47,7 +47,7 @@ public class LoginListener implements Listener {
 		if (plugin.data.checkUser(uuid)) {
 			plugin.authList.put(uuid, false);
 			player.sendMessage(ChatColor.RED + plugin.lang.get("log_msg"));
-		} else if (plugin.required) {
+		} else if (plugin.conf.required) {
 			plugin.authList.put(uuid, true);
 			player.sendMessage(ChatColor.RED + plugin.lang.get("reg_msg"));
 		} else {
