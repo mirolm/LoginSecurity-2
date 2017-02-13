@@ -4,10 +4,18 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
 public class Config {
-    public boolean required, usemysql;
-    public int timeDelay, countFail, minFail;
-    public String hasher;
-    public String host, port, database, user, pass, table;
+    public final boolean required;
+    public final boolean usemysql;
+    public final int timeDelay;
+    public final int countFail;
+    public final int minFail;
+    public final String hasher;
+    public final String host;
+    public final String port;
+    public final String database;
+    public final String user;
+    public final String pass;
+    public final String table;
 
     public Config(Plugin plugin) {
         FileConfiguration config = plugin.getConfig();

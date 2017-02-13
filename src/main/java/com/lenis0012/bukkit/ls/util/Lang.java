@@ -9,7 +9,7 @@ import java.io.File;
 import java.util.concurrent.ConcurrentMap;
 
 public class Lang {
-    private final ConcurrentMap<String, String> langs = Maps.newConcurrentMap();
+    private static final ConcurrentMap<String, String> langs = Maps.newConcurrentMap();
 
     public Lang(Plugin plugin) {
         File langFile = new File(plugin.getDataFolder(), "lang.yml");
