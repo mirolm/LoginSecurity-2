@@ -3,7 +3,6 @@ package com.lenis0012.bukkit.ls.thread;
 import com.google.common.collect.Maps;
 import com.lenis0012.bukkit.ls.LoginSecurity;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -44,9 +43,9 @@ public class TimeoutThread extends BukkitRunnable {
 
                     if (player != null && player.isOnline()) {
                         if (current.registered) {
-                            player.sendMessage(ChatColor.RED + plugin.lang.get("reg_msg"));
+                            player.sendMessage(plugin.lang.get("reg_msg"));
                         } else {
-                            player.sendMessage(ChatColor.RED + plugin.lang.get("log_msg"));
+                            player.sendMessage(plugin.lang.get("log_msg"));
                         }
                     }
                 }

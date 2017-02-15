@@ -2,7 +2,6 @@ package com.lenis0012.bukkit.ls.commands;
 
 import com.lenis0012.bukkit.ls.LoginSecurity;
 import com.lenis0012.bukkit.ls.data.LoginData;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -30,16 +29,16 @@ public class RegisterCommand implements CommandExecutor {
 		String uuid = player.getUniqueId().toString();
 
 		if (plugin.data.checkUser(uuid)) {
-			player.sendMessage(ChatColor.RED + plugin.lang.get("already_reg"));
+			player.sendMessage(plugin.lang.get("already_reg"));
 			return true;
 		}
 		if (args.length < 1) {
-			player.sendMessage(ChatColor.RED + plugin.lang.get("invalid_args"));
-			player.sendMessage(ChatColor.RED + plugin.lang.get("usage") + cmd.getUsage());
+			player.sendMessage(plugin.lang.get("invalid_args"));
+			player.sendMessage(plugin.lang.get("usage") + cmd.getUsage());
 			return true;
 		}
 		if (!plugin.passmgr.validPass(args[0])) {
-			player.sendMessage(ChatColor.RED + plugin.lang.get("verify_psw"));
+			player.sendMessage(plugin.lang.get("verify_psw"));
 			logger.log(Level.WARNING, "{0} failed to register", player.getName());
 			return true;
 		}
@@ -51,7 +50,7 @@ public class RegisterCommand implements CommandExecutor {
 
 		plugin.rehabPlayer(player);
 
-		player.sendMessage(ChatColor.GREEN + plugin.lang.get("registered"));
+		player.sendMessage(plugin.lang.get("registered"));
 		logger.log(Level.INFO, "{0} registered sucessfully", player.getName());
 
 		return true;
