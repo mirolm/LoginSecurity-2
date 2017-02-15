@@ -1,6 +1,5 @@
 package com.lenis0012.bukkit.ls.encryption;
 
-import com.lenis0012.bukkit.ls.LoginSecurity;
 import com.lenis0012.bukkit.ls.util.EncryptionUtil;
 
 public class SHA implements Encryptor {
