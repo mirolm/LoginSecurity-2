@@ -1,7 +1,6 @@
 package com.lenis0012.bukkit.ls;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -32,7 +31,7 @@ public class LoginListener implements Listener {
 			if (player.isOnline() && !player.hasMetadata("NPC")) {
 				String uuid = player.getUniqueId().toString();
 
-				return plugin.authList.containsKey(uuid);
+				return plugin.timeout.check(uuid);
 			}
 		}
 
@@ -45,11 +44,9 @@ public class LoginListener implements Listener {
 		String uuid = player.getUniqueId().toString();
 
 		if (plugin.data.checkUser(uuid)) {
-			plugin.authList.put(uuid, false);
-			player.sendMessage(ChatColor.RED + plugin.lang.get("log_msg"));
+			plugin.timeout.add(uuid,false);
 		} else if (plugin.conf.required) {
-			plugin.authList.put(uuid, true);
-			player.sendMessage(ChatColor.RED + plugin.lang.get("reg_msg"));
+            plugin.timeout.add(uuid,true);
 		} else {
 			return;
 		}
@@ -70,7 +67,7 @@ public class LoginListener implements Listener {
 		String addr = event.getAddress().toString();
 		String fuuid = plugin.getFullUUID(uuid, addr);
 		//Check account locked due to failed logins
-		if (plugin.thread.getLockout().containsKey(fuuid)) {
+		if (plugin.lockout.check(fuuid)) {
 			event.disallow(Result.KICK_OTHER, plugin.lang.get("account_locked"));
 			return;
 		}
@@ -78,7 +75,7 @@ public class LoginListener implements Listener {
 		//Check if the player is already online
 		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 			if (uuid.equalsIgnoreCase(p.getUniqueId().toString())) {
-				event.disallow(Result.KICK_OTHER, plugin.lang.get("already_online"));
+			    event.disallow(Result.KICK_OTHER, plugin.lang.get("already_online"));
 				return;
 			}
 		}
@@ -89,7 +86,7 @@ public class LoginListener implements Listener {
 		Player player = event.getPlayer();
 		String uuid = player.getUniqueId().toString();
 
-		plugin.authList.remove(uuid);
+		plugin.timeout.remove(uuid);
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -100,8 +97,8 @@ public class LoginListener implements Listener {
 			Location to = event.getTo();
 
 			if(from.getBlockX() != to.getBlockX() || from.getBlockZ() != to.getBlockZ()) {
-            			event.setTo(event.getFrom());
-        		}
+                event.setTo(event.getFrom());
+            }
 		}
 	}
 
@@ -221,7 +218,7 @@ public class LoginListener implements Listener {
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
 		Player player = event.getPlayer();
 		if (authEntity(player)) {
-			event.setCancelled(true);
+		    event.setCancelled(true);
 		}
 	}
 
@@ -230,15 +227,16 @@ public class LoginListener implements Listener {
 		Player player = event.getPlayer();
 		if (authEntity(player)) {
 			String message = event.getMessage().toLowerCase();
-        		for(String cmd : ALLOWED_COMMANDS) {
-            			if(message.startsWith(cmd)) {
-                			return;
-            			}
-        		}
+
+			for(String cmd : ALLOWED_COMMANDS) {
+                if(message.startsWith(cmd)) {
+                    return;
+                }
+            }
 
 			if(message.startsWith("/f")) {
             			event.setMessage("/LOGIN_SECURITY_FACTION_REPLACEMENT_FIX");
-        		}
+            }
 
 			event.setCancelled(true);
 		}

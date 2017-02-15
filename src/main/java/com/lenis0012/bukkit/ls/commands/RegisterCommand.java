@@ -47,8 +47,8 @@ public class RegisterCommand implements CommandExecutor {
 		LoginData login = new LoginData(uuid, plugin.hasher.hash(args[0]), plugin.hasher.getTypeId());
 		plugin.data.regUser(login);
 
-		plugin.authList.remove(uuid);
-		plugin.thread.getTimeout().remove(uuid);
+		plugin.timeout.remove(uuid);
+
 		plugin.rehabPlayer(player);
 
 		player.sendMessage(ChatColor.GREEN + plugin.lang.get("registered"));

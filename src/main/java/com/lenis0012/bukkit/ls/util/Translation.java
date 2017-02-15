@@ -8,10 +8,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.util.concurrent.ConcurrentMap;
 
-public class Lang {
-    private static final ConcurrentMap<String, String> langs = Maps.newConcurrentMap();
+public class Translation {
+    private final ConcurrentMap<String, String> langs = Maps.newConcurrentMap();
 
-    public Lang(Plugin plugin) {
+    public Translation(Plugin plugin) {
         File langFile = new File(plugin.getDataFolder(), "lang.yml");
         if (!langFile.exists()) {
             plugin.saveResource("lang.yml", false);
@@ -27,7 +27,7 @@ public class Lang {
         }
     }
 
-    public String get (String key) {
+    public String get(String key) {
         return langs.get(key);
     }
 }

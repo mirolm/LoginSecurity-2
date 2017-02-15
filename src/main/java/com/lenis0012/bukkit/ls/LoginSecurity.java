@@ -1,6 +1,5 @@
 package com.lenis0012.bukkit.ls;
 
-import com.google.common.collect.Maps;
 import com.lenis0012.bukkit.ls.commands.ChangePassCommand;
 import com.lenis0012.bukkit.ls.commands.LoginCommand;
 import com.lenis0012.bukkit.ls.commands.RegisterCommand;
@@ -11,9 +10,11 @@ import com.lenis0012.bukkit.ls.data.MySQL;
 import com.lenis0012.bukkit.ls.data.SQLite;
 import com.lenis0012.bukkit.ls.encryption.PasswordManager;
 import com.lenis0012.bukkit.ls.encryption.EncryptionType;
-import com.lenis0012.bukkit.ls.util.Lang;
+import com.lenis0012.bukkit.ls.util.Translation;
 import com.lenis0012.bukkit.ls.util.Config;
 import com.lenis0012.bukkit.ls.util.LoggingFilter;
+import com.lenis0012.bukkit.ls.thread.LockoutThread;
+import com.lenis0012.bukkit.ls.thread.TimeoutThread;
 import org.apache.logging.log4j.LogManager;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,31 +23,26 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.io.File;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentMap;
 
 public class LoginSecurity extends JavaPlugin {
 	public DataManager data;
 	public PasswordManager passmgr;
-	public Lang lang;
+	public Translation lang;
 	public Config conf;
-    public ThreadManager thread;
     public EncryptionType hasher;
-
-	public final ConcurrentMap<String, Boolean> authList = Maps.newConcurrentMap();
-	public final ConcurrentMap<String, Integer> failList = Maps.newConcurrentMap();
+    public LockoutThread lockout;
+    public TimeoutThread timeout;
 
 	@Override
 	public void onEnable() {
 		//intalize fields
         conf = new Config(this);
-        lang = new Lang(this);
+        lang = new Translation(this);
         hasher = EncryptionType.fromString(conf.hasher);
         data = this.getDataManager();
         passmgr = new PasswordManager(this);
-		thread = new ThreadManager(this);
-
-		// Threads
-		thread.start();
+        lockout = new LockoutThread(this);
+        timeout = new TimeoutThread(this);
 
 		//convert everything
 		checkConverter();
@@ -64,17 +60,19 @@ public class LoginSecurity extends JavaPlugin {
 
         logger = (org.apache.logging.log4j.core.Logger) LogManager.getRootLogger();
         logger.addFilter(new LoggingFilter());
+
+        //run threads
+        lockout.runTaskTimer(this, 20L, 20L);
+        timeout.runTaskTimer(this, 1200L, 1200L);
+
     }
 
 	@Override
 	public void onDisable() {
-		if (data != null) {
-			data.close();
-		}
-		
-		if (thread != null) {
-			thread.stop();
-		}
+		data.close();
+
+		lockout.cancel();
+        timeout.cancel();
 	}
 
 	private DataManager getDataManager() {
@@ -93,25 +91,11 @@ public class LoginSecurity extends JavaPlugin {
 		}
 	}
 
-	public boolean checkFailed(String uuid) {
-		if (failList.containsKey(uuid)) {
-			return failList.put(uuid, failList.get(uuid) + 1)  >= conf.countFail;
-		} else {
-			failList.put(uuid, 1);
-		}
-
-		return false;
-	}
-
 	public String getFullUUID(String uuid, String addr) {
                 return UUID.nameUUIDFromBytes(("|#" + uuid + "^|^" + addr + "#|").getBytes()).toString();
 	}
 
 	public void debilitatePlayer(Player player) {
-		String uuid = player.getUniqueId().toString();
-		
-		thread.getTimeout().put(uuid, conf.timeDelay);
-
 		player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 1), true);
 	}
 
