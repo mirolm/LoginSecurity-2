@@ -9,8 +9,8 @@ import java.util.concurrent.ConcurrentMap;
 
 public class LockoutThread extends BukkitRunnable {
     private class LockoutData {
-        int failed;
-        int timeout;
+        public int failed;
+        public int timeout;
 
         public LockoutData(int failed, int timeout) {
             this.failed = failed;

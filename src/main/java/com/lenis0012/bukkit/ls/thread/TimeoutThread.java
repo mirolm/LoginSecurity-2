@@ -12,8 +12,8 @@ import java.util.concurrent.ConcurrentMap;
 
 public class TimeoutThread extends BukkitRunnable {
     private class TimeoutData {
-        boolean registered;
-        int timeout;
+        public final boolean registered;
+        public int timeout;
 
         public TimeoutData(boolean registered, int timeout) {
             this.registered = registered;
