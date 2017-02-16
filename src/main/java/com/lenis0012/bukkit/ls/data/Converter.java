@@ -27,7 +27,7 @@ public class Converter {
         manager = new SQLite(name, plugin);
 
         try {
-            if (manager.exists(name) && plugin.data instanceof MySQL) {
+            if (manager.exists(name) && plugin.conf.usemysql) {
                 conn = manager.getConn();
                 result = manager.getAllUsers(conn);
 

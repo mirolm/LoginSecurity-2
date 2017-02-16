@@ -46,9 +46,9 @@ public class TimeoutThread implements Runnable {
             if (!trigger(current)) {
                 if (player != null && player.isOnline()) {
                     if (current.registered) {
-                        player.sendMessage(plugin.lang.get("reg_msg"));
-                    } else {
                         player.sendMessage(plugin.lang.get("log_msg"));
+                    } else {
+                        player.sendMessage(plugin.lang.get("reg_msg"));
                     }
                 }
             } else {
@@ -65,9 +65,9 @@ public class TimeoutThread implements Runnable {
         Player player = Bukkit.getPlayer(UUID.fromString(uuid));
         if (player != null && player.isOnline()) {
             if (registered) {
-                player.sendMessage(plugin.lang.get("reg_msg"));
-            } else {
                 player.sendMessage(plugin.lang.get("log_msg"));
+            } else {
+                player.sendMessage(plugin.lang.get("reg_msg"));
             }
 
             player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 1), true);
