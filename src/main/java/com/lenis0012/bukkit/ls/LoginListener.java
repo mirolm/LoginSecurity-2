@@ -232,7 +232,7 @@ public class LoginListener implements Listener {
             }
 
 			if(message.startsWith("/f")) {
-            			event.setMessage("/LOGIN_SECURITY_FACTION_REPLACEMENT_FIX");
+				event.setMessage("/LOGIN_SECURITY_FACTION_REPLACEMENT_FIX");
             }
 
 			event.setCancelled(true);

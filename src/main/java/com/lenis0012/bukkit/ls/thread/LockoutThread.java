@@ -16,7 +16,7 @@ public class LockoutThread implements Runnable {
         public LockoutData(String uuid) {
             this.uuid = uuid;
             this.failed = 1;
-            this.timeout = System.currentTimeMillis();
+            this.timeout = System.currentTimeMillis() / 1000L;
         }
     }
 
