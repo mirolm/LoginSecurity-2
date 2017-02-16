@@ -48,8 +48,6 @@ public class RegisterCommand implements CommandExecutor {
 
 		plugin.timeout.remove(uuid);
 
-		plugin.rehabPlayer(player);
-
 		player.sendMessage(plugin.lang.get("registered"));
 		logger.log(Level.INFO, "{0} registered sucessfully", player.getName());
 

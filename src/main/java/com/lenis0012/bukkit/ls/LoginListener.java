@@ -50,8 +50,6 @@ public class LoginListener implements Listener {
 		} else {
 			return;
 		}
-
-		plugin.debilitatePlayer(player);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -65,9 +63,8 @@ public class LoginListener implements Listener {
 
 		String uuid = event.getUniqueId().toString();
 		String addr = event.getAddress().toString();
-		String fuuid = plugin.getFullUUID(uuid, addr);
 		//Check account locked due to failed logins
-		if (plugin.lockout.check(fuuid)) {
+		if (plugin.lockout.check(uuid, addr)) {
 			event.disallow(Result.KICK_OTHER, plugin.lang.get("account_locked"));
 			return;
 		}

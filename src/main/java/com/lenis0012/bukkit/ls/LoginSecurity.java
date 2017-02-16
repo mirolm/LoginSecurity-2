@@ -16,13 +16,9 @@ import com.lenis0012.bukkit.ls.util.LoggingFilter;
 import com.lenis0012.bukkit.ls.thread.LockoutThread;
 import com.lenis0012.bukkit.ls.thread.TimeoutThread;
 import org.apache.logging.log4j.LogManager;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 import java.io.File;
-import java.util.UUID;
 
 public class LoginSecurity extends JavaPlugin {
 	public DataManager data;
@@ -41,8 +37,8 @@ public class LoginSecurity extends JavaPlugin {
         hasher = EncryptionType.fromString(conf.hasher);
         data = this.getDataManager();
         passmgr = new PasswordManager(this);
-        lockout = new LockoutThread(this);
         timeout = new TimeoutThread(this);
+		lockout = new LockoutThread(this);
 
 		//convert everything
 		checkConverter();
@@ -61,18 +57,14 @@ public class LoginSecurity extends JavaPlugin {
         logger = (org.apache.logging.log4j.core.Logger) LogManager.getRootLogger();
         logger.addFilter(new LoggingFilter());
 
-        //run threads
-        lockout.runTaskTimer(this, 20L, 20L);
-        timeout.runTaskTimer(this, 1200L, 1200L);
-
+        //register threads
+		getServer().getScheduler().runTaskTimer(this, timeout, 0L, 200L);
+		getServer().getScheduler().runTaskTimer(this, lockout, 0L, 1200L);
     }
 
 	@Override
 	public void onDisable() {
 		data.close();
-
-		lockout.cancel();
-        timeout.cancel();
 	}
 
 	private DataManager getDataManager() {
@@ -89,20 +81,5 @@ public class LoginSecurity extends JavaPlugin {
 			Converter conv = new Converter(FileType.SQLite, "users.db", this);
 			conv.convert();
 		}
-	}
-
-	public String getFullUUID(String uuid, String addr) {
-                return UUID.nameUUIDFromBytes(("|#" + uuid + "^|^" + addr + "#|").getBytes()).toString();
-	}
-
-	public void debilitatePlayer(Player player) {
-		player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 1), true);
-	}
-
-	public void rehabPlayer(Player player) {
-		player.removePotionEffect(PotionEffectType.BLINDNESS);
-
-		// ensure that player does not drown after logging in
-		player.setRemainingAir(player.getMaximumAir());
 	}
 }

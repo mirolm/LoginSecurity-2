@@ -2,24 +2,27 @@ package com.lenis0012.bukkit.ls.thread;
 
 import com.google.common.collect.Maps;
 import com.lenis0012.bukkit.ls.LoginSecurity;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Iterator;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentMap;
 
-public class LockoutThread extends BukkitRunnable {
+public class LockoutThread implements Runnable {
     private class LockoutData {
+        public final String uuid;
         public int failed;
-        public int timeout;
+        public long timeout;
 
-        public LockoutData(int failed, int timeout) {
-            this.failed = failed;
-            this.timeout = timeout;
+        public LockoutData(String uuid) {
+            this.uuid = uuid;
+            this.failed = 1;
+            this.timeout = System.currentTimeMillis();
         }
     }
 
     private final ConcurrentMap<String, LockoutData> failList = Maps.newConcurrentMap();
     private final LoginSecurity plugin;
+    private long cycle;
 
     public LockoutThread(LoginSecurity plugin) {
         this.plugin = plugin;
@@ -28,34 +31,37 @@ public class LockoutThread extends BukkitRunnable {
     @Override
     public void run() {
         Iterator<String> it = failList.keySet().iterator();
+        cycle = System.currentTimeMillis() / 1000L;
+
         while (it.hasNext()) {
             String puuid = it.next();
             if (check(puuid)) {
                 LockoutData current = failList.get(puuid);
-                if (current.timeout >= 1) {
-                    current.timeout -= 1;
-                    failList.put(puuid, current);
-                } else {
+                if (trigger(current)) {
                     it.remove();
                 }
             }
         }
     }
 
-    public boolean failed(String uuid) {
-        if (failList.containsKey(uuid)) {
-            LockoutData current = failList.get(uuid);
-            current.failed += 1;
+    public boolean failed(String uuid, String addr) {
+        String fuuid = fulluuid(uuid, addr);
 
-            return failList.put(uuid, current).failed  >= plugin.conf.countFail;
+        if (failList.containsKey(fuuid)) {
+            LockoutData current = failList.get(fuuid);
+
+            current.failed += 1;
+            current.timeout = System.currentTimeMillis() / 1000L;
+
+            return failList.put(fuuid, current).failed  >= plugin.conf.countFail;
         } else {
-            failList.put(uuid, new LockoutData(1, plugin.conf.minFail));
+            failList.put(fuuid, new LockoutData(fuuid));
         }
 
         return false;
     }
 
-    public boolean check(String uuid) {
+    private boolean check(String uuid) {
         if (failList.containsKey(uuid)) {
             return failList.get(uuid).failed >= plugin.conf.countFail;
         } else {
@@ -63,9 +69,29 @@ public class LockoutThread extends BukkitRunnable {
         }
     }
 
-    public void remove(String uuid) {
-        if (failList.containsKey(uuid)) {
-            failList.remove(uuid);
+    public boolean check(String uuid, String addr) {
+        String fuuid = fulluuid(uuid, addr);
+
+        return check(fuuid);
+    }
+
+    public void remove(String uuid, String addr) {
+        String fuuid = fulluuid(uuid, addr);
+
+        if (failList.containsKey(fuuid)) {
+            failList.remove(fuuid);
+        }
+    }
+
+    private String fulluuid(String uuid, String addr) {
+        return UUID.nameUUIDFromBytes(("|#" + uuid + "^|^" + addr + "#|").getBytes()).toString();
+    }
+
+    private boolean trigger(LockoutData current) {
+        if (failList.containsKey(current.uuid)) {
+            return (cycle - current.timeout) / 60 >= plugin.conf.minFail;
+        } else {
+            return false;
         }
     }
 }

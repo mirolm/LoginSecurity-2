@@ -28,7 +28,6 @@ public class LoginCommand implements CommandExecutor {
 		Player player = (Player)sender;
 		String uuid = player.getUniqueId().toString();
 		String addr = player.getAddress().getAddress().toString();
-		String fuuid = plugin.getFullUUID(uuid, addr);
 
 		if(!plugin.timeout.check(uuid)) {
 			player.sendMessage(plugin.lang.get("already_login"));
@@ -45,9 +44,7 @@ public class LoginCommand implements CommandExecutor {
 		}
 		if(plugin.passmgr.checkPass(uuid, args[0])) {
 			plugin.timeout.remove(uuid);
-			plugin.lockout.remove(fuuid);
-
-			plugin.rehabPlayer(player);
+			plugin.lockout.remove(uuid, addr);
 
 			player.sendMessage(plugin.lang.get("login"));
 
@@ -58,7 +55,7 @@ public class LoginCommand implements CommandExecutor {
 
 			logger.log(Level.INFO, "{0} authenticated", player.getName());
 		} else {
-			if (plugin.lockout.failed(fuuid)) {
+			if (plugin.lockout.failed(uuid, addr)) {
 				player.kickPlayer(plugin.lang.get("fail_count"));
 			} else {
 				player.sendMessage(plugin.lang.get("invalid_psw"));
