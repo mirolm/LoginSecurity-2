@@ -8,7 +8,7 @@ public interface Encryptor {
 	 * @param real		real password from database
 	 * @return			passwords the same?
 	 */
-	public boolean check(String check, String real);
+	boolean check(String check, String real);
 	
 	/**
 	 * Hash a value
@@ -16,5 +16,5 @@ public interface Encryptor {
 	 * @param value		Value
 	 * @return			Hashed value
 	 */
-	public String hash(String value);
+	String hash(String value);
 }

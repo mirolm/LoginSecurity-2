@@ -62,10 +62,9 @@ public class PHPBB3 implements Encryptor {
 		}
 
 		String output = "$H$";
-		output += itoa64.charAt(
-				Math.min(iteration_count_log2 +
-				((LoginSecurity.PHP_VERSION >= 5) ? 5 : 3), 30));
+		output += itoa64.charAt(Math.min(iteration_count_log2 + 3, 30)); // PHP_VERSION >= 5 ? 5 : 3
 		output += _hash_encode64(input, 6);
+
 
 		return output;
 	}

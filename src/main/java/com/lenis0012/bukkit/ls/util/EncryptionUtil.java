@@ -9,7 +9,7 @@ import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
 public class EncryptionUtil {
 	public static String encrypt(String value, String algorithm, String encoding) {
-		MessageDigest digest = null;
+		MessageDigest digest;
 		try {
 			digest = MessageDigest.getInstance(algorithm);
 			digest.update(value.getBytes(encoding));
@@ -26,8 +26,7 @@ public class EncryptionUtil {
 		try {
 			MessageDigest md = MessageDigest.getInstance("MD5");
 			md.update(value.getBytes(), 0 ,value.length());
-			String md5 = new BigInteger(1, md.digest()).toString(16);
-			return md5;
+			return new BigInteger(1, md.digest()).toString(16);
 		} catch (NoSuchAlgorithmException e) {
 			return value;
 		}

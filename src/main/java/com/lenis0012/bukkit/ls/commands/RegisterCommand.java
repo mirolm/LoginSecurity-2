@@ -1,23 +1,24 @@
 package com.lenis0012.bukkit.ls.commands;
 
-import org.bukkit.ChatColor;
+import com.lenis0012.bukkit.ls.LoginSecurity;
+import com.lenis0012.bukkit.ls.data.LoginData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.lenis0012.bukkit.ls.Lang;
-import com.lenis0012.bukkit.ls.LoginSecurity;
-import com.lenis0012.bukkit.ls.data.LoginData;
-import com.lenis0012.bukkit.ls.encryption.PasswordManager;
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class RegisterCommand implements CommandExecutor {
+	private final LoginSecurity plugin;
+
+	public RegisterCommand(LoginSecurity plugin) {
+		this.plugin = plugin;
+	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		LoginSecurity plugin = LoginSecurity.instance;
 		Logger logger = plugin.getLogger();
 		
 		if (!(sender instanceof Player)) {
@@ -28,16 +29,16 @@ public class RegisterCommand implements CommandExecutor {
 		String uuid = player.getUniqueId().toString();
 
 		if (plugin.data.checkUser(uuid)) {
-			player.sendMessage(ChatColor.RED + Lang.ALREADY_REG.toString());
+			player.sendMessage(plugin.lang.get("already_reg"));
 			return true;
 		}
 		if (args.length < 1) {
-			player.sendMessage(ChatColor.RED + Lang.INVALID_ARGS.toString());
-			player.sendMessage(ChatColor.RED + Lang.USAGE.toString() + cmd.getUsage());
+			player.sendMessage(plugin.lang.get("invalid_args"));
+			player.sendMessage(plugin.lang.get("usage") + cmd.getUsage());
 			return true;
 		}
-		if (!PasswordManager.validPass(args[0])) {
-			player.sendMessage(ChatColor.RED + Lang.VERIFY_PSW.toString());
+		if (!plugin.passmgr.validPass(args[0])) {
+			player.sendMessage(plugin.lang.get("verify_psw"));
 			logger.log(Level.WARNING, "{0} failed to register", player.getName());
 			return true;
 		}
@@ -45,11 +46,9 @@ public class RegisterCommand implements CommandExecutor {
 		LoginData login = new LoginData(uuid, plugin.hasher.hash(args[0]), plugin.hasher.getTypeId());
 		plugin.data.regUser(login);
 
-		plugin.authList.remove(uuid);
-		plugin.thread.getTimeout().remove(uuid);
-		plugin.rehabPlayer(player);
+		plugin.timeout.remove(uuid);
 
-		player.sendMessage(ChatColor.GREEN + Lang.REGISTERED.toString());
+		player.sendMessage(plugin.lang.get("registered"));
 		logger.log(Level.INFO, "{0} registered sucessfully", player.getName());
 
 		return true;

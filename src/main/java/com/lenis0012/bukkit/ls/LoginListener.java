@@ -1,45 +1,28 @@
 package com.lenis0012.bukkit.ls;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityTargetEvent;
-import org.bukkit.event.entity.EntityShootBowEvent;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.event.entity.PotionSplashEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
+import java.util.Arrays;
+import java.util.List;
 
 public class LoginListener implements Listener {
-	private LoginSecurity plugin;
+	private final LoginSecurity plugin;
 	private static final List<String> ALLOWED_COMMANDS = Arrays.asList("/login ", "/log ", "/l ", "/register ", "/reg ");
 
-	public LoginListener(LoginSecurity i) {
-		this.plugin = i;
+	public LoginListener(LoginSecurity plugin) {
+		this.plugin = plugin;
 	}
 
 	private boolean authEntity(Entity entity) {
@@ -48,7 +31,7 @@ public class LoginListener implements Listener {
 			if (player.isOnline() && !player.hasMetadata("NPC")) {
 				String uuid = player.getUniqueId().toString();
 
-				return plugin.authList.containsKey(uuid);
+				return plugin.timeout.check(uuid);
 			}
 		}
 
@@ -61,16 +44,12 @@ public class LoginListener implements Listener {
 		String uuid = player.getUniqueId().toString();
 
 		if (plugin.data.checkUser(uuid)) {
-			plugin.authList.put(uuid, false);
-			player.sendMessage(ChatColor.RED + Lang.LOG_MSG.toString());
-		} else if (plugin.required) {
-			plugin.authList.put(uuid, true);
-			player.sendMessage(ChatColor.RED + Lang.REG_MSG.toString());
+			plugin.timeout.add(uuid,false);
+		} else if (plugin.conf.required) {
+            plugin.timeout.add(uuid,true);
 		} else {
 			return;
 		}
-
-		plugin.debilitatePlayer(player);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -78,23 +57,22 @@ public class LoginListener implements Listener {
 		String pname = event.getName();
 		//Check for valid user name
 		if (!pname.matches("^\\w{3,16}$")) {
-			event.disallow(Result.KICK_OTHER, Lang.INVALID_USERNAME.toString());
+			event.disallow(Result.KICK_OTHER, plugin.lang.get("invalid_username"));
 			return;
  		}
 
 		String uuid = event.getUniqueId().toString();
 		String addr = event.getAddress().toString();
-		String fuuid = plugin.getFullUUID(uuid, addr);
 		//Check account locked due to failed logins
-		if (plugin.thread.getLockout().containsKey(fuuid)) {
-			event.disallow(Result.KICK_OTHER, Lang.ACCOUNT_LOCKED.toString());
+		if (plugin.lockout.check(uuid, addr)) {
+			event.disallow(Result.KICK_OTHER, plugin.lang.get("account_locked"));
 			return;
 		}
 
 		//Check if the player is already online
 		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 			if (uuid.equalsIgnoreCase(p.getUniqueId().toString())) {
-				event.disallow(Result.KICK_OTHER, Lang.ALREADY_ONLINE.toString());
+			    event.disallow(Result.KICK_OTHER, plugin.lang.get("already_online"));
 				return;
 			}
 		}
@@ -105,7 +83,7 @@ public class LoginListener implements Listener {
 		Player player = event.getPlayer();
 		String uuid = player.getUniqueId().toString();
 
-		plugin.authList.remove(uuid);
+		plugin.timeout.remove(uuid);
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -116,8 +94,8 @@ public class LoginListener implements Listener {
 			Location to = event.getTo();
 
 			if(from.getBlockX() != to.getBlockX() || from.getBlockZ() != to.getBlockZ()) {
-            			event.setTo(event.getFrom());
-        		}
+                event.setTo(event.getFrom());
+            }
 		}
 	}
 
@@ -237,7 +215,7 @@ public class LoginListener implements Listener {
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
 		Player player = event.getPlayer();
 		if (authEntity(player)) {
-			event.setCancelled(true);
+		    event.setCancelled(true);
 		}
 	}
 
@@ -246,15 +224,16 @@ public class LoginListener implements Listener {
 		Player player = event.getPlayer();
 		if (authEntity(player)) {
 			String message = event.getMessage().toLowerCase();
-        		for(String cmd : ALLOWED_COMMANDS) {
-            			if(message.startsWith(cmd)) {
-                			return;
-            			}
-        		}
+
+			for(String cmd : ALLOWED_COMMANDS) {
+                if(message.startsWith(cmd)) {
+                    return;
+                }
+            }
 
 			if(message.startsWith("/f")) {
             			event.setMessage("/LOGIN_SECURITY_FACTION_REPLACEMENT_FIX");
-        		}
+            }
 
 			event.setCancelled(true);
 		}

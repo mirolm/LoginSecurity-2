@@ -9,11 +9,12 @@ import java.util.logging.Level;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import com.lenis0012.bukkit.ls.LoginSecurity;
+import org.bukkit.plugin.Plugin;
 
 public abstract class SQL implements DataManager {
 	private Logger logger;
 	private HikariDataSource datasrc;
+	protected Plugin plugin;
 
 	private String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS <TABLE> ("
 					+ "unique_user_id VARCHAR(130) NOT NULL UNIQUE,"
@@ -34,7 +35,7 @@ public abstract class SQL implements DataManager {
 		SELECT_LOGIN = SELECT_LOGIN.replace("<TABLE>", table);
 		SELECT_USERS = SELECT_USERS.replace("<TABLE>", table);
 
-		logger = LoginSecurity.instance.getLogger();
+		logger = plugin.getLogger();
 		datasrc = new HikariDataSource(config);
 
 		createTables();
@@ -171,7 +172,7 @@ public abstract class SQL implements DataManager {
 
 	@Override
 	public ResultSet getAllUsers(Connection con) {
-		PreparedStatement stmt = null;
+		PreparedStatement stmt;
 
 		try {
 			stmt = con.prepareStatement(SELECT_USERS);
@@ -197,12 +198,12 @@ public abstract class SQL implements DataManager {
 
 	@Override
         public void closeQuietly(AutoCloseable closeable) {
-		try {
-			if (closeable != null) {
-				closeable.close();
-	                }
-                } catch (Exception e) {
-                        logger.log(Level.SEVERE, "Failed to close");
-                }
+		    try {
+			    if (closeable != null) {
+				    closeable.close();
+			    }
+			} catch (Exception e) {
+		    	logger.log(Level.SEVERE, "Failed to close");
+			}
         }
 }
