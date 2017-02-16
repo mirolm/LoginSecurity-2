@@ -28,4 +28,10 @@ public class SQLite extends SQL {
 			.toPath().normalize()
 			.toString();
 	}
+
+	public boolean exists(String name) {
+        File file = new File(plugin.getDataFolder(), name);
+
+        return file.exists();
+    }
 }

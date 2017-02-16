@@ -4,7 +4,6 @@ import com.lenis0012.bukkit.ls.commands.ChangePassCommand;
 import com.lenis0012.bukkit.ls.commands.LoginCommand;
 import com.lenis0012.bukkit.ls.commands.RegisterCommand;
 import com.lenis0012.bukkit.ls.data.Converter;
-import com.lenis0012.bukkit.ls.data.Converter.FileType;
 import com.lenis0012.bukkit.ls.data.DataManager;
 import com.lenis0012.bukkit.ls.data.MySQL;
 import com.lenis0012.bukkit.ls.data.SQLite;
@@ -15,10 +14,9 @@ import com.lenis0012.bukkit.ls.util.Config;
 import com.lenis0012.bukkit.ls.util.LoggingFilter;
 import com.lenis0012.bukkit.ls.thread.LockoutThread;
 import com.lenis0012.bukkit.ls.thread.TimeoutThread;
+
 import org.apache.logging.log4j.LogManager;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.File;
 
 public class LoginSecurity extends JavaPlugin {
 	public DataManager data;
@@ -35,13 +33,20 @@ public class LoginSecurity extends JavaPlugin {
         conf = new Config(this);
         lang = new Translation(this);
         hasher = EncryptionType.fromString(conf.hasher);
-        data = this.getDataManager();
         passmgr = new PasswordManager(this);
         timeout = new TimeoutThread(this);
 		lockout = new LockoutThread(this);
 
+		//get database
+        if (conf.usemysql) {
+            data = new MySQL(this);
+        } else {
+            data = new SQLite("users.db", this);
+        }
+
 		//convert everything
-		checkConverter();
+        Converter conv = new Converter("users.db", this);
+        conv.convert();
 
 		//register events
         getServer().getPluginManager().registerEvents(new LoginListener(this), this);
@@ -65,21 +70,5 @@ public class LoginSecurity extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		data.close();
-	}
-
-	private DataManager getDataManager() {
-		if (conf.usemysql) {
-			return new MySQL(this);
-		} else {
-			return new SQLite("users.db", this);
-		}
-	}
-
-	private void checkConverter() {
-		File file = new File(this.getDataFolder(), "users.db");
- 		if (file.exists() && data instanceof MySQL) {
-			Converter conv = new Converter(FileType.SQLite, "users.db", this);
-			conv.convert();
-		}
 	}
 }
