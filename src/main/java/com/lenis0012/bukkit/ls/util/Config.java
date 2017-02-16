@@ -4,7 +4,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
 public class Config {
-    public final boolean required;
     public final boolean usemysql;
     public final int timeDelay;
     public final int countFail;
@@ -21,7 +20,6 @@ public class Config {
         FileConfiguration config = plugin.getConfig();
 
         //setup config
-        config.addDefault("settings.password-required", true);
         config.addDefault("settings.encryption", "BCRYPT");
         config.addDefault("settings.timeout", 60);
         config.addDefault("settings.failed.count", 3);
@@ -37,7 +35,6 @@ public class Config {
         plugin.saveConfig();
 
         //read values
-        required = config.getBoolean("settings.password-required");
         timeDelay = config.getInt("settings.timeout", 60);
         countFail = config.getInt("settings.failed.count", 3);
         minFail = config.getInt("settings.failed.minutes", 120);
