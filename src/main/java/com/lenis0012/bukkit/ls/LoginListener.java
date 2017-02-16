@@ -43,11 +43,7 @@ public class LoginListener implements Listener {
         Player player = event.getPlayer();
         String uuid = player.getUniqueId().toString();
 
-        if (plugin.data.checkUser(uuid)) {
-            plugin.timeout.add(uuid,false);
-        } else if (plugin.conf.required) {
-            plugin.timeout.add(uuid,true);
-        }
+        plugin.timeout.add(uuid, plugin.data.checkUser(uuid));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
