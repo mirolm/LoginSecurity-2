@@ -24,7 +24,7 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>com.zaxxer</groupId>
+        <groupId>com.zaxxer</groupId>
       <artifactId>HikariCP</artifactId>
       <version>2.5.1</version>
       <scope>compile</scope>
