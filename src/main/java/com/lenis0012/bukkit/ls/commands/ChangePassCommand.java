@@ -11,49 +11,49 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ChangePassCommand implements CommandExecutor {
-	private final LoginSecurity plugin;
+    private final LoginSecurity plugin;
 
-	public ChangePassCommand(LoginSecurity plugin) {
-		this.plugin = plugin;
-	}
+    public ChangePassCommand(LoginSecurity plugin) {
+        this.plugin = plugin;
+    }
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		Logger logger = plugin.getLogger();
-		
-		if (!(sender instanceof Player)) {
-			return true;
-		}
+    @Override
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        Logger logger = plugin.getLogger();
 
-		Player player = (Player) sender;
-		String uuid = player.getUniqueId().toString();
+        if (!(sender instanceof Player)) {
+            return true;
+        }
 
-		if (!plugin.data.checkUser(uuid)) {
-			player.sendMessage(plugin.lang.get("not_reg"));
-			return true;
-		}
-		if (args.length < 2) {
-			player.sendMessage(plugin.lang.get("invalid_args"));
-			player.sendMessage(plugin.lang.get("usage") + cmd.getUsage());
-			return true;
-		}
-		if (!plugin.passmgr.checkPass(uuid, args[0])) {
-			player.sendMessage(plugin.lang.get("invalid_psw"));
-			logger.log(Level.WARNING, "{0} failed to change password", player.getName());
-			return true;
-		}
-		if (!plugin.passmgr.validPass(args[1])) {
-			player.sendMessage(plugin.lang.get("verify_psw"));
-			logger.log(Level.WARNING, "{0} failed to change password", player.getName());
-			return true;
-		}
+        Player player = (Player) sender;
+        String uuid = player.getUniqueId().toString();
 
-		LoginData login = new LoginData(uuid, plugin.hasher.hash(args[1]), plugin.hasher.getTypeId());
-		plugin.data.updateUser(login);
+        if (!plugin.data.checkUser(uuid)) {
+            player.sendMessage(plugin.lang.get("not_reg"));
+            return true;
+        }
+        if (args.length < 2) {
+            player.sendMessage(plugin.lang.get("invalid_args"));
+            player.sendMessage(plugin.lang.get("usage") + cmd.getUsage());
+            return true;
+        }
+        if (!plugin.passmgr.checkPass(uuid, args[0])) {
+            player.sendMessage(plugin.lang.get("invalid_psw"));
+            logger.log(Level.WARNING, "{0} failed to change password", player.getName());
+            return true;
+        }
+        if (!plugin.passmgr.validPass(args[1])) {
+            player.sendMessage(plugin.lang.get("verify_psw"));
+            logger.log(Level.WARNING, "{0} failed to change password", player.getName());
+            return true;
+        }
 
-		player.sendMessage(plugin.lang.get("psw_changed"));
-		logger.log(Level.INFO, "{0} sucessfully changed password", player.getName());
+        LoginData login = new LoginData(uuid, plugin.hasher.hash(args[1]), plugin.hasher.getTypeId());
+        plugin.data.updateUser(login);
 
-		return true;
-	}
+        player.sendMessage(plugin.lang.get("psw_changed"));
+        logger.log(Level.INFO, "{0} sucessfully changed password", player.getName());
+
+        return true;
+    }
 }

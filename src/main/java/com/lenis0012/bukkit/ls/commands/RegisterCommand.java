@@ -11,46 +11,46 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class RegisterCommand implements CommandExecutor {
-	private final LoginSecurity plugin;
+    private final LoginSecurity plugin;
 
-	public RegisterCommand(LoginSecurity plugin) {
-		this.plugin = plugin;
-	}
+    public RegisterCommand(LoginSecurity plugin) {
+        this.plugin = plugin;
+    }
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		Logger logger = plugin.getLogger();
-		
-		if (!(sender instanceof Player)) {
-			return true;
-		}
+    @Override
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        Logger logger = plugin.getLogger();
 
-		Player player = (Player) sender;
-		String uuid = player.getUniqueId().toString();
+        if (!(sender instanceof Player)) {
+            return true;
+        }
 
-		if (plugin.data.checkUser(uuid)) {
-			player.sendMessage(plugin.lang.get("already_reg"));
-			return true;
-		}
-		if (args.length < 1) {
-			player.sendMessage(plugin.lang.get("invalid_args"));
-			player.sendMessage(plugin.lang.get("usage") + cmd.getUsage());
-			return true;
-		}
-		if (!plugin.passmgr.validPass(args[0])) {
-			player.sendMessage(plugin.lang.get("verify_psw"));
-			logger.log(Level.WARNING, "{0} failed to register", player.getName());
-			return true;
-		}
+        Player player = (Player) sender;
+        String uuid = player.getUniqueId().toString();
 
-		LoginData login = new LoginData(uuid, plugin.hasher.hash(args[0]), plugin.hasher.getTypeId());
-		plugin.data.regUser(login);
+        if (plugin.data.checkUser(uuid)) {
+            player.sendMessage(plugin.lang.get("already_reg"));
+            return true;
+        }
+        if (args.length < 1) {
+            player.sendMessage(plugin.lang.get("invalid_args"));
+            player.sendMessage(plugin.lang.get("usage") + cmd.getUsage());
+            return true;
+        }
+        if (!plugin.passmgr.validPass(args[0])) {
+            player.sendMessage(plugin.lang.get("verify_psw"));
+            logger.log(Level.WARNING, "{0} failed to register", player.getName());
+            return true;
+        }
 
-		plugin.timeout.remove(uuid);
+        LoginData login = new LoginData(uuid, plugin.hasher.hash(args[0]), plugin.hasher.getTypeId());
+        plugin.data.regUser(login);
 
-		player.sendMessage(plugin.lang.get("registered"));
-		logger.log(Level.INFO, "{0} registered sucessfully", player.getName());
+        plugin.timeout.remove(uuid);
 
-		return true;
-	}
+        player.sendMessage(plugin.lang.get("registered"));
+        logger.log(Level.INFO, "{0} registered sucessfully", player.getName());
+
+        return true;
+    }
 }

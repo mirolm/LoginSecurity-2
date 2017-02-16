@@ -8,16 +8,16 @@ import java.util.logging.Level;
 import com.lenis0012.bukkit.ls.LoginSecurity;
 
 public class Converter {
-	private final String name;
-	private final LoginSecurity plugin;
+    private final String name;
+    private final LoginSecurity plugin;
 
-	public Converter(String name, LoginSecurity plugin) {
-		this.name = name;
-		this.plugin = plugin;
-	}
+    public Converter(String name, LoginSecurity plugin) {
+        this.name = name;
+        this.plugin = plugin;
+    }
 
-	public void convert() {
-		Logger logger = plugin.getLogger();
+    public void convert() {
+        Logger logger = plugin.getLogger();
 		
         SQLite manager;
         Connection conn = null;
@@ -46,5 +46,5 @@ public class Converter {
             manager.closeQuietly(conn);
             manager.close();
         }
-	}
+    }
 }

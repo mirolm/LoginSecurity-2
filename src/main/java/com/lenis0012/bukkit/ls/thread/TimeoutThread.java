@@ -20,7 +20,7 @@ public class TimeoutThread implements Runnable {
         public TimeoutData(String uuid, boolean registered) {
             this.uuid = uuid;
             this.registered = registered;
-            this.timeout = System.currentTimeMillis() / 1000L;;
+            this.timeout = System.currentTimeMillis() / 1000L;
         }
     }
 
