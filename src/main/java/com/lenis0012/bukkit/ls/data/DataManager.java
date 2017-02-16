@@ -5,63 +5,63 @@ import java.sql.ResultSet;
 
 public interface DataManager {
 
-	/**
- 	 * Close Connection Pool
- 	 */
-	void close();
+    /**
+     * Close Connection Pool
+     */
+    void close();
 
-	/**
- 	 * Get Connection from Pool
- 	 */
-	Connection getConn();
+    /**
+     * Get Connection from Pool
+     */
+    Connection getConn();
 
-	/**
-	 * Check if player is registered
-	 *
-	 * @param uuid PlayerUUID
-	 * @return user registered
-	 */
-	boolean checkUser(String uuid);
+    /**
+     * Check if player is registered
+     *
+     * @param uuid PlayerUUID
+     * @return user registered
+     */
+    boolean checkUser(String uuid);
 
-	/**
-	 * Register a user
-	 *
-	 * @param login LoginData
-	 */
-	void regUser(LoginData login);
+    /**
+     * Register a user
+     *
+     * @param login LoginData
+     */
+    void regUser(LoginData login);
 
-	/**
-	 * Update player data
-	 *
-	 * @param login LoginData
-	 */
-	void updateUser(LoginData login);
+    /**
+     * Update player data
+     *
+     * @param login LoginData
+     */
+    void updateUser(LoginData login);
 
-	/**
-	 * Get user stored data
-	 *
-	 * @param uuid PlayerUUID
-	 * @return LoginData
-	 */
-	LoginData getUser(String uuid);
+    /**
+     * Get user stored data
+     *
+     * @param uuid PlayerUUID
+     * @return LoginData
+     */
+    LoginData getUser(String uuid);
 
-	/**
-	 * Get all users data
-	 *
-	 * @return All registered users
-	 */
-	ResultSet getAllUsers(Connection con);
+    /**
+     * Get all users data
+     *
+     * @return All registered users
+     */
+    ResultSet getAllUsers(Connection con);
 
-	/**
-	 * Parse single user row
-	 *
-	 * @param data ResultSet
-	 * @return LoginData
-	 */
-	LoginData parseData(ResultSet data);
+    /**
+     * Parse single user row
+     *
+     * @param data ResultSet
+     * @return LoginData
+     */
+    LoginData parseData(ResultSet data);
 
-	/**
- 	 * Close Database Object
- 	 */
-	void closeQuietly(AutoCloseable closeable);
+    /**
+     * Close Database Object
+     */
+    void closeQuietly(AutoCloseable closeable);
 }

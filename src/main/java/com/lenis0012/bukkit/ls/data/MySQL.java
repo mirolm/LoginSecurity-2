@@ -8,27 +8,27 @@ import com.lenis0012.bukkit.ls.util.Config;
 import com.zaxxer.hikari.HikariConfig;
 
 public class MySQL extends SQL {
-	public MySQL(LoginSecurity plugin) {
-		this.plugin = plugin;
+    public MySQL(LoginSecurity plugin) {
+        this.plugin = plugin;
 
-		Config conf = plugin.conf;
+        Config conf = plugin.conf;
 
-		HikariConfig dbcfg = new HikariConfig();
-		Properties prop = new Properties();
+        HikariConfig dbcfg = new HikariConfig();
+        Properties prop = new Properties();
 		
-		prop.setProperty("useConfigs", "maxPerformance");
-		prop.setProperty("useServerPrepStmts", "true");
-		prop.setProperty("prepStmtCacheSize", "250");
-		prop.setProperty("prepStmtCacheSqlLimit", "2048");
+        prop.setProperty("useConfigs", "maxPerformance");
+        prop.setProperty("useServerPrepStmts", "true");
+        prop.setProperty("prepStmtCacheSize", "250");
+        prop.setProperty("prepStmtCacheSqlLimit", "2048");
 		
-		dbcfg.setDriverClassName("com.mysql.jdbc.Driver");
-		dbcfg.setJdbcUrl("jdbc:mysql:" + "//" + conf.host + ":" + conf.port + "/" + conf.database);
-		dbcfg.setUsername(conf.user);
-		dbcfg.setPassword(conf.pass);
+        dbcfg.setDriverClassName("com.mysql.jdbc.Driver");
+        dbcfg.setJdbcUrl("jdbc:mysql:" + "//" + conf.host + ":" + conf.port + "/" + conf.database);
+        dbcfg.setUsername(conf.user);
+        dbcfg.setPassword(conf.pass);
 
-		dbcfg.setMaximumPoolSize(6);
-		dbcfg.setDataSourceProperties(prop);
+        dbcfg.setMaximumPoolSize(6);
+        dbcfg.setDataSourceProperties(prop);
 
-		init(conf.table, dbcfg);
-	}
+        init(conf.table, dbcfg);
+    }
 }

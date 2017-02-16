@@ -19,36 +19,36 @@ import org.apache.logging.log4j.LogManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class LoginSecurity extends JavaPlugin {
-	public DataManager data;
-	public PasswordManager passmgr;
-	public Translation lang;
-	public Config conf;
+    public DataManager data;
+    public PasswordManager passmgr;
+    public Translation lang;
+    public Config conf;
     public EncryptionType hasher;
     public LockoutThread lockout;
     public TimeoutThread timeout;
 
-	@Override
-	public void onEnable() {
-		//intalize fields
+    @Override
+    public void onEnable() {
+        //intalize fields
         conf = new Config(this);
         lang = new Translation(this);
         hasher = EncryptionType.fromString(conf.hasher);
         passmgr = new PasswordManager(this);
         timeout = new TimeoutThread(this);
-		lockout = new LockoutThread(this);
+        lockout = new LockoutThread(this);
 
-		//get database
+        //get database
         if (conf.usemysql) {
             data = new MySQL(this);
         } else {
             data = new SQLite("users.db", this);
         }
 
-		//convert everything
+        //convert everything
         Converter conv = new Converter("users.db", this);
         conv.convert();
 
-		//register events
+        //register events
         getServer().getPluginManager().registerEvents(new LoginListener(this), this);
 
         //register commands
@@ -63,12 +63,12 @@ public class LoginSecurity extends JavaPlugin {
         logger.addFilter(new LoggingFilter());
 
         //register threads
-		getServer().getScheduler().runTaskTimer(this, timeout, 0L, 200L);
-		getServer().getScheduler().runTaskTimer(this, lockout, 0L, 1200L);
+        getServer().getScheduler().runTaskTimer(this, timeout, 0L, 200L);
+        getServer().getScheduler().runTaskTimer(this, lockout, 0L, 1200L);
     }
 
-	@Override
-	public void onDisable() {
-		data.close();
-	}
+    @Override
+    public void onDisable() {
+        data.close();
+    }
 }
