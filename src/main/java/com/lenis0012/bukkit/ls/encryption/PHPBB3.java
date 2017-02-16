@@ -4,8 +4,6 @@ import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 
-import com.lenis0012.bukkit.ls.LoginSecurity;
-
 /**
  * Port of phpBB3 password handling to Java. 
  * See phpBB3/includes/functions.php
@@ -13,7 +11,7 @@ import com.lenis0012.bukkit.ls.LoginSecurity;
  * @author lars
  */
 public class PHPBB3 implements Encryptor {
-    private String itoa64 =
+    private final String itoa64 =
             "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
     public String phpbb_hash(String password) {

@@ -47,8 +47,6 @@ public class LoginListener implements Listener {
             plugin.timeout.add(uuid,false);
         } else if (plugin.conf.required) {
             plugin.timeout.add(uuid,true);
-        } else {
-            return;
         }
     }
 

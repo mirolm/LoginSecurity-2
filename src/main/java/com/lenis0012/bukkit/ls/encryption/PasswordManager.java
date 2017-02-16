@@ -5,7 +5,7 @@ import com.lenis0012.bukkit.ls.data.DataManager;
 import com.lenis0012.bukkit.ls.data.LoginData;
 
 public class PasswordManager {
-    private LoginSecurity plugin;
+    private final LoginSecurity plugin;
 
     public PasswordManager(LoginSecurity plugin) {
         this.plugin = plugin;

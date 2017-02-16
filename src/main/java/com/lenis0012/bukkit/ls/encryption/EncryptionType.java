@@ -9,8 +9,8 @@ public enum EncryptionType {
     SHA512(6, new SHA("SHA-512")),
     BCRYPT(7, new BCrypt());
 	
-    private Encryptor cryp;
-    private int type;
+    private final Encryptor cryp;
+    private final int type;
 	
     EncryptionType(int type, Encryptor cryp) {
         this.cryp = cryp;
