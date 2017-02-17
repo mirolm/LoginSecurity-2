@@ -21,37 +21,37 @@ public class LoginCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Logger logger = plugin.getLogger();
 
-        if(!(sender instanceof Player)) {
+        if (!(sender instanceof Player)) {
             return true;
         }
 
-        Player player = (Player)sender;
+        Player player = (Player) sender;
         String uuid = player.getUniqueId().toString();
         String addr = player.getAddress().getAddress().toString();
 
-        if(!plugin.timeout.check(uuid)) {
+        if (!plugin.timeout.check(uuid)) {
             player.sendMessage(plugin.lang.get("already_login"));
             return true;
         }
 
-        if(!plugin.data.checkUser(uuid)) {
+        if (!plugin.data.checkUser(uuid)) {
             player.sendMessage(plugin.lang.get("no_psw_set"));
             return true;
         }
 
-        if(args.length < 1) {
+        if (args.length < 1) {
             player.sendMessage(plugin.lang.get("invalid_args"));
             player.sendMessage(plugin.lang.get("usage") + cmd.getUsage());
             return true;
         }
 
-        if(plugin.passmgr.checkPass(uuid, args[0])) {
+        if (plugin.passmgr.checkPass(uuid, args[0])) {
             plugin.timeout.remove(uuid);
             plugin.lockout.remove(uuid, addr);
 
             player.sendMessage(plugin.lang.get("login"));
 
-            if(!plugin.passmgr.validPass(args[0])) {
+            if (!plugin.passmgr.validPass(args[0])) {
                 player.sendMessage(plugin.lang.get("weak_psw"));
                 logger.log(Level.INFO, "{0} uses weak password", player.getName());
             }

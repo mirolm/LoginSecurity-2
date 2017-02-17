@@ -16,7 +16,7 @@ public class Converter {
 
     public void convert() {
         Logger logger = plugin.getLogger();
-		
+
         SQLite manager;
         Connection conn = null;
         ResultSet result = null;
@@ -30,11 +30,11 @@ public class Converter {
                 result = manager.getAllUsers(conn);
 
                 while (result.next()) {
-                   login = manager.parseData(result);
+                    login = manager.parseData(result);
 
-                   if (!plugin.data.checkUser(login.uuid)) {
-                       plugin.data.regUser(login);
-                  }
+                    if (!plugin.data.checkUser(login.uuid)) {
+                        plugin.data.regUser(login);
+                    }
                 }
             } catch (Exception e) {
                 logger.log(Level.WARNING, "Failed to convert from SQLite to MySQL");

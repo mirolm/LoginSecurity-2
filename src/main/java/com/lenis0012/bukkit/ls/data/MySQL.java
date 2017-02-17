@@ -14,12 +14,12 @@ public class MySQL extends SQL {
 
         HikariConfig dbcfg = new HikariConfig();
         Properties prop = new Properties();
-		
+
         prop.setProperty("useConfigs", "maxPerformance");
         prop.setProperty("useServerPrepStmts", "true");
         prop.setProperty("prepStmtCacheSize", "250");
         prop.setProperty("prepStmtCacheSqlLimit", "2048");
-		
+
         dbcfg.setDriverClassName("com.mysql.jdbc.Driver");
         dbcfg.setJdbcUrl("jdbc:mysql:" + "//" + conf.host + ":" + conf.port + "/" + conf.database);
         dbcfg.setUsername(conf.user);
