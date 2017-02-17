@@ -1,15 +1,14 @@
 package com.lenis0012.bukkit.ls.data;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import org.bukkit.plugin.Plugin;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.logging.Logger;
 import java.util.logging.Level;
-
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-
-import org.bukkit.plugin.Plugin;
+import java.util.logging.Logger;
 
 public abstract class SQL implements DataManager {
     private Logger logger;

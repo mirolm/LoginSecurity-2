@@ -1,11 +1,11 @@
 package com.lenis0012.bukkit.ls.util;
 
+import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
+
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
 public class EncryptionUtil {
     public static String encrypt(String value, String algorithm, String encoding) {

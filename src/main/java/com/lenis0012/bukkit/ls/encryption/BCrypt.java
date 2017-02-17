@@ -15,7 +15,6 @@ package com.lenis0012.bukkit.ls.encryption;
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 import java.io.UnsupportedEncodingException;
-
 import java.security.SecureRandom;
 
 /**

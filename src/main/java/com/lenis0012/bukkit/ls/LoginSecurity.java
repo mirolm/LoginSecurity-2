@@ -7,14 +7,13 @@ import com.lenis0012.bukkit.ls.data.Converter;
 import com.lenis0012.bukkit.ls.data.DataManager;
 import com.lenis0012.bukkit.ls.data.MySQL;
 import com.lenis0012.bukkit.ls.data.SQLite;
-import com.lenis0012.bukkit.ls.encryption.PasswordManager;
 import com.lenis0012.bukkit.ls.encryption.EncryptionType;
-import com.lenis0012.bukkit.ls.util.Translation;
-import com.lenis0012.bukkit.ls.util.Config;
-import com.lenis0012.bukkit.ls.util.LoggingFilter;
+import com.lenis0012.bukkit.ls.encryption.PasswordManager;
 import com.lenis0012.bukkit.ls.thread.LockoutThread;
 import com.lenis0012.bukkit.ls.thread.TimeoutThread;
-
+import com.lenis0012.bukkit.ls.util.Config;
+import com.lenis0012.bukkit.ls.util.LoggingFilter;
+import com.lenis0012.bukkit.ls.util.Translation;
 import org.apache.logging.log4j.LogManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;

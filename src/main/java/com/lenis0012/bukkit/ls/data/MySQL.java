@@ -1,11 +1,10 @@
 package com.lenis0012.bukkit.ls.data;
 
-import java.util.Properties;
-
 import com.lenis0012.bukkit.ls.LoginSecurity;
 import com.lenis0012.bukkit.ls.util.Config;
-
 import com.zaxxer.hikari.HikariConfig;
+
+import java.util.Properties;
 
 public class MySQL extends SQL {
     public MySQL(LoginSecurity plugin) {

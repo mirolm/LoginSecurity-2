@@ -1,11 +1,11 @@
 package com.lenis0012.bukkit.ls.data;
 
+import com.lenis0012.bukkit.ls.LoginSecurity;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.util.logging.Logger;
 import java.util.logging.Level;
-
-import com.lenis0012.bukkit.ls.LoginSecurity;
+import java.util.logging.Logger;
 
 public class Converter {
     private final LoginSecurity plugin;

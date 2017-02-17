@@ -1,9 +1,9 @@
 package com.lenis0012.bukkit.ls.data;
 
-import java.io.File;
-
-import com.zaxxer.hikari.HikariConfig;
 import com.lenis0012.bukkit.ls.LoginSecurity;
+import com.zaxxer.hikari.HikariConfig;
+
+import java.io.File;
 
 public class SQLite extends SQL {
     private static final String dbname = "users.db";
