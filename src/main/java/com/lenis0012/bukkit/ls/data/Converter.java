@@ -22,27 +22,27 @@ public class Converter {
         ResultSet result = null;
         LoginData login;
 
-        manager = new SQLite(plugin);
+        if (SQLite.exists(plugin) && plugin.conf.usemysql) {
+            manager = new SQLite(plugin);
 
-        try {
-            if (SQLite.exists(plugin) && plugin.conf.usemysql) {
+            try {
                 conn = manager.getConn();
                 result = manager.getAllUsers(conn);
 
                 while (result.next()) {
-                    login = manager.parseData(result);
+                   login = manager.parseData(result);
 
-                    if (!plugin.data.checkUser(login.uuid)) {
-                        plugin.data.regUser(login);
-                    }
+                   if (!plugin.data.checkUser(login.uuid)) {
+                       plugin.data.regUser(login);
+                  }
                 }
+            } catch (Exception e) {
+                logger.log(Level.WARNING, "Failed to convert from SQLite to MySQL");
+            } finally {
+                manager.closeQuietly(result);
+                manager.closeQuietly(conn);
+                manager.close();
             }
-        } catch (Exception e) {
-            logger.log(Level.WARNING, "Failed to convert from SQLite to MySQL");
-        } finally {
-            manager.closeQuietly(result);
-            manager.closeQuietly(conn);
-            manager.close();
         }
     }
 }
