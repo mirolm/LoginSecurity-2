@@ -17,6 +17,7 @@ import com.lenis0012.bukkit.ls.thread.TimeoutThread;
 
 import org.apache.logging.log4j.LogManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 
 public class LoginSecurity extends JavaPlugin {
     public DataManager data;
@@ -26,6 +27,9 @@ public class LoginSecurity extends JavaPlugin {
     public EncryptionType hasher;
     public LockoutThread lockout;
     public TimeoutThread timeout;
+
+    private BukkitTask locktask;
+    private BukkitTask timetask;
 
     @Override
     public void onEnable() {
@@ -38,14 +42,11 @@ public class LoginSecurity extends JavaPlugin {
         lockout = new LockoutThread(this);
 
         //get database
-        if (conf.usemysql) {
-            data = new MySQL(this);
-        } else {
-            data = new SQLite("users.db", this);
-        }
+        data = conf.usemysql ? new MySQL(this) : new SQLite(this);
+
 
         //convert everything
-        Converter conv = new Converter("users.db", this);
+        Converter conv = new Converter(this);
         conv.convert();
 
         //register events
@@ -63,12 +64,15 @@ public class LoginSecurity extends JavaPlugin {
         logger.addFilter(new LoggingFilter());
 
         //register threads
-        getServer().getScheduler().runTaskTimer(this, timeout, 0L, 200L);
-        getServer().getScheduler().runTaskTimer(this, lockout, 0L, 1200L);
+        timetask = getServer().getScheduler().runTaskTimer(this, timeout, 0L, 200L);
+        locktask = getServer().getScheduler().runTaskTimer(this, lockout, 0L, 1200L);
     }
 
     @Override
     public void onDisable() {
         data.close();
+
+        timetask.cancel();
+        locktask.cancel();
     }
 }

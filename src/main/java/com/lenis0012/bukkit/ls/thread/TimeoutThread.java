@@ -41,19 +41,12 @@ public class TimeoutThread implements Runnable {
             String puuid = it.next();
 
             TimeoutData current = authList.get(puuid);
-            Player player = Bukkit.getPlayer(UUID.fromString(puuid));
-
             if (!trigger(current)) {
-                if (player != null && player.isOnline()) {
-                    if (current.registered) {
-                        player.sendMessage(plugin.lang.get("log_msg"));
-                    } else {
-                        player.sendMessage(plugin.lang.get("reg_msg"));
-                    }
-                }
+                notify(current);
             } else {
                 it.remove();
 
+                Player player = Bukkit.getPlayer(UUID.fromString(puuid));
                 if (player != null && player.isOnline()) {
                     player.kickPlayer(plugin.lang.get("timed_out"));
                 }
@@ -62,19 +55,17 @@ public class TimeoutThread implements Runnable {
     }
 
     public void add(String uuid, boolean registered) {
+        TimeoutData current = new TimeoutData(uuid, registered);
+
+        notify(current);
+
         Player player = Bukkit.getPlayer(UUID.fromString(uuid));
         if (player != null && player.isOnline()) {
-            if (registered) {
-                player.sendMessage(plugin.lang.get("log_msg"));
-            } else {
-                player.sendMessage(plugin.lang.get("reg_msg"));
-            }
-
             player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 1), true);
         }
 
         if (!authList.containsKey(uuid)) {
-            authList.put(uuid, new TimeoutData(uuid, registered));
+            authList.put(uuid, current);
         }
     }
 
@@ -104,4 +95,14 @@ public class TimeoutThread implements Runnable {
         }
     }
 
+    private void notify(TimeoutData current) {
+        Player player = Bukkit.getPlayer(UUID.fromString(current.uuid));
+        if (player != null && player.isOnline()) {
+            if (current.registered) {
+                player.sendMessage(plugin.lang.get("log_msg"));
+            } else {
+                player.sendMessage(plugin.lang.get("reg_msg"));
+            }
+        }
+    }
 }

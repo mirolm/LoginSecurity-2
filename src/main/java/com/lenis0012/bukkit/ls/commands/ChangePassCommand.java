@@ -32,16 +32,19 @@ public class ChangePassCommand implements CommandExecutor {
             player.sendMessage(plugin.lang.get("not_reg"));
             return true;
         }
+
         if (args.length < 2) {
             player.sendMessage(plugin.lang.get("invalid_args"));
             player.sendMessage(plugin.lang.get("usage") + cmd.getUsage());
             return true;
         }
+
         if (!plugin.passmgr.checkPass(uuid, args[0])) {
             player.sendMessage(plugin.lang.get("invalid_psw"));
             logger.log(Level.WARNING, "{0} failed to change password", player.getName());
             return true;
         }
+
         if (!plugin.passmgr.validPass(args[1])) {
             player.sendMessage(plugin.lang.get("verify_psw"));
             logger.log(Level.WARNING, "{0} failed to change password", player.getName());

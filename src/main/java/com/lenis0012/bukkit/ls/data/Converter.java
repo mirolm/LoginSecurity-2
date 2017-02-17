@@ -8,11 +8,9 @@ import java.util.logging.Level;
 import com.lenis0012.bukkit.ls.LoginSecurity;
 
 public class Converter {
-    private final String name;
     private final LoginSecurity plugin;
 
-    public Converter(String name, LoginSecurity plugin) {
-        this.name = name;
+    public Converter(LoginSecurity plugin) {
         this.plugin = plugin;
     }
 
@@ -24,10 +22,10 @@ public class Converter {
         ResultSet result = null;
         LoginData login;
 
-        manager = new SQLite(name, plugin);
+        manager = new SQLite(plugin);
 
         try {
-            if (manager.exists(name) && plugin.conf.usemysql) {
+            if (SQLite.exists(plugin) && plugin.conf.usemysql) {
                 conn = manager.getConn();
                 result = manager.getAllUsers(conn);
 
