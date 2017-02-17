@@ -51,7 +51,7 @@ public class LoginCommand implements CommandExecutor {
 
             player.sendMessage(plugin.lang.get("login"));
 
-            if (!plugin.passmgr.validPass(args[0])) {
+            if (plugin.passmgr.weakPass(args[0])) {
                 player.sendMessage(plugin.lang.get("weak_psw"));
                 logger.log(Level.INFO, "{0} uses weak password", player.getName());
             }

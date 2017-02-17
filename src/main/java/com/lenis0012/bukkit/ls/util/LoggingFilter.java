@@ -13,8 +13,6 @@ import java.util.List;
 public class LoggingFilter extends AbstractFilter {
     private static final List<String> filteredWords = Arrays.asList("/register ", "/reg ", "/login ", "/log ", "/l ", "/changepassword ", "/changepass ", "/cp ");
 
-    private static final long serialVersionUID = 1L;
-
     private Result handle(String message) {
         message = message.toLowerCase();
         for (String word : filteredWords) {
@@ -22,6 +20,7 @@ public class LoggingFilter extends AbstractFilter {
                 return Result.DENY;
             }
         }
+
         return Result.NEUTRAL;
     }
 

@@ -160,8 +160,8 @@ public class PHPBB3 implements Encryptor {
 
     private static String bytes2hex(byte[] bytes) {
         StringBuilder r = new StringBuilder(32);
-        for (int i = 0; i < bytes.length; i++) {
-            String x = Integer.toHexString(bytes[i] & 0xff);
+        for (byte aByte : bytes) {
+            String x = Integer.toHexString(aByte & 0xff);
             if (x.length() < 2)
                 r.append("0");
             r.append(x);

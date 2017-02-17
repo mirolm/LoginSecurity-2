@@ -26,7 +26,6 @@ public class TimeoutThread implements Runnable {
 
     private final ConcurrentMap<String, TimeoutData> authList = Maps.newConcurrentMap();
     private final LoginSecurity plugin;
-    private long cycle;
 
     public TimeoutThread(LoginSecurity plugin) {
         this.plugin = plugin;
@@ -35,13 +34,13 @@ public class TimeoutThread implements Runnable {
     @Override
     public void run() {
         Iterator<String> it = authList.keySet().iterator();
-        cycle = System.currentTimeMillis() / 1000L;
+        long cycle = System.currentTimeMillis() / 1000L;
 
         while (it.hasNext()) {
             String puuid = it.next();
 
             TimeoutData current = authList.get(puuid);
-            if (!trigger(current)) {
+            if (!((cycle - current.timeout) >= plugin.conf.timeDelay)) {
                 notify(current);
             } else {
                 it.remove();
@@ -85,14 +84,6 @@ public class TimeoutThread implements Runnable {
 
     public boolean check(String uuid) {
         return authList.containsKey(uuid);
-    }
-
-    private boolean trigger(TimeoutData current) {
-        if (authList.containsKey(current.uuid)) {
-            return (cycle - current.timeout) >= plugin.conf.timeDelay;
-        } else {
-            return false;
-        }
     }
 
     private void notify(TimeoutData current) {

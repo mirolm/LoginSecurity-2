@@ -45,7 +45,7 @@ public class ChangePassCommand implements CommandExecutor {
             return true;
         }
 
-        if (!plugin.passmgr.validPass(args[1])) {
+        if (plugin.passmgr.weakPass(args[1])) {
             player.sendMessage(plugin.lang.get("verify_psw"));
             logger.log(Level.WARNING, "{0} failed to change password", player.getName());
             return true;
