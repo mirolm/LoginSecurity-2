@@ -70,8 +70,10 @@ public class LoginSecurity extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        //release pool
         data.close();
 
+        //release threads
         timetask.cancel();
         locktask.cancel();
     }
