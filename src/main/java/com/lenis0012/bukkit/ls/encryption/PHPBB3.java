@@ -5,9 +5,9 @@ import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 
 /**
- * Port of phpBB3 password handling to Java. 
+ * Port of phpBB3 password handling to Java.
  * See phpBB3/includes/functions.php
- * 
+ *
  * @author lars
  */
 public class PHPBB3 implements Encryptor {
@@ -28,7 +28,7 @@ public class PHPBB3 implements Encryptor {
             }
             random = random.substring(0, count);
         }
-		
+
         String hash = _hash_crypt_private(
                 password, _hash_gensalt_private(random, itoa64));
         if (hash.length() == 34)
@@ -77,23 +77,23 @@ public class PHPBB3 implements Encryptor {
         do {
             int value = input.charAt(i++);
             output += itoa64.charAt(value & 0x3f);
- 
+
             if (i < count)
                 value |= input.charAt(i) << 8;
- 
+
             output += itoa64.charAt((value >> 6) & 0x3f);
- 
+
             if (i++ >= count)
                 break;
- 
+
             if (i < count)
                 value |= input.charAt(i) << 16;
- 
+
             output += itoa64.charAt((value >> 12) & 0x3f);
- 
+
             if (i++ >= count)
                 break;
- 
+
             output += itoa64.charAt((value >> 18) & 0x3f);
         } while (i < count);
 
@@ -148,18 +148,18 @@ public class PHPBB3 implements Encryptor {
             throw new RuntimeException(e);
         }
     }
-  
+
     static int hexToInt(char ch) {
-        if(ch >= '0' && ch <= '9')
+        if (ch >= '0' && ch <= '9')
             return ch - '0';
-  
+
         ch = Character.toUpperCase(ch);
-        if(ch >= 'A' && ch <= 'F')
+        if (ch >= 'A' && ch <= 'F')
             return ch - 'A' + 0xA;
-  
+
         throw new IllegalArgumentException("Not a hex character: " + ch);
     }
- 
+
     private static String bytes2hex(byte[] bytes) {
         StringBuffer r = new StringBuffer(32);
         for (int i = 0; i < bytes.length; i++) {
@@ -173,9 +173,9 @@ public class PHPBB3 implements Encryptor {
 
     static String pack(String hex) {
         StringBuffer buf = new StringBuffer();
-        for(int i = 0; i < hex.length(); i += 2) {
+        for (int i = 0; i < hex.length(); i += 2) {
             char c1 = hex.charAt(i);
-            char c2 = hex.charAt(i+1);
+            char c2 = hex.charAt(i + 1);
             char packed = (char) (hexToInt(c1) * 16 + hexToInt(c2));
             buf.append(packed);
         }

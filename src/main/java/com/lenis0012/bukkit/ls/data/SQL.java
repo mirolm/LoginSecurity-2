@@ -49,7 +49,7 @@ public abstract class SQL implements DataManager {
     public Connection getConn() {
         try {
             return datasrc.getConnection();
-        } catch(Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }
@@ -65,7 +65,7 @@ public abstract class SQL implements DataManager {
             stmt.setQueryTimeout(30);
 
             stmt.executeUpdate();
-        } catch(Exception e) {
+        } catch (Exception e) {
             logger.log(Level.SEVERE, "Failed to create tables");
         } finally {
             closeQuietly(stmt);
@@ -87,7 +87,7 @@ public abstract class SQL implements DataManager {
 
             result = stmt.executeQuery();
             return result.next();
-        } catch(Exception e) {
+        } catch (Exception e) {
             logger.log(Level.SEVERE, "Failed to check user");
             return false;
         } finally {

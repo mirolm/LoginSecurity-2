@@ -6,7 +6,7 @@ public interface Encryptor {
      *
      * @param check password to check
      * @param real  real password from database
-     * @return      passwords the same?
+     * @return passwords the same?
      */
     boolean check(String check, String real);
 
@@ -14,7 +14,7 @@ public interface Encryptor {
      * Hash a value
      *
      * @param value Value
-     * @return      Hashed value
+     * @return Hashed value
      */
     String hash(String value);
 }
