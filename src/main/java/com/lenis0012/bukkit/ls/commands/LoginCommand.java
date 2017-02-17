@@ -33,15 +33,18 @@ public class LoginCommand implements CommandExecutor {
             player.sendMessage(plugin.lang.get("already_login"));
             return true;
         }
+
         if(!plugin.data.checkUser(uuid)) {
             player.sendMessage(plugin.lang.get("no_psw_set"));
             return true;
         }
+
         if(args.length < 1) {
             player.sendMessage(plugin.lang.get("invalid_args"));
             player.sendMessage(plugin.lang.get("usage") + cmd.getUsage());
             return true;
         }
+
         if(plugin.passmgr.checkPass(uuid, args[0])) {
             plugin.timeout.remove(uuid);
             plugin.lockout.remove(uuid, addr);

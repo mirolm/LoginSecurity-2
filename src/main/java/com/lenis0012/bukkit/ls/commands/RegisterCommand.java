@@ -32,11 +32,13 @@ public class RegisterCommand implements CommandExecutor {
             player.sendMessage(plugin.lang.get("already_reg"));
             return true;
         }
+
         if (args.length < 1) {
             player.sendMessage(plugin.lang.get("invalid_args"));
             player.sendMessage(plugin.lang.get("usage") + cmd.getUsage());
             return true;
         }
+
         if (!plugin.passmgr.validPass(args[0])) {
             player.sendMessage(plugin.lang.get("verify_psw"));
             logger.log(Level.WARNING, "{0} failed to register", player.getName());
