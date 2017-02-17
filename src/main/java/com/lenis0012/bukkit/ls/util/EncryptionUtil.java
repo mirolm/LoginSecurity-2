@@ -1,11 +1,11 @@
 package com.lenis0012.bukkit.ls.util;
 
+import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
+
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
 public class EncryptionUtil {
     public static String encrypt(String value, String algorithm, String encoding) {
@@ -21,11 +21,11 @@ public class EncryptionUtil {
             throw new IllegalArgumentException("Invalid encoding: " + encoding);
         }
     }
-	
+
     public static String getMD5(String value) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
-            md.update(value.getBytes(), 0 ,value.length());
+            md.update(value.getBytes(), 0, value.length());
             return new BigInteger(1, md.digest()).toString(16);
         } catch (NoSuchAlgorithmException e) {
             return value;

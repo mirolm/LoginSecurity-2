@@ -1,9 +1,9 @@
 package com.lenis0012.bukkit.ls.data;
 
-import java.io.File;
-
-import com.zaxxer.hikari.HikariConfig;
 import com.lenis0012.bukkit.ls.LoginSecurity;
+import com.zaxxer.hikari.HikariConfig;
+
+import java.io.File;
 
 public class SQLite extends SQL {
     private static final String dbname = "users.db";
@@ -11,10 +11,10 @@ public class SQLite extends SQL {
     public SQLite(LoginSecurity plugin) {
         this.plugin = plugin;
 
-        String path = getFilePath();
-		
+        String path = getpath();
+
         HikariConfig dbcfg = new HikariConfig();
-		
+
         dbcfg.setDriverClassName("org.sqlite.JDBC");
         dbcfg.setJdbcUrl("jdbc:sqlite:" + path);
         dbcfg.setUsername("");
@@ -24,16 +24,16 @@ public class SQLite extends SQL {
 
         init(plugin.conf.table, dbcfg);
     }
-	
-    private String getFilePath() {
-        return new File(plugin.getDataFolder(), dbname)
-                .toPath().normalize()
-                .toString();
-    }
 
     public static boolean exists(LoginSecurity plugin) {
         File file = new File(plugin.getDataFolder(), dbname);
 
         return file.exists();
+    }
+
+    private String getpath() {
+        return new File(plugin.getDataFolder(), dbname)
+                .toPath().normalize()
+                .toString();
     }
 }

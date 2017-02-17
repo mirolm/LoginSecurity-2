@@ -18,8 +18,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class LoginListener implements Listener {
-    private final LoginSecurity plugin;
     private static final List<String> ALLOWED_COMMANDS = Arrays.asList("/login ", "/log ", "/l ", "/register ", "/reg ");
+    private final LoginSecurity plugin;
 
     public LoginListener(LoginSecurity plugin) {
         this.plugin = plugin;
@@ -87,7 +87,7 @@ public class LoginListener implements Listener {
             Location from = event.getFrom();
             Location to = event.getTo();
 
-            if(from.getBlockX() != to.getBlockX() || from.getBlockZ() != to.getBlockZ()) {
+            if (from.getBlockX() != to.getBlockX() || from.getBlockZ() != to.getBlockZ()) {
                 event.setTo(event.getFrom());
             }
         }
@@ -161,12 +161,12 @@ public class LoginListener implements Listener {
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         Entity defender = event.getEntity();
         Entity damager = event.getDamager();
- 
+
         if (authEntity(defender)) {
             event.setCancelled(true);
             return;
         }
- 
+
         if (authEntity(damager)) {
             event.setCancelled(true);
         }
@@ -219,13 +219,13 @@ public class LoginListener implements Listener {
         if (authEntity(player)) {
             String message = event.getMessage().toLowerCase();
 
-            for(String cmd : ALLOWED_COMMANDS) {
-                if(message.startsWith(cmd)) {
+            for (String cmd : ALLOWED_COMMANDS) {
+                if (message.startsWith(cmd)) {
                     return;
                 }
             }
 
-            if(message.startsWith("/f")) {
+            if (message.startsWith("/f")) {
                 event.setMessage("/LOGIN_SECURITY_FACTION_REPLACEMENT_FIX");
             }
 

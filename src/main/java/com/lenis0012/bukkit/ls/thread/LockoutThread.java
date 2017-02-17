@@ -53,7 +53,7 @@ public class LockoutThread implements Runnable {
             current.failed += 1;
             current.timeout = System.currentTimeMillis() / 1000L;
 
-            return failList.put(fuuid, current).failed  >= plugin.conf.countFail;
+            return failList.put(fuuid, current).failed >= plugin.conf.countFail;
         } else {
             failList.put(fuuid, new LockoutData(fuuid));
         }

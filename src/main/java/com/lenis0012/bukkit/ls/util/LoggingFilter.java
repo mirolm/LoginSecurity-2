@@ -17,8 +17,8 @@ public class LoggingFilter extends AbstractFilter {
 
     private Result handle(String message) {
         message = message.toLowerCase();
-        for(String word : filteredWords) {
-            if(message.contains(word)) {
+        for (String word : filteredWords) {
+            if (message.contains(word)) {
                 return Result.DENY;
             }
         }

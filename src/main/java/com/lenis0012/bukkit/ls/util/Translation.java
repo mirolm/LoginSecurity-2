@@ -1,9 +1,9 @@
 package com.lenis0012.bukkit.ls.util;
 
 import com.google.common.collect.Maps;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.util.concurrent.ConcurrentMap;

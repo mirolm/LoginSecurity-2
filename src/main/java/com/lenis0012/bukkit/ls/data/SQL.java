@@ -1,15 +1,14 @@
 package com.lenis0012.bukkit.ls.data;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import org.bukkit.plugin.Plugin;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.logging.Logger;
 import java.util.logging.Level;
-
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-
-import org.bukkit.plugin.Plugin;
+import java.util.logging.Logger;
 
 public abstract class SQL implements DataManager {
     private Logger logger;
@@ -50,7 +49,7 @@ public abstract class SQL implements DataManager {
     public Connection getConn() {
         try {
             return datasrc.getConnection();
-        } catch(Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }
@@ -66,7 +65,7 @@ public abstract class SQL implements DataManager {
             stmt.setQueryTimeout(30);
 
             stmt.executeUpdate();
-        } catch(Exception e) {
+        } catch (Exception e) {
             logger.log(Level.SEVERE, "Failed to create tables");
         } finally {
             closeQuietly(stmt);
@@ -88,7 +87,7 @@ public abstract class SQL implements DataManager {
 
             result = stmt.executeQuery();
             return result.next();
-        } catch(Exception e) {
+        } catch (Exception e) {
             logger.log(Level.SEVERE, "Failed to check user");
             return false;
         } finally {
