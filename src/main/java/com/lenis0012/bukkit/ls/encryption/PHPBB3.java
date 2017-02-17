@@ -14,7 +14,7 @@ public class PHPBB3 implements Encryptor {
     private final String itoa64 =
             "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
-    public String phpbb_hash(String password) {
+    private String phpbb_hash(String password) {
         String random_state = unique_id();
         String random = "";
         int count = 6;
@@ -100,7 +100,7 @@ public class PHPBB3 implements Encryptor {
         return output;
     }
 
-    String _hash_crypt_private(String password, String setting) {
+    private String _hash_crypt_private(String password, String setting) {
         String output = "*";
 
         // Check for correct hash
@@ -128,7 +128,7 @@ public class PHPBB3 implements Encryptor {
         return output;
     }
 
-    public boolean phpbb_check_hash(
+    private boolean phpbb_check_hash(
             String password, String hash) {
         if (hash.length() == 34)
             return _hash_crypt_private(password, hash).equals(hash);
@@ -136,20 +136,18 @@ public class PHPBB3 implements Encryptor {
             return md5(password).equals(hash);
     }
 
-    public static String md5(String data) {
+    private static String md5(String data) {
         try {
             byte[] bytes = data.getBytes("ISO-8859-1");
             MessageDigest md5er = MessageDigest.getInstance("MD5");
             byte[] hash = md5er.digest(bytes);
             return bytes2hex(hash);
-        } catch (GeneralSecurityException e) {
-            throw new RuntimeException(e);
-        } catch (UnsupportedEncodingException e) {
+        } catch (GeneralSecurityException | UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
     }
 
-    static int hexToInt(char ch) {
+    private static int hexToInt(char ch) {
         if (ch >= '0' && ch <= '9')
             return ch - '0';
 
@@ -161,7 +159,7 @@ public class PHPBB3 implements Encryptor {
     }
 
     private static String bytes2hex(byte[] bytes) {
-        StringBuffer r = new StringBuffer(32);
+        StringBuilder r = new StringBuilder(32);
         for (int i = 0; i < bytes.length; i++) {
             String x = Integer.toHexString(bytes[i] & 0xff);
             if (x.length() < 2)
@@ -171,8 +169,8 @@ public class PHPBB3 implements Encryptor {
         return r.toString();
     }
 
-    static String pack(String hex) {
-        StringBuffer buf = new StringBuffer();
+    private static String pack(String hex) {
+        StringBuilder buf = new StringBuilder();
         for (int i = 0; i < hex.length(); i += 2) {
             char c1 = hex.charAt(i);
             char c2 = hex.charAt(i + 1);

@@ -55,7 +55,7 @@ import java.security.SecureRandom;
  * <p>
  * The amount of work increases exponentially (2**log_rounds), so
  * each increment is twice as much work. The default log_rounds is
- * 10, and the valid range is 4 to 31.
+ * 10, and the valid range is 4 to 30.
  *
  * @author Damien Miller
  * @version 0.2
@@ -347,14 +347,16 @@ public class BCrypt implements Encryptor {
             0xb74e6132, 0xce77e25b, 0x578fdfe3, 0x3ac372e6
     };
 
-    // bcrypt IV: "OrpheanBeholderScryDoubt"
-    static private final int bf_crypt_ciphertext[] = {
+    // bcrypt IV: "OrpheanBeholderScryDoubt". The C implementation calls
+    // this "ciphertext", but it is really plaintext or an IV. We keep
+    // the name to make code comparison easier.
+    private static final int bf_crypt_ciphertext[] = {
             0x4f727068, 0x65616e42, 0x65686f6c,
             0x64657253, 0x63727944, 0x6f756274
     };
 
     // Table for Base64 encoding
-    static private final char base64_code[] = {
+    private static final char base64_code[] = {
             '.', '/', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
             'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
             'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
@@ -364,7 +366,7 @@ public class BCrypt implements Encryptor {
     };
 
     // Table for Base64 decoding
-    static private final byte index_64[] = {
+    private static final byte index_64[] = {
             -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
             -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
             -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -397,7 +399,7 @@ public class BCrypt implements Encryptor {
     private static String encode_base64(byte d[], int len)
             throws IllegalArgumentException {
         int off = 0;
-        StringBuffer rs = new StringBuffer();
+        StringBuilder rs = new StringBuilder();
         int c1, c2;
 
         if (len <= 0 || len > d.length)
@@ -452,7 +454,7 @@ public class BCrypt implements Encryptor {
      */
     private static byte[] decode_base64(String s, int maxolen)
             throws IllegalArgumentException {
-        StringBuffer rs = new StringBuffer();
+        StringBuilder rs = new StringBuilder();
         int off = 0, slen = s.length(), olen = 0;
         byte ret[];
         byte c1, c2, c3, c4, o;
@@ -620,15 +622,15 @@ public class BCrypt implements Encryptor {
      * @param salt       the binary salt to hash with the password
      * @param log_rounds the binary logarithm of the number
      *                   of rounds of hashing to apply
+     * @param cdata      the plaintext to encrypt
      * @return an array containing the binary hashed password
      */
-    private byte[] crypt_raw(byte password[], byte salt[], int log_rounds) {
+    private byte[] crypt_raw(byte password[], byte salt[], int log_rounds, int cdata[]) {
         int rounds, i, j;
-        int cdata[] = bf_crypt_ciphertext.clone();
         int clen = cdata.length;
         byte ret[];
 
-        if (log_rounds < 4 || log_rounds > 31)
+        if (log_rounds < 4 || log_rounds > 30)
             throw new IllegalArgumentException("Bad number of rounds");
         rounds = 1 << log_rounds;
         if (salt.length != BCRYPT_SALT_LEN)
@@ -636,7 +638,7 @@ public class BCrypt implements Encryptor {
 
         init_key();
         ekskey(salt, password);
-        for (i = 0; i < rounds; i++) {
+        for (i = 0; i != rounds; i++) {
             key(password);
             key(salt);
         }
@@ -664,13 +666,13 @@ public class BCrypt implements Encryptor {
      *                 using BCrypt.gensalt)
      * @return the hashed password
      */
-    public static String hashpw(String password, String salt) {
+    private static String hashpw(String password, String salt) {
         BCrypt B;
         String real_salt;
         byte passwordb[], saltb[], hashed[];
         char minor = (char) 0;
         int rounds, off;
-        StringBuffer rs = new StringBuffer();
+        StringBuilder rs = new StringBuilder();
 
         if (salt.charAt(0) != '$' || salt.charAt(1) != '2')
             throw new IllegalArgumentException("Invalid salt version");
@@ -698,7 +700,7 @@ public class BCrypt implements Encryptor {
         saltb = decode_base64(real_salt, BCRYPT_SALT_LEN);
 
         B = new BCrypt();
-        hashed = B.crypt_raw(passwordb, saltb, rounds);
+        hashed = B.crypt_raw(passwordb, saltb, rounds, bf_crypt_ciphertext.clone());
 
         rs.append("$2");
         if (minor >= 'a')
@@ -706,6 +708,10 @@ public class BCrypt implements Encryptor {
         rs.append("$");
         if (rounds < 10)
             rs.append("0");
+        if (rounds > 30) {
+            throw new IllegalArgumentException(
+                    "rounds exceeds maximum (30)");
+        }
         rs.append(Integer.toString(rounds));
         rs.append("$");
         rs.append(encode_base64(saltb, saltb.length));
@@ -723,8 +729,8 @@ public class BCrypt implements Encryptor {
      * @param random     an instance of SecureRandom to use
      * @return an encoded salt value
      */
-    public static String gensalt(int log_rounds, SecureRandom random) {
-        StringBuffer rs = new StringBuffer();
+    private static String gensalt(int log_rounds, SecureRandom random) {
+        StringBuilder rs = new StringBuilder();
         byte rnd[] = new byte[BCRYPT_SALT_LEN];
 
         random.nextBytes(rnd);
@@ -732,6 +738,10 @@ public class BCrypt implements Encryptor {
         rs.append("$2a$");
         if (log_rounds < 10)
             rs.append("0");
+        if (log_rounds > 30) {
+            throw new IllegalArgumentException(
+                    "log_rounds exceeds maximum (30)");
+        }
         rs.append(Integer.toString(log_rounds));
         rs.append("$");
         rs.append(encode_base64(rnd, rnd.length));
@@ -746,7 +756,7 @@ public class BCrypt implements Encryptor {
      *                   2**log_rounds.
      * @return an encoded salt value
      */
-    public static String gensalt(int log_rounds) {
+    private static String gensalt(int log_rounds) {
         return gensalt(log_rounds, new SecureRandom());
     }
 
@@ -757,7 +767,7 @@ public class BCrypt implements Encryptor {
      *
      * @return an encoded salt value
      */
-    public static String gensalt() {
+    private static String gensalt() {
         return gensalt(GENSALT_DEFAULT_LOG2_ROUNDS);
     }
 
@@ -769,7 +779,21 @@ public class BCrypt implements Encryptor {
      * @param hashed    the previously-hashed password
      * @return true if the passwords match, false otherwise
      */
-    public static boolean checkpw(String plaintext, String hashed) {
-        return (hashed.compareTo(hashpw(plaintext, hashed)) == 0);
+    private static boolean checkpw(String plaintext, String hashed) {
+        byte hashed_bytes[];
+        byte try_bytes[];
+        try {
+            String try_pw = hashpw(plaintext, hashed);
+            hashed_bytes = hashed.getBytes("UTF-8");
+            try_bytes = try_pw.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException uee) {
+            return false;
+        }
+        if (hashed_bytes.length != try_bytes.length)
+            return false;
+        byte ret = 0;
+        for (int i = 0; i < try_bytes.length; i++)
+            ret |= hashed_bytes[i] ^ try_bytes[i];
+        return ret == 0;
     }
 }
