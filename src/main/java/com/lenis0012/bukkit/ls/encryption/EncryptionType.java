@@ -2,11 +2,6 @@ package com.lenis0012.bukkit.ls.encryption;
 
 public enum EncryptionType {
     MD5(1, new MD5()),
-    PHPBB3(2, new PHPBB3()),
-    SHA1(3, new SHA("SHA-1")),
-    SHA(4, new SHA("SHA")),
-    SHA256(5, new SHA("SHA-256")),
-    SHA512(6, new SHA("SHA-512")),
     BCRYPT(7, new BCrypt());
 
     private final Encryptor cryp;
@@ -40,17 +35,7 @@ public enum EncryptionType {
     public static EncryptionType fromString(String from) {
         if (from.equalsIgnoreCase("md5"))
             return MD5;
-        else if (from.equalsIgnoreCase("phpbb3"))
-            return PHPBB3;
-        else if (from.equalsIgnoreCase("sha")) {
-            return SHA;
-        } else if (from.equalsIgnoreCase("sha-1")) {
-            return SHA1;
-        } else if (from.equalsIgnoreCase("sha-256")) {
-            return SHA256;
-        } else if (from.equalsIgnoreCase("sha-512")) {
-            return SHA512;
-        } else if (from.equalsIgnoreCase("bcrypt")) {
+        if (from.equalsIgnoreCase("bcrypt")) {
             return BCRYPT;
         } else
             return BCRYPT;
