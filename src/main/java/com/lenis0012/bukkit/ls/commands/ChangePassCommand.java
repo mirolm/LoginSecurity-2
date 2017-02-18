@@ -51,7 +51,7 @@ public class ChangePassCommand implements CommandExecutor {
             return true;
         }
 
-        LoginData login = new LoginData(uuid, plugin.passmgr.hash(args[1]), plugin.passmgr.gettypeid());
+        LoginData login = new LoginData(uuid, plugin.passmgr.hash(args[1]), plugin.passmgr.type());
         plugin.data.updateUser(login);
 
         player.sendMessage(plugin.lang.get("psw_changed"));

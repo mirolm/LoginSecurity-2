@@ -45,7 +45,7 @@ public class RegisterCommand implements CommandExecutor {
             return true;
         }
 
-        LoginData login = new LoginData(uuid, plugin.passmgr.hash(args[0]), plugin.passmgr.gettypeid());
+        LoginData login = new LoginData(uuid, plugin.passmgr.hash(args[0]), plugin.passmgr.type());
         plugin.data.regUser(login);
 
         plugin.timeout.remove(uuid);
