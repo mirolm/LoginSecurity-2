@@ -85,7 +85,7 @@
                             <shadedPattern>com.lenis0012.bukkit.ls.libs.slf4j</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>org.mindrot.jbcrypt/</pattern>
+                            <pattern>org.mindrot.jbcrypt</pattern>
                             <shadedPattern>com.lenis0012.bukkit.ls.libs.jbcrypt</shadedPattern>
                         </relocation>
                     </relocations>
