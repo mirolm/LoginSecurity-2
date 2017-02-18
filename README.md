@@ -6,21 +6,15 @@ Worlds must-known plugin for security & control
 Features:
 ========
 - Login with custom passwords
+- Blindness effect on join
 - Completely optimized code
 - No Corss-Thread acces
-- Optional or required passwords
 - MySQL and SQLite support
 - Fast handling
-- MD5 Encryption
+- MD5, BCRYPT Encryption
 - Automatic LockDown whem MySQL conection is lost
-- Task to reconnect with MySQL, keeps the connection fresh
-- Converter from SQLite to MySQL wehn switching
-- Safe data files with .db format
-- Advanced Error handling
-- Command to change password
+- Converter from SQLite to MySQL when switching
 - More than 15 events being blocked when not logged in
-- Blindness effect on jon
-- Much more to come
 
 License:
 =======
