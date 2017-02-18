@@ -39,19 +39,19 @@ public class ChangePassCommand implements CommandExecutor {
             return true;
         }
 
-        if (!plugin.passmgr.checkPass(uuid, args[0])) {
+        if (!plugin.passmgr.check(uuid, args[0])) {
             player.sendMessage(plugin.lang.get("invalid_psw"));
             logger.log(Level.WARNING, "{0} failed to change password", player.getName());
             return true;
         }
 
-        if (plugin.passmgr.weakPass(args[1])) {
+        if (plugin.passmgr.weak(args[1])) {
             player.sendMessage(plugin.lang.get("verify_psw"));
             logger.log(Level.WARNING, "{0} failed to change password", player.getName());
             return true;
         }
 
-        LoginData login = new LoginData(uuid, plugin.hasher.hash(args[1]), plugin.hasher.getTypeId());
+        LoginData login = new LoginData(uuid, plugin.passmgr.hash(args[1]), plugin.passmgr.gettypeid());
         plugin.data.updateUser(login);
 
         player.sendMessage(plugin.lang.get("psw_changed"));

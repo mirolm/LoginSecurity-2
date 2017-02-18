@@ -45,13 +45,13 @@ public class LoginCommand implements CommandExecutor {
             return true;
         }
 
-        if (plugin.passmgr.checkPass(uuid, args[0])) {
+        if (plugin.passmgr.check(uuid, args[0])) {
             plugin.timeout.remove(uuid);
             plugin.lockout.remove(uuid, addr);
 
             player.sendMessage(plugin.lang.get("login"));
 
-            if (plugin.passmgr.weakPass(args[0])) {
+            if (plugin.passmgr.weak(args[0])) {
                 player.sendMessage(plugin.lang.get("weak_psw"));
                 logger.log(Level.INFO, "{0} uses weak password", player.getName());
             }
