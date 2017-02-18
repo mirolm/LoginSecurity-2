@@ -8,11 +8,11 @@ Features:
 - Login with custom passwords
 - Blindness effect on join
 - Completely optimized code
-- No Corss-Thread acces
+- No Cross-Thread access
 - MySQL and SQLite support
 - Fast handling
 - MD5, BCRYPT Encryption
-- Automatic LockDown whem MySQL conection is lost
+- Automatic LockDown when MySQL connection is lost
 - Converter from SQLite to MySQL when switching
 - More than 15 events being blocked when not logged in
 
