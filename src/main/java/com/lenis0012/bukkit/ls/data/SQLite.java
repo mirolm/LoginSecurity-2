@@ -5,7 +5,7 @@ import com.zaxxer.hikari.HikariConfig;
 
 import java.io.File;
 
-class SQLite extends SQL {
+public class SQLite extends SQL {
     private static final String dbname = "users.db";
 
     public SQLite(LoginSecurity plugin) {

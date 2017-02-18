@@ -11,10 +11,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public abstract class SQL implements DataManager {
+    protected Plugin plugin;
     private Logger logger;
     private HikariDataSource datasrc;
-    Plugin plugin;
-
     private String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS <TABLE> ("
             + "unique_user_id VARCHAR(130) NOT NULL UNIQUE,"
             + "password VARCHAR(300) NOT NULL,"
