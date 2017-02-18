@@ -7,7 +7,6 @@ import com.lenis0012.bukkit.ls.data.Converter;
 import com.lenis0012.bukkit.ls.data.DataManager;
 import com.lenis0012.bukkit.ls.data.MySQL;
 import com.lenis0012.bukkit.ls.data.SQLite;
-import com.lenis0012.bukkit.ls.encryption.EncryptionType;
 import com.lenis0012.bukkit.ls.encryption.PasswordManager;
 import com.lenis0012.bukkit.ls.thread.LockoutThread;
 import com.lenis0012.bukkit.ls.thread.TimeoutThread;
@@ -23,7 +22,6 @@ public class LoginSecurity extends JavaPlugin {
     public PasswordManager passmgr;
     public Translation lang;
     public Config conf;
-    public EncryptionType hasher;
     public LockoutThread lockout;
     public TimeoutThread timeout;
 
@@ -32,48 +30,48 @@ public class LoginSecurity extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        //intalize fields
+        //configuration
         conf = new Config(this);
         lang = new Translation(this);
-        hasher = EncryptionType.fromString(conf.hasher);
-        passmgr = new PasswordManager(this);
-        timeout = new TimeoutThread(this);
-        lockout = new LockoutThread(this);
 
-        //get database
+        //database
         data = conf.usemysql ? new MySQL(this) : new SQLite(this);
 
-
-        //convert everything
         Converter conv = new Converter(this);
         conv.convert();
 
-        //register events
+        //encryption
+        passmgr = new PasswordManager(this);
+
+        //events
         getServer().getPluginManager().registerEvents(new LoginListener(this), this);
 
-        //register commands
+        //commands
         getCommand("login").setExecutor(new LoginCommand(this));
         getCommand("register").setExecutor(new RegisterCommand(this));
         getCommand("changepass").setExecutor(new ChangePassCommand(this));
 
-        //register filter
+        //filter log
         org.apache.logging.log4j.core.Logger logger;
 
         logger = (org.apache.logging.log4j.core.Logger) LogManager.getRootLogger();
         logger.addFilter(new LoggingFilter());
 
-        //register threads
+        //threads
+        timeout = new TimeoutThread(this);
+        lockout = new LockoutThread(this);
+
         timetask = getServer().getScheduler().runTaskTimer(this, timeout, 0L, 200L);
         locktask = getServer().getScheduler().runTaskTimer(this, lockout, 0L, 1200L);
     }
 
     @Override
     public void onDisable() {
-        //release pool
-        data.close();
-
-        //release threads
+        //threads
         timetask.cancel();
         locktask.cancel();
+
+        //database
+        data.close();
     }
 }

@@ -29,6 +29,7 @@ public enum EncryptionType {
             if (type.type == from)
                 return type;
         }
+
         return null;
     }
 
