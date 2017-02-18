@@ -71,7 +71,7 @@ public class Account {
             plugin.timeout.remove(uuid);
 
             player.sendMessage(plugin.lang.get("registered"));
-            logger.log(Level.INFO, "{0} registered sucessfully", player.getName());
+            logger.log(Level.INFO, "{0} registered successfully", player.getName());
         }
     }
 
@@ -94,7 +94,7 @@ public class Account {
             executor.update(new LoginData(uuid, hasher.hash(newpass), hasher.gettype()));
 
             player.sendMessage(plugin.lang.get("psw_changed"));
-            logger.log(Level.INFO, "{0} sucessfully changed password", player.getName());
+            logger.log(Level.INFO, "{0} successfully changed password", player.getName());
         }
     }
 
