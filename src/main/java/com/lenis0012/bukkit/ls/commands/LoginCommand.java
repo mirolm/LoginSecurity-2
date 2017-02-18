@@ -6,9 +6,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 public class LoginCommand implements CommandExecutor {
     private final LoginSecurity plugin;
 
@@ -19,52 +16,12 @@ public class LoginCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        Logger logger = plugin.getLogger();
-
         if (!(sender instanceof Player)) {
             return true;
         }
 
         Player player = (Player) sender;
-        String uuid = player.getUniqueId().toString();
-        String addr = player.getAddress().getAddress().toString();
-
-        if (!plugin.timeout.check(uuid)) {
-            player.sendMessage(plugin.lang.get("already_login"));
-            return true;
-        }
-
-        if (!plugin.data.checkUser(uuid)) {
-            player.sendMessage(plugin.lang.get("no_psw_set"));
-            return true;
-        }
-
-        if (args.length < 1) {
-            player.sendMessage(plugin.lang.get("invalid_args"));
-            player.sendMessage(plugin.lang.get("usage") + cmd.getUsage());
-            return true;
-        }
-
-        if (plugin.passmgr.check(uuid, args[0])) {
-            plugin.timeout.remove(uuid);
-            plugin.lockout.remove(uuid, addr);
-
-            player.sendMessage(plugin.lang.get("login"));
-
-            if (plugin.passmgr.weak(args[0])) {
-                player.sendMessage(plugin.lang.get("weak_psw"));
-                logger.log(Level.INFO, "{0} uses weak password", player.getName());
-            }
-
-            logger.log(Level.INFO, "{0} authenticated", player.getName());
-        } else {
-            if (plugin.lockout.failed(uuid, addr)) {
-                player.kickPlayer(plugin.lang.get("fail_count"));
-            } else {
-                player.sendMessage(plugin.lang.get("invalid_psw"));
-                logger.log(Level.WARNING, "{0} entered an incorrect password", player.getName());
-            }
-        }
+        plugin.manager.login(player, args[0]);
 
         return true;
     }

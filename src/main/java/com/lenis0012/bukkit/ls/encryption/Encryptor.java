@@ -1,6 +1,6 @@
 package com.lenis0012.bukkit.ls.encryption;
 
-public interface Encryptor {
+interface Encryptor {
     /**
      * Check if 2 passwords mach
      *
