@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentMap;
 
-public class LockoutThread implements Runnable {
+public class Lockout implements Runnable {
     private class LockoutData {
         public int failed;
         public long timeout;
@@ -21,7 +21,7 @@ public class LockoutThread implements Runnable {
     private final ConcurrentMap<String, LockoutData> failList = Maps.newConcurrentMap();
     private final LoginSecurity plugin;
 
-    public LockoutThread(LoginSecurity plugin) {
+    public Lockout(LoginSecurity plugin) {
         this.plugin = plugin;
     }
 

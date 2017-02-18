@@ -10,7 +10,7 @@ import org.apache.logging.log4j.message.Message;
 import java.util.Arrays;
 import java.util.List;
 
-public class LoggingFilter extends AbstractFilter {
+public class LogFilter extends AbstractFilter {
     private static final List<String> filteredWords = Arrays.asList("/register ", "/reg ", "/login ", "/log ", "/l ", "/changepassword ", "/changepass ", "/cp ");
 
     private Result handle(String message) {

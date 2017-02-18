@@ -1,23 +1,24 @@
-package com.lenis0012.bukkit.ls;
+package com.lenis0012.bukkit.ls.util;
 
+import com.lenis0012.bukkit.ls.LoginSecurity;
 import com.lenis0012.bukkit.ls.data.Executor;
 import com.lenis0012.bukkit.ls.data.LoginData;
-import com.lenis0012.bukkit.ls.encryption.EncryptionType;
+import com.lenis0012.bukkit.ls.encryption.Encryptor;
 import org.bukkit.entity.Player;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class AccountManager {
+public class Account {
     private final LoginSecurity plugin;
-    private final EncryptionType hasher;
+    private final Encryptor hasher;
     private final Logger logger;
     private final Executor executor;
 
-    public AccountManager(LoginSecurity plugin) {
+    public Account(LoginSecurity plugin) {
         this.plugin = plugin;
         this.logger = plugin.getLogger();
-        this.hasher = EncryptionType.gethasher(plugin.conf.hasher);
+        this.hasher = Encryptor.gethasher(plugin.conf.hasher);
         this.executor = new Executor(plugin);
     }
 

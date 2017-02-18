@@ -1,4 +1,4 @@
-package com.lenis0012.bukkit.ls.event;
+package com.lenis0012.bukkit.ls.util;
 
 import com.lenis0012.bukkit.ls.LoginSecurity;
 import org.bukkit.Bukkit;
@@ -18,11 +18,11 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 import java.util.Arrays;
 import java.util.List;
 
-public class LoginListener implements Listener {
+public class EventHook implements Listener {
     private static final List<String> ALLOWED_COMMANDS = Arrays.asList("/login ", "/log ", "/l ", "/register ", "/reg ");
     private final LoginSecurity plugin;
 
-    public LoginListener(LoginSecurity plugin) {
+    public EventHook(LoginSecurity plugin) {
         this.plugin = plugin;
     }
 
@@ -44,7 +44,7 @@ public class LoginListener implements Listener {
         Player player = event.getPlayer();
         String uuid = player.getUniqueId().toString();
 
-        plugin.timeout.add(uuid, plugin.manager.checkuser(uuid));
+        plugin.timeout.add(uuid, plugin.account.checkuser(uuid));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
