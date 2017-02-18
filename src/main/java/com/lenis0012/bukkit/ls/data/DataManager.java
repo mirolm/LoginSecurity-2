@@ -3,7 +3,7 @@ package com.lenis0012.bukkit.ls.data;
 import java.sql.Connection;
 import java.sql.ResultSet;
 
-public interface DataManager {
+interface DataManager {
 
     /**
      * Close Connection Pool

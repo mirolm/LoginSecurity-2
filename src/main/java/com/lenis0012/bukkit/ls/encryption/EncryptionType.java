@@ -2,7 +2,7 @@ package com.lenis0012.bukkit.ls.encryption;
 
 public enum EncryptionType {
     MD5(1, new MD5()),
-    BCRYPT(7, new BCrypt());
+    BCRYPT(7, new BCRYPT());
 
     private final Encryptor cryp;
     private final int type;

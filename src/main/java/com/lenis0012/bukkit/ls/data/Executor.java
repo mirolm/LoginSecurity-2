@@ -7,16 +7,45 @@ import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Converter {
+public class Executor {
     private final LoginSecurity plugin;
+    private final Logger logger;
+    private final DataManager data;
 
-    public Converter(LoginSecurity plugin) {
+    public Executor(LoginSecurity plugin) {
         this.plugin = plugin;
+        this.logger = plugin.getLogger();
+
+        this.data = plugin.conf.usemysql ? new MySQL(plugin) : new SQLite(plugin);
+
+        convert();
     }
 
-    public void convert() {
-        Logger logger = plugin.getLogger();
+    public void disable() {
+        data.close();
+    }
 
+    public boolean check(String uuid) {
+        return data.checkUser(uuid);
+    }
+
+    public LoginData get(String uuid) {
+        return data.getUser(uuid);
+    }
+
+    public void register(LoginData login) {
+        if (!data.checkUser(login.uuid)) {
+            data.regUser(login);
+        }
+    }
+
+    public void update(LoginData login) {
+        if (data.checkUser(login.uuid)) {
+            data.updateUser(login);
+        }
+    }
+
+    private void convert() {
         DataManager manager;
         Connection conn = null;
         ResultSet result = null;
@@ -32,9 +61,7 @@ public class Converter {
                 while (result.next()) {
                     login = manager.parseData(result);
 
-                    if (!plugin.data.checkUser(login.uuid)) {
-                        plugin.data.regUser(login);
-                    }
+                    register(login);
                 }
             } catch (Exception e) {
                 logger.log(Level.WARNING, "Failed to convert from SQLite to MySQL");

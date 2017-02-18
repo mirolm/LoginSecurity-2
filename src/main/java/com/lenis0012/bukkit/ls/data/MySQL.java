@@ -6,7 +6,7 @@ import com.zaxxer.hikari.HikariConfig;
 
 import java.util.Properties;
 
-public class MySQL extends SQL {
+class MySQL extends SQL {
     public MySQL(LoginSecurity plugin) {
         this.plugin = plugin;
 

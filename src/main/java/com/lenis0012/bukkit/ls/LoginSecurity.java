@@ -3,11 +3,7 @@ package com.lenis0012.bukkit.ls;
 import com.lenis0012.bukkit.ls.commands.ChangePassCommand;
 import com.lenis0012.bukkit.ls.commands.LoginCommand;
 import com.lenis0012.bukkit.ls.commands.RegisterCommand;
-import com.lenis0012.bukkit.ls.data.Converter;
-import com.lenis0012.bukkit.ls.data.DataManager;
-import com.lenis0012.bukkit.ls.data.MySQL;
-import com.lenis0012.bukkit.ls.data.SQLite;
-import com.lenis0012.bukkit.ls.encryption.PasswordManager;
+import com.lenis0012.bukkit.ls.event.LoginListener;
 import com.lenis0012.bukkit.ls.thread.LockoutThread;
 import com.lenis0012.bukkit.ls.thread.TimeoutThread;
 import com.lenis0012.bukkit.ls.util.Config;
@@ -18,8 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
 public class LoginSecurity extends JavaPlugin {
-    public DataManager data;
-    public PasswordManager passmgr;
+    public AccountManager manager;
     public Translation lang;
     public Config conf;
     public LockoutThread lockout;
@@ -34,14 +29,8 @@ public class LoginSecurity extends JavaPlugin {
         conf = new Config(this);
         lang = new Translation(this);
 
-        //database
-        data = conf.usemysql ? new MySQL(this) : new SQLite(this);
-
-        Converter conv = new Converter(this);
-        conv.convert();
-
-        //encryption
-        passmgr = new PasswordManager(this);
+        //manager
+        manager = new AccountManager(this);
 
         //events
         getServer().getPluginManager().registerEvents(new LoginListener(this), this);
@@ -71,7 +60,7 @@ public class LoginSecurity extends JavaPlugin {
         timetask.cancel();
         locktask.cancel();
 
-        //database
-        data.close();
+        //manager
+        manager.disable();
     }
 }

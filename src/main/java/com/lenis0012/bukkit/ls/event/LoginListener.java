@@ -1,5 +1,6 @@
-package com.lenis0012.bukkit.ls;
+package com.lenis0012.bukkit.ls.event;
 
+import com.lenis0012.bukkit.ls.LoginSecurity;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -43,7 +44,7 @@ public class LoginListener implements Listener {
         Player player = event.getPlayer();
         String uuid = player.getUniqueId().toString();
 
-        plugin.timeout.add(uuid, plugin.data.checkUser(uuid));
+        plugin.timeout.add(uuid, plugin.manager.checkuser(uuid));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
