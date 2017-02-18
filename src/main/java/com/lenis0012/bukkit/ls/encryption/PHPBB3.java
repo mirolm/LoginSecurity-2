@@ -38,14 +38,6 @@ public class PHPBB3 implements Encryptor {
     }
 
     private String unique_id() {
-        return unique_id("c");
-    }
-
-    // global $config;
-    // private boolean dss_seeded = false;
-
-    private String unique_id(String extra) {
-        // TODO Generate something random here.
         return "1234567890abcdef";
     }
 
