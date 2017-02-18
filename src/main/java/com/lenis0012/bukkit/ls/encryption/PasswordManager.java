@@ -1,7 +1,6 @@
 package com.lenis0012.bukkit.ls.encryption;
 
 import com.lenis0012.bukkit.ls.LoginSecurity;
-import com.lenis0012.bukkit.ls.data.DataManager;
 import com.lenis0012.bukkit.ls.data.LoginData;
 
 public class PasswordManager {
@@ -10,24 +9,21 @@ public class PasswordManager {
 
     public PasswordManager(LoginSecurity plugin) {
         this.plugin = plugin;
-        this.hasher = EncryptionType.fromString(plugin.conf.hasher);
+        this.hasher = EncryptionType.gethasher(plugin.conf.hasher);
     }
 
     public String hash(String value) {
         return hasher.hash(value);
     }
 
-    public int gettypeid() {
-        return hasher.getTypeId();
+    public int type() {
+        return hasher.gettype();
     }
 
     public boolean check(String uuid, String password) {
-        DataManager data = plugin.data;
+        LoginData login = plugin.data.getUser(uuid);
 
-        LoginData login = data.getUser(uuid);
-        EncryptionType etype = EncryptionType.fromInt(login.encryption);
-
-        return (etype != null) && etype.checkPass(password, login.password);
+        return (hasher.gettype() == login.encryption) && hasher.check(password, login.password);
     }
 
     public boolean weak(String password) {
