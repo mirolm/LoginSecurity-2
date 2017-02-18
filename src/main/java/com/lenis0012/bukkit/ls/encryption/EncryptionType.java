@@ -13,12 +13,13 @@ public enum EncryptionType {
     }
 
     public static EncryptionType gethasher(String from) {
-        if (from.equalsIgnoreCase("MD5"))
+        if (from.equalsIgnoreCase("MD5")) {
             return MD5;
-        if (from.equalsIgnoreCase("BCRYPT")) {
+        } else if (from.equalsIgnoreCase("BCRYPT")) {
             return BCRYPT;
-        } else
+        } else {
             return BCRYPT;
+        }
     }
 
     public int gettype() {
