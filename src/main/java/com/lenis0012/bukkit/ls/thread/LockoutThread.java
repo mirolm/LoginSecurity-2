@@ -9,12 +9,10 @@ import java.util.concurrent.ConcurrentMap;
 
 public class LockoutThread implements Runnable {
     private class LockoutData {
-        public final String uuid;
         public int failed;
         public long timeout;
 
-        public LockoutData(String uuid) {
-            this.uuid = uuid;
+        public LockoutData() {
             this.failed = 1;
             this.timeout = System.currentTimeMillis() / 1000L;
         }
@@ -22,7 +20,6 @@ public class LockoutThread implements Runnable {
 
     private final ConcurrentMap<String, LockoutData> failList = Maps.newConcurrentMap();
     private final LoginSecurity plugin;
-    private long cycle;
 
     public LockoutThread(LoginSecurity plugin) {
         this.plugin = plugin;
@@ -31,13 +28,13 @@ public class LockoutThread implements Runnable {
     @Override
     public void run() {
         Iterator<String> it = failList.keySet().iterator();
-        cycle = System.currentTimeMillis() / 1000L;
+        long cycle = System.currentTimeMillis() / 1000L;
 
         while (it.hasNext()) {
             String puuid = it.next();
             if (check(puuid)) {
                 LockoutData current = failList.get(puuid);
-                if (trigger(current)) {
+                if ((cycle - current.timeout) / 60 >= plugin.conf.minFail) {
                     it.remove();
                 }
             }
@@ -55,18 +52,14 @@ public class LockoutThread implements Runnable {
 
             return failList.put(fuuid, current).failed >= plugin.conf.countFail;
         } else {
-            failList.put(fuuid, new LockoutData(fuuid));
-        }
+            failList.put(fuuid, new LockoutData());
 
-        return false;
+            return false;
+        }
     }
 
     private boolean check(String uuid) {
-        if (failList.containsKey(uuid)) {
-            return failList.get(uuid).failed >= plugin.conf.countFail;
-        } else {
-            return false;
-        }
+        return failList.containsKey(uuid) && (failList.get(uuid).failed >= plugin.conf.countFail);
     }
 
     public boolean check(String uuid, String addr) {
@@ -85,13 +78,5 @@ public class LockoutThread implements Runnable {
 
     private String fulluuid(String uuid, String addr) {
         return UUID.nameUUIDFromBytes(("|#" + uuid + "^|^" + addr + "#|").getBytes()).toString();
-    }
-
-    private boolean trigger(LockoutData current) {
-        if (failList.containsKey(current.uuid)) {
-            return (cycle - current.timeout) / 60 >= plugin.conf.minFail;
-        } else {
-            return false;
-        }
     }
 }

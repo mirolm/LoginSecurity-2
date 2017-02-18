@@ -17,7 +17,7 @@ public class Converter {
     public void convert() {
         Logger logger = plugin.getLogger();
 
-        SQLite manager;
+        DataManager manager;
         Connection conn = null;
         ResultSet result = null;
         LoginData login;

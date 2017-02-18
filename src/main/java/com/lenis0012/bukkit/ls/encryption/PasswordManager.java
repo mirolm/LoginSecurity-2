@@ -17,15 +17,11 @@ public class PasswordManager {
         LoginData login = data.getUser(uuid);
         EncryptionType etype = EncryptionType.fromInt(login.encryption);
 
-        if (etype != null) {
-            return etype.checkPass(password, login.password);
-        } else {
-            return false;
-        }
+        return (etype != null) && etype.checkPass(password, login.password);
     }
 
-    public boolean validPass(String password) {
+    public boolean weakPass(String password) {
         // 6+ chars long, letters and number or symbol
-        return password.matches("^(?=.*[a-zA-Z])(?=.*([0-9]|[!@#$%\\^&*])).{6,}+$");
+        return !password.matches("^(?=.*[a-zA-Z])(?=.*([0-9]|[!@#$%\\^&*])).{6,}+$");
     }
 }

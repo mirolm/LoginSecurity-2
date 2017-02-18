@@ -8,17 +8,17 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class EncryptionUtil {
-    public static String encrypt(String value, String algorithm, String encoding) {
+    public static String encrypt(String value, String algorithm) {
         MessageDigest digest;
         try {
             digest = MessageDigest.getInstance(algorithm);
-            digest.update(value.getBytes(encoding));
+            digest.update(value.getBytes("UTF-8"));
             byte[] rawDigest = digest.digest();
             return Base64Coder.encodeLines(rawDigest);
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalArgumentException("Invalid algorithm: " + algorithm);
+            throw new IllegalArgumentException("Invalid algorithm");
         } catch (UnsupportedEncodingException e) {
-            throw new IllegalArgumentException("Invalid encoding: " + encoding);
+            throw new IllegalArgumentException("Invalid encoding");
         }
     }
 

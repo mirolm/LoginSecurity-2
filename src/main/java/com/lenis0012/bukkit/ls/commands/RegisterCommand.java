@@ -39,7 +39,7 @@ public class RegisterCommand implements CommandExecutor {
             return true;
         }
 
-        if (!plugin.passmgr.validPass(args[0])) {
+        if (plugin.passmgr.weakPass(args[0])) {
             player.sendMessage(plugin.lang.get("verify_psw"));
             logger.log(Level.WARNING, "{0} failed to register", player.getName());
             return true;
