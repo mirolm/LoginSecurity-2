@@ -89,11 +89,9 @@ public class TimeoutThread implements Runnable {
     private void notify(TimeoutData current) {
         Player player = Bukkit.getPlayer(UUID.fromString(current.uuid));
         if (player != null && player.isOnline()) {
-            if (current.registered) {
-                player.sendMessage(plugin.lang.get("log_msg"));
-            } else {
-                player.sendMessage(plugin.lang.get("reg_msg"));
-            }
+            String message = current.registered ? plugin.lang.get("log_msg") : plugin.lang.get("reg_msg");
+
+            player.sendMessage(message);
         }
     }
 }
