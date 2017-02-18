@@ -36,6 +36,12 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
             <version>2.5</version>
@@ -66,6 +72,7 @@
                         <includes>
                             <include>com.zaxxer:HikariCP</include>
                             <include>org.slf4j:slf4j-nop</include>
+                            <include>org.mindrot:jbcrypt</include>
                         </includes>
                     </artifactSet>
                     <relocations>
@@ -76,6 +83,10 @@
                         <relocation>
                             <pattern>org.slf4j.impl</pattern>
                             <shadedPattern>com.lenis0012.bukkit.ls.libs.slf4j</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.mindrot.jbcrypt/</pattern>
+                            <shadedPattern>com.lenis0012.bukkit.ls.libs.jbcrypt</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
