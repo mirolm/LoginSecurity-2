@@ -3,7 +3,7 @@ package com.lenis0012.bukkit.ls.encryption;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 
-public class MD5 implements Encryptor {
+public class MD5 implements CryptoManager {
     @Override
     public String hash(String pw) {
         try {

@@ -1,20 +1,36 @@
 package com.lenis0012.bukkit.ls.encryption;
 
-public interface Encryptor {
-    /**
-     * Check if 2 passwords mach
-     *
-     * @param check password to check
-     * @param real  real password from database
-     * @return passwords the same?
-     */
-    boolean check(String check, String real);
+public enum Encryptor {
+    MD5(1, new MD5()),
+    BCRYPT(7, new BCRYPT());
 
-    /**
-     * Hash a value
-     *
-     * @param value Value
-     * @return Hashed value
-     */
-    String hash(String value);
+    private final CryptoManager cryp;
+    private final int type;
+
+    Encryptor(int type, CryptoManager cryp) {
+        this.type = type;
+        this.cryp = cryp;
+    }
+
+    public static Encryptor gethasher(String from) {
+        if (from.equalsIgnoreCase("MD5")) {
+            return MD5;
+        } else if (from.equalsIgnoreCase("BCRYPT")) {
+            return BCRYPT;
+        } else {
+            return BCRYPT;
+        }
+    }
+
+    public int gettype() {
+        return this.type;
+    }
+
+    public String hash(String value) {
+        return cryp.hash(value);
+    }
+
+    public boolean check(String check, String real) {
+        return cryp.check(check, real);
+    }
 }

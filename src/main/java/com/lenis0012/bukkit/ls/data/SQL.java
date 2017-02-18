@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public abstract class SQL implements DataManager {
+public abstract class SQL implements SQLManager {
     protected Plugin plugin;
     private Logger logger;
     private HikariDataSource datasrc;

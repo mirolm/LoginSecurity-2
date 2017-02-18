@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 public class Executor {
     private final LoginSecurity plugin;
     private final Logger logger;
-    private final DataManager data;
+    private final SQLManager data;
 
     public Executor(LoginSecurity plugin) {
         this.plugin = plugin;
@@ -46,7 +46,7 @@ public class Executor {
     }
 
     private void convert() {
-        DataManager manager;
+        SQLManager manager;
         Connection conn = null;
         ResultSet result = null;
         LoginData login;

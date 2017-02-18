@@ -1,4 +1,4 @@
-package com.lenis0012.bukkit.ls.commands;
+package com.lenis0012.bukkit.ls.command;
 
 import com.lenis0012.bukkit.ls.LoginSecurity;
 import org.bukkit.command.Command;
@@ -6,12 +6,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class ChangePassCommand implements CommandExecutor {
+public class Login implements CommandExecutor {
     private final LoginSecurity plugin;
 
-    public ChangePassCommand(LoginSecurity plugin) {
+    public Login(LoginSecurity plugin) {
         this.plugin = plugin;
     }
+
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -20,7 +21,7 @@ public class ChangePassCommand implements CommandExecutor {
         }
 
         Player player = (Player) sender;
-        plugin.manager.changepass(player, args[0], args[1]);
+        plugin.account.login(player, args[0]);
 
         return true;
     }

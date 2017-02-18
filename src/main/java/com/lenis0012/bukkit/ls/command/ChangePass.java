@@ -1,4 +1,4 @@
-package com.lenis0012.bukkit.ls.commands;
+package com.lenis0012.bukkit.ls.command;
 
 import com.lenis0012.bukkit.ls.LoginSecurity;
 import org.bukkit.command.Command;
@@ -6,10 +6,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class RegisterCommand implements CommandExecutor {
+public class ChangePass implements CommandExecutor {
     private final LoginSecurity plugin;
 
-    public RegisterCommand(LoginSecurity plugin) {
+    public ChangePass(LoginSecurity plugin) {
         this.plugin = plugin;
     }
 
@@ -20,7 +20,7 @@ public class RegisterCommand implements CommandExecutor {
         }
 
         Player player = (Player) sender;
-        plugin.manager.register(player, args[0]);
+        plugin.account.changepass(player, args[0], args[1]);
 
         return true;
     }

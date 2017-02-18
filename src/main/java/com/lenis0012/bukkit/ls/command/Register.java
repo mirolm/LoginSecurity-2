@@ -1,4 +1,4 @@
-package com.lenis0012.bukkit.ls.commands;
+package com.lenis0012.bukkit.ls.command;
 
 import com.lenis0012.bukkit.ls.LoginSecurity;
 import org.bukkit.command.Command;
@@ -6,13 +6,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class LoginCommand implements CommandExecutor {
+public class Register implements CommandExecutor {
     private final LoginSecurity plugin;
 
-    public LoginCommand(LoginSecurity plugin) {
+    public Register(LoginSecurity plugin) {
         this.plugin = plugin;
     }
-
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -21,7 +20,7 @@ public class LoginCommand implements CommandExecutor {
         }
 
         Player player = (Player) sender;
-        plugin.manager.login(player, args[0]);
+        plugin.account.register(player, args[0]);
 
         return true;
     }

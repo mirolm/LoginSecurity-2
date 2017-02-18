@@ -11,7 +11,7 @@ import java.util.Iterator;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentMap;
 
-public class TimeoutThread implements Runnable {
+public class Timeout implements Runnable {
     private class TimeoutData {
         public final String uuid;
         public final boolean registered;
@@ -27,7 +27,7 @@ public class TimeoutThread implements Runnable {
     private final ConcurrentMap<String, TimeoutData> authList = Maps.newConcurrentMap();
     private final LoginSecurity plugin;
 
-    public TimeoutThread(LoginSecurity plugin) {
+    public Timeout(LoginSecurity plugin) {
         this.plugin = plugin;
     }
 
