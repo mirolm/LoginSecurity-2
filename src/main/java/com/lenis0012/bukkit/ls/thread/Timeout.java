@@ -63,9 +63,7 @@ public class Timeout implements Runnable {
             player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 1), true);
         }
 
-        if (!authList.containsKey(uuid)) {
-            authList.put(uuid, current);
-        }
+        authList.putIfAbsent(uuid, current);
     }
 
     public void remove(String uuid) {
@@ -77,9 +75,7 @@ public class Timeout implements Runnable {
             player.setRemainingAir(player.getMaximumAir());
         }
 
-        if (authList.containsKey(uuid)) {
-            authList.remove(uuid);
-        }
+        authList.remove(uuid);
     }
 
     public boolean check(String uuid) {
