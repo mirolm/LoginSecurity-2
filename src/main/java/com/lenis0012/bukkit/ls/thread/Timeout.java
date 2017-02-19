@@ -54,7 +54,7 @@ public class Timeout implements Runnable {
     }
 
     public void add(String uuid, boolean registered) {
-        TimeoutData current = authList.putIfAbsent(uuid, new TimeoutData(uuid, registered));
+        TimeoutData current = new TimeoutData(uuid, registered);
 
         notify(current);
 
@@ -62,6 +62,8 @@ public class Timeout implements Runnable {
         if (player != null && player.isOnline()) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 1), true);
         }
+
+        authList.putIfAbsent(uuid, current);
     }
 
     public void remove(String uuid) {

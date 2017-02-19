@@ -44,12 +44,18 @@ public class Lockout implements Runnable {
     public boolean failed(String uuid, String addr) {
         String fuuid = fulluuid(uuid, addr);
 
-        LockoutData current = failList.putIfAbsent(fuuid, new LockoutData());
+        if (failList.containsKey(fuuid)) {
+            LockoutData current = failList.get(fuuid);
 
-        current.failed += 1;
-        current.timeout = System.currentTimeMillis() / 1000L;
+            current.failed += 1;
+            current.timeout = System.currentTimeMillis() / 1000L;
 
-        return failList.replace(fuuid, current).failed >= plugin.conf.countFail;
+            return failList.replace(fuuid, current).failed >= plugin.conf.countFail;
+        } else {
+            failList.putIfAbsent(fuuid, new LockoutData());
+
+            return false;
+        }
     }
 
     private boolean check(String uuid) {
