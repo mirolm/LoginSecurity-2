@@ -16,12 +16,10 @@ public class Login implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (!(sender instanceof Player)) {
-            return true;
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
+            plugin.account.login(player, args[0]);
         }
-
-        Player player = (Player) sender;
-        plugin.account.login(player, args[0]);
 
         return true;
     }

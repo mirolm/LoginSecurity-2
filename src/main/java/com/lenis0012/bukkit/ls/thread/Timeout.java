@@ -54,17 +54,13 @@ public class Timeout implements Runnable {
     }
 
     public void add(String uuid, boolean registered) {
-        TimeoutData current = new TimeoutData(uuid, registered);
+        TimeoutData current = authList.putIfAbsent(uuid, new TimeoutData(uuid, registered));
 
         notify(current);
 
         Player player = Bukkit.getPlayer(UUID.fromString(uuid));
         if (player != null && player.isOnline()) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 1), true);
-        }
-
-        if (!authList.containsKey(uuid)) {
-            authList.put(uuid, current);
         }
     }
 
@@ -77,9 +73,7 @@ public class Timeout implements Runnable {
             player.setRemainingAir(player.getMaximumAir());
         }
 
-        if (authList.containsKey(uuid)) {
-            authList.remove(uuid);
-        }
+        authList.remove(uuid);
     }
 
     public boolean check(String uuid) {

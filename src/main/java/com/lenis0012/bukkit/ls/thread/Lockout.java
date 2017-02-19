@@ -44,18 +44,12 @@ public class Lockout implements Runnable {
     public boolean failed(String uuid, String addr) {
         String fuuid = fulluuid(uuid, addr);
 
-        if (failList.containsKey(fuuid)) {
-            LockoutData current = failList.get(fuuid);
+        LockoutData current = failList.putIfAbsent(fuuid, new LockoutData());
 
-            current.failed += 1;
-            current.timeout = System.currentTimeMillis() / 1000L;
+        current.failed += 1;
+        current.timeout = System.currentTimeMillis() / 1000L;
 
-            return failList.put(fuuid, current).failed >= plugin.conf.countFail;
-        } else {
-            failList.put(fuuid, new LockoutData());
-
-            return false;
-        }
+        return failList.replace(fuuid, current).failed >= plugin.conf.countFail;
     }
 
     private boolean check(String uuid) {
@@ -71,9 +65,7 @@ public class Lockout implements Runnable {
     public void remove(String uuid, String addr) {
         String fuuid = fulluuid(uuid, addr);
 
-        if (failList.containsKey(fuuid)) {
-            failList.remove(fuuid);
-        }
+        failList.remove(fuuid);
     }
 
     private String fulluuid(String uuid, String addr) {
