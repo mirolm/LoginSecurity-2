@@ -33,7 +33,6 @@ public class SQLite extends SQL {
 
     private String getpath() {
         return new File(plugin.getDataFolder(), dbname)
-                .toPath().normalize()
-                .toString();
+                .toPath().normalize().toString();
     }
 }
