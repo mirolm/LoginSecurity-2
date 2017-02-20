@@ -79,12 +79,12 @@ public class Timeout implements Runnable {
         }
     }
 
-    private class TimeoutData {
-        public final String uuid;
-        public final boolean registered;
-        public final long timeout;
+    class TimeoutData {
+        final String uuid;
+        final boolean registered;
+        final long timeout;
 
-        public TimeoutData(String uuid, boolean registered) {
+        TimeoutData(String uuid, boolean registered) {
             this.uuid = uuid;
             this.registered = registered;
             this.timeout = System.currentTimeMillis() / 1000L;

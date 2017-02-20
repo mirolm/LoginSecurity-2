@@ -68,11 +68,11 @@ public class Lockout implements Runnable {
         return UUID.nameUUIDFromBytes(("|#" + uuid + "^|^" + addr + "#|").getBytes()).toString();
     }
 
-    private class LockoutData {
-        public int failed;
-        public long timeout;
+    class LockoutData {
+        int failed;
+        long timeout;
 
-        public LockoutData() {
+        LockoutData() {
             this.failed = 1;
             this.timeout = System.currentTimeMillis() / 1000L;
         }
