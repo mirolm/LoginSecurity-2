@@ -12,18 +12,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentMap;
 
 public class Timeout implements Runnable {
-    private class TimeoutData {
-        public final String uuid;
-        public final boolean registered;
-        public final long timeout;
-
-        public TimeoutData(String uuid, boolean registered) {
-            this.uuid = uuid;
-            this.registered = registered;
-            this.timeout = System.currentTimeMillis() / 1000L;
-        }
-    }
-
     private final ConcurrentMap<String, TimeoutData> authList = Maps.newConcurrentMap();
     private final LoginSecurity plugin;
 
@@ -88,6 +76,18 @@ public class Timeout implements Runnable {
             String message = current.registered ? plugin.lang.get("log_msg") : plugin.lang.get("reg_msg");
 
             player.sendMessage(message);
+        }
+    }
+
+    private class TimeoutData {
+        public final String uuid;
+        public final boolean registered;
+        public final long timeout;
+
+        public TimeoutData(String uuid, boolean registered) {
+            this.uuid = uuid;
+            this.registered = registered;
+            this.timeout = System.currentTimeMillis() / 1000L;
         }
     }
 }
