@@ -8,7 +8,7 @@ import java.util.Properties;
 
 public class MySQL extends SQL {
     public MySQL(LoginSecurity plugin) {
-        this.plugin = plugin;
+        super(plugin);
 
         Config conf = plugin.conf;
 
@@ -28,6 +28,6 @@ public class MySQL extends SQL {
         dbcfg.setMaximumPoolSize(6);
         dbcfg.setDataSourceProperties(prop);
 
-        init(conf.table, dbcfg);
+        super.init(conf.table, dbcfg);
     }
 }

@@ -11,9 +11,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public abstract class SQL implements SQLManager {
-    protected Plugin plugin;
-    private Logger logger;
+    private final Logger logger;
     private HikariDataSource datasrc;
+
     private String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS <TABLE> ("
             + "unique_user_id VARCHAR(130) NOT NULL UNIQUE,"
             + "password VARCHAR(300) NOT NULL,"
@@ -25,7 +25,11 @@ public abstract class SQL implements SQLManager {
     private String SELECT_LOGIN = "SELECT unique_user_id, password, encryption FROM <TABLE> WHERE unique_user_id = ?";
     private String SELECT_USERS = "SELECT unique_user_id, password, encryption FROM <TABLE>";
 
-    public void init(String table, HikariConfig config) {
+    protected SQL(Plugin plugin) {
+        this.logger = plugin.getLogger();
+    }
+
+    protected void init(String table, HikariConfig config) {
         CREATE_TABLE = CREATE_TABLE.replace("<TABLE>", table);
         CHECK_REG = CHECK_REG.replace("<TABLE>", table);
         INSERT_LOGIN = INSERT_LOGIN.replace("<TABLE>", table);
@@ -33,7 +37,6 @@ public abstract class SQL implements SQLManager {
         SELECT_LOGIN = SELECT_LOGIN.replace("<TABLE>", table);
         SELECT_USERS = SELECT_USERS.replace("<TABLE>", table);
 
-        logger = plugin.getLogger();
         datasrc = new HikariDataSource(config);
 
         createTables();

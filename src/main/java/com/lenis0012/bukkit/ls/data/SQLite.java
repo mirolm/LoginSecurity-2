@@ -3,15 +3,15 @@ package com.lenis0012.bukkit.ls.data;
 import com.lenis0012.bukkit.ls.LoginSecurity;
 import com.zaxxer.hikari.HikariConfig;
 
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class SQLite extends SQL {
-    private static final String dbname = "users.db";
-
     public SQLite(LoginSecurity plugin) {
-        this.plugin = plugin;
+        super(plugin);
 
-        String path = getpath();
+        String path = getpath(plugin).toString();
 
         HikariConfig dbcfg = new HikariConfig();
 
@@ -22,17 +22,14 @@ public class SQLite extends SQL {
 
         dbcfg.setMaximumPoolSize(1);
 
-        init(plugin.conf.table, dbcfg);
+        super.init(plugin.conf.table, dbcfg);
     }
 
     public static boolean exists(LoginSecurity plugin) {
-        File file = new File(plugin.getDataFolder(), dbname);
-
-        return file.exists();
+        return Files.exists(getpath(plugin));
     }
 
-    private String getpath() {
-        return new File(plugin.getDataFolder(), dbname)
-                .toPath().normalize().toString();
+    private static Path getpath(LoginSecurity plugin) {
+        return Paths.get(plugin.getDataFolder().toString(), "users.db").normalize();
     }
 }
