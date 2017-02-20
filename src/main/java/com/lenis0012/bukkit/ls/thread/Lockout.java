@@ -8,16 +8,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentMap;
 
 public class Lockout implements Runnable {
-    private class LockoutData {
-        public int failed;
-        public long timeout;
-
-        public LockoutData() {
-            this.failed = 1;
-            this.timeout = System.currentTimeMillis() / 1000L;
-        }
-    }
-
     private final ConcurrentMap<String, LockoutData> failList = Maps.newConcurrentMap();
     private final LoginSecurity plugin;
 
@@ -76,5 +66,15 @@ public class Lockout implements Runnable {
 
     private String fulluuid(String uuid, String addr) {
         return UUID.nameUUIDFromBytes(("|#" + uuid + "^|^" + addr + "#|").getBytes()).toString();
+    }
+
+    class LockoutData {
+        int failed;
+        long timeout;
+
+        LockoutData() {
+            this.failed = 1;
+            this.timeout = System.currentTimeMillis() / 1000L;
+        }
     }
 }

@@ -1,6 +1,6 @@
 package com.lenis0012.bukkit.ls.encryption;
 
-public interface CryptoManager {
+interface CryptoManager {
     /**
      * Check if 2 passwords mach
      *
