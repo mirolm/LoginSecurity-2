@@ -58,11 +58,15 @@ public class Executor {
                 conn = manager.getConn();
                 result = manager.getAllUsers(conn);
 
+                logger.log(Level.INFO, "Starting to convert.");
+
                 while (result.next()) {
                     login = manager.parseData(result);
 
                     register(login);
                 }
+
+                logger.log(Level.INFO, "Finished.");
             } catch (Exception e) {
                 logger.log(Level.WARNING, "Failed to convert from SQLite to MySQL");
             } finally {

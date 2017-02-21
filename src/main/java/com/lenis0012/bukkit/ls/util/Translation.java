@@ -6,15 +6,17 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.concurrent.ConcurrentMap;
 
 public class Translation {
+    private static final String langname = "lang.yml";
     private final ConcurrentMap<String, String> langs = Maps.newConcurrentMap();
 
     public Translation(Plugin plugin) {
-        File langFile = new File(plugin.getDataFolder(), "lang.yml");
+        File langFile = getpath(plugin);
         if (!langFile.exists()) {
-            plugin.saveResource("lang.yml", false);
+            plugin.saveResource(langname, false);
         }
 
         YamlConfiguration conf = YamlConfiguration.loadConfiguration(langFile);
@@ -25,6 +27,10 @@ public class Translation {
                 langs.put(key, message);
             }
         }
+    }
+
+    private File getpath(Plugin plugin) {
+        return Paths.get(plugin.getDataFolder().toString(), langname).normalize().toFile();
     }
 
     public String get(String key) {
