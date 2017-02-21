@@ -3,8 +3,7 @@ package com.lenis0012.bukkit.ls.data;
 import com.lenis0012.bukkit.ls.LoginSecurity;
 import com.zaxxer.hikari.HikariConfig;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.File;
 import java.nio.file.Paths;
 
 public class SQLite extends SQL {
@@ -28,10 +27,10 @@ public class SQLite extends SQL {
     }
 
     public static boolean exists(LoginSecurity plugin) {
-        return Files.exists(getpath(plugin));
+        return getpath(plugin).exists();
     }
 
-    private static Path getpath(LoginSecurity plugin) {
-        return Paths.get(plugin.getDataFolder().toString(), dbname).normalize();
+    private static File getpath(LoginSecurity plugin) {
+        return Paths.get(plugin.getDataFolder().toString(), dbname).normalize().toFile();
     }
 }
