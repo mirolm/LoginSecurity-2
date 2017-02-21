@@ -57,12 +57,14 @@ public class Account {
 
             if (checkuser(uuid)) {
                 player.sendMessage(plugin.lang.get("already_reg"));
+
                 return;
             }
 
             if (weakpass(pass)) {
                 player.sendMessage(plugin.lang.get("verify_psw"));
                 logger.log(Level.WARNING, "{0} failed to register", player.getName());
+
                 return;
             }
 
@@ -82,12 +84,14 @@ public class Account {
             if (!checkpass(uuid, oldpass)) {
                 player.sendMessage(plugin.lang.get("invalid_psw"));
                 logger.log(Level.WARNING, "{0} failed to change password", player.getName());
+
                 return;
             }
 
             if (weakpass(newpass)) {
                 player.sendMessage(plugin.lang.get("verify_psw"));
                 logger.log(Level.WARNING, "{0} failed to change password", player.getName());
+
                 return;
             }
 
@@ -105,11 +109,13 @@ public class Account {
 
             if (!plugin.timeout.check(uuid)) {
                 player.sendMessage(plugin.lang.get("already_login"));
+
                 return;
             }
 
             if (!checkuser(uuid)) {
                 player.sendMessage(plugin.lang.get("no_psw_set"));
+
                 return;
             }
 

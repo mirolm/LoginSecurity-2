@@ -53,6 +53,7 @@ public class EventHook implements Listener {
         //Check for valid user name
         if (!pname.matches("^\\w{3,16}$")) {
             event.disallow(Result.KICK_OTHER, plugin.lang.get("invalid_username"));
+
             return;
         }
 
@@ -61,6 +62,7 @@ public class EventHook implements Listener {
         //Check account locked due to failed logins
         if (plugin.lockout.check(uuid, addr)) {
             event.disallow(Result.KICK_OTHER, plugin.lang.get("account_locked"));
+
             return;
         }
 
@@ -68,6 +70,7 @@ public class EventHook implements Listener {
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
             if (uuid.equalsIgnoreCase(p.getUniqueId().toString())) {
                 event.disallow(Result.KICK_OTHER, plugin.lang.get("already_online"));
+
                 return;
             }
         }
@@ -165,6 +168,7 @@ public class EventHook implements Listener {
 
         if (authEntity(defender)) {
             event.setCancelled(true);
+
             return;
         }
 
