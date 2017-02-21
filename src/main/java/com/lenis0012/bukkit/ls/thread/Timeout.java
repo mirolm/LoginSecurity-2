@@ -22,7 +22,7 @@ public class Timeout implements Runnable {
     @Override
     public void run() {
         Iterator<String> it = authList.keySet().iterator();
-        long cycle = System.currentTimeMillis() / 1000L;
+        long cycle = seconds();
 
         while (it.hasNext()) {
             String puuid = it.next();
@@ -79,6 +79,10 @@ public class Timeout implements Runnable {
         }
     }
 
+    private long seconds() {
+        return System.currentTimeMillis() / 1000L;
+    }
+
     class TimeoutData {
         final String uuid;
         final boolean registered;
@@ -87,7 +91,7 @@ public class Timeout implements Runnable {
         TimeoutData(String uuid, boolean registered) {
             this.uuid = uuid;
             this.registered = registered;
-            this.timeout = System.currentTimeMillis() / 1000L;
+            this.timeout = seconds();
         }
     }
 }

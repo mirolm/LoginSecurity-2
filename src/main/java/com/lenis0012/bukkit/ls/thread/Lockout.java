@@ -18,7 +18,7 @@ public class Lockout implements Runnable {
     @Override
     public void run() {
         Iterator<String> it = failList.keySet().iterator();
-        long cycle = System.currentTimeMillis() / 1000L;
+        long cycle = seconds();
 
         while (it.hasNext()) {
             String puuid = it.next();
@@ -38,7 +38,7 @@ public class Lockout implements Runnable {
             LockoutData current = failList.get(fuuid);
 
             current.failed += 1;
-            current.timeout = System.currentTimeMillis() / 1000L;
+            current.timeout = seconds();
 
             return failList.replace(fuuid, current).failed >= plugin.conf.countFail;
         } else {
@@ -68,13 +68,17 @@ public class Lockout implements Runnable {
         return UUID.nameUUIDFromBytes(("|#" + uuid + "^|^" + addr + "#|").getBytes()).toString();
     }
 
+    private long seconds() {
+        return System.currentTimeMillis() / 1000L;
+    }
+
     class LockoutData {
         int failed;
         long timeout;
 
         LockoutData() {
             this.failed = 1;
-            this.timeout = System.currentTimeMillis() / 1000L;
+            this.timeout = seconds();
         }
     }
 }

@@ -8,6 +8,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class SQLite extends SQL {
+    private static final String dbname = "users.db";
+
     public SQLite(LoginSecurity plugin) {
         super(plugin);
 
@@ -30,6 +32,6 @@ public class SQLite extends SQL {
     }
 
     private static Path getpath(LoginSecurity plugin) {
-        return Paths.get(plugin.getDataFolder().toString(), "users.db").normalize();
+        return Paths.get(plugin.getDataFolder().toString(), dbname).normalize();
     }
 }
