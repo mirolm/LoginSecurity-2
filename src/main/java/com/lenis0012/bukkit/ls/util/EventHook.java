@@ -178,14 +178,6 @@ public class EventHook implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onPlayerShear(PlayerShearEntityEvent event) {
-        Player player = event.getPlayer();
-        if (authEntity(player)) {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerFish(PlayerFishEvent event) {
         Player player = event.getPlayer();
         if (authEntity(player)) {
