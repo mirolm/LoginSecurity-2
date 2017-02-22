@@ -24,28 +24,28 @@
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
-                    <artifactId>commons-lang</artifactId>
                     <groupId>commons-lang</groupId>
+                    <artifactId>commons-lang</artifactId>
                 </exclusion>
                 <exclusion>
-                    <artifactId>json-simple</artifactId>
                     <groupId>com.googlecode.json-simple</groupId>
+                    <artifactId>json-simple</artifactId>
                 </exclusion>
                 <exclusion>
-                    <artifactId>gson</artifactId>
                     <groupId>com.google.code.gson</groupId>
+                    <artifactId>gson</artifactId>
                 </exclusion>
                 <exclusion>
-                    <artifactId>ebean</artifactId>
                     <groupId>org.avaje</groupId>
+                    <artifactId>ebean</artifactId>
                 </exclusion>
                 <exclusion>
-                    <artifactId>snakeyaml</artifactId>
                     <groupId>org.yaml</groupId>
+                    <artifactId>snakeyaml</artifactId>
                 </exclusion>
                 <exclusion>
-                    <artifactId>bungeecord-chat</artifactId>
                     <groupId>net.md-5</groupId>
+                    <artifactId>bungeecord-chat</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
