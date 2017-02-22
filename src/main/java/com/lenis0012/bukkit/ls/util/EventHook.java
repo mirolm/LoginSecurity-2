@@ -129,6 +129,14 @@ public class EventHook implements Listener {
         }
     }
 
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onPlayerSwapHandItems(PlayerSwapHandItemsEvent event) {
+        Player player = event.getPlayer();
+        if (authEntity(player)) {
+            event.setCancelled(true);
+        }
+    }
+
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent chat) {
         Player player = chat.getPlayer();
