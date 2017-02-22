@@ -12,7 +12,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentMap;
 
 public class Timeout implements Runnable {
-    private final ConcurrentMap<String, TimeoutData> authList = Maps.newConcurrentMap();
+    private final ConcurrentMap<String, TimeoutData> authlist = Maps.newConcurrentMap();
     private final LoginSecurity plugin;
 
     public Timeout(LoginSecurity plugin) {
@@ -21,13 +21,13 @@ public class Timeout implements Runnable {
 
     @Override
     public void run() {
-        Iterator<String> it = authList.keySet().iterator();
+        Iterator<String> it = authlist.keySet().iterator();
         long cycle = seconds();
 
         while (it.hasNext()) {
             String puuid = it.next();
 
-            TimeoutData current = authList.get(puuid);
+            TimeoutData current = authlist.get(puuid);
             if (!((cycle - current.timeout) >= plugin.conf.timeDelay)) {
                 notify(current);
             } else {
@@ -51,7 +51,7 @@ public class Timeout implements Runnable {
             player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 1), true);
         }
 
-        authList.putIfAbsent(uuid, current);
+        authlist.putIfAbsent(uuid, current);
     }
 
     public void remove(String uuid) {
@@ -63,11 +63,11 @@ public class Timeout implements Runnable {
             player.setRemainingAir(player.getMaximumAir());
         }
 
-        authList.remove(uuid);
+        authlist.remove(uuid);
     }
 
     public boolean check(String uuid) {
-        return authList.containsKey(uuid);
+        return authlist.containsKey(uuid);
     }
 
     private void notify(TimeoutData current) {
