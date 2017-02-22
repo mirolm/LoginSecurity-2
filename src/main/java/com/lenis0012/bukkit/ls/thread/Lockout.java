@@ -8,7 +8,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentMap;
 
 public class Lockout implements Runnable {
-    private final ConcurrentMap<String, LockoutData> failList = Maps.newConcurrentMap();
+    private final ConcurrentMap<String, LockoutData> faillist = Maps.newConcurrentMap();
     private final LoginSecurity plugin;
 
     public Lockout(LoginSecurity plugin) {
@@ -17,16 +17,15 @@ public class Lockout implements Runnable {
 
     @Override
     public void run() {
-        Iterator<String> it = failList.keySet().iterator();
+        Iterator<String> it = faillist.keySet().iterator();
         long cycle = seconds();
 
         while (it.hasNext()) {
             String puuid = it.next();
-            if (check(puuid)) {
-                LockoutData current = failList.get(puuid);
-                if ((cycle - current.timeout) / 60 >= plugin.conf.minFail) {
-                    it.remove();
-                }
+
+            LockoutData current = faillist.get(puuid);
+            if ((cycle - current.timeout) / 60 >= plugin.conf.minFail) {
+                it.remove();
             }
         }
     }
@@ -34,34 +33,30 @@ public class Lockout implements Runnable {
     public boolean failed(String uuid, String addr) {
         String fuuid = fulluuid(uuid, addr);
 
-        if (failList.containsKey(fuuid)) {
-            LockoutData current = failList.get(fuuid);
+        if (faillist.containsKey(fuuid)) {
+            LockoutData current = faillist.get(fuuid);
 
             current.failed += 1;
             current.timeout = seconds();
 
-            return failList.replace(fuuid, current).failed >= plugin.conf.countFail;
+            return faillist.replace(fuuid, current).failed >= plugin.conf.countFail;
         } else {
-            failList.putIfAbsent(fuuid, new LockoutData());
+            faillist.putIfAbsent(fuuid, new LockoutData());
 
             return false;
         }
     }
 
-    private boolean check(String uuid) {
-        return failList.containsKey(uuid) && (failList.get(uuid).failed >= plugin.conf.countFail);
-    }
-
     public boolean check(String uuid, String addr) {
         String fuuid = fulluuid(uuid, addr);
 
-        return check(fuuid);
+        return faillist.containsKey(fuuid) && (faillist.get(fuuid).failed >= plugin.conf.countFail);
     }
 
     public void remove(String uuid, String addr) {
         String fuuid = fulluuid(uuid, addr);
 
-        failList.remove(fuuid);
+        faillist.remove(fuuid);
     }
 
     private String fulluuid(String uuid, String addr) {
