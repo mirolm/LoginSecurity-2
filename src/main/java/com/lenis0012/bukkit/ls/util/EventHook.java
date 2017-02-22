@@ -170,6 +170,30 @@ public class EventHook implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onPlayerEditBook(PlayerEditBookEvent event) {
+        Player player = event.getPlayer();
+        if (authEntity(player)) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onPlayerShear(PlayerShearEntityEvent event) {
+        Player player = event.getPlayer();
+        if (authEntity(player)) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onPlayerFish(PlayerFishEvent event) {
+        Player player = event.getPlayer();
+        if (authEntity(player)) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent event) {
         Entity entity = event.getWhoClicked();
         if (authEntity(entity)) {
