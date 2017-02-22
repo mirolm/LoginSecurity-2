@@ -154,6 +154,14 @@ public class EventHook implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onPlayerAirChange(EntityAirChangeEvent event) {
+        Entity entity = event.getEntity();
+        if (authEntity(entity)) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerItemConsume(PlayerItemConsumeEvent event) {
         Player player = event.getPlayer();
         if (authEntity(player)) {
