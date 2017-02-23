@@ -3,16 +3,9 @@ package com.lenis0012.bukkit.ls;
 import com.lenis0012.bukkit.ls.command.ChangePass;
 import com.lenis0012.bukkit.ls.command.Login;
 import com.lenis0012.bukkit.ls.command.Register;
-import com.lenis0012.bukkit.ls.event.BlockHook;
-import com.lenis0012.bukkit.ls.event.EntityHook;
-import com.lenis0012.bukkit.ls.event.InventoryHook;
-import com.lenis0012.bukkit.ls.event.PlayerHook;
 import com.lenis0012.bukkit.ls.thread.Lockout;
 import com.lenis0012.bukkit.ls.thread.Timeout;
-import com.lenis0012.bukkit.ls.util.Account;
-import com.lenis0012.bukkit.ls.util.Config;
-import com.lenis0012.bukkit.ls.util.LogFilter;
-import com.lenis0012.bukkit.ls.util.Translation;
+import com.lenis0012.bukkit.ls.util.*;
 import org.apache.logging.log4j.LogManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
@@ -37,10 +30,7 @@ public class LoginSecurity extends JavaPlugin {
         account = new Account(this);
 
         //events
-        getServer().getPluginManager().registerEvents(new PlayerHook(this), this);
-        getServer().getPluginManager().registerEvents(new EntityHook(this), this);
-        getServer().getPluginManager().registerEvents(new BlockHook(this), this);
-        getServer().getPluginManager().registerEvents(new InventoryHook(this), this);
+        getServer().getPluginManager().registerEvents(new EventHook(this), this);
 
         //command
         getCommand("login").setExecutor(new Login(this));

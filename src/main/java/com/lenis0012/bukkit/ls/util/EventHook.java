@@ -1,4 +1,4 @@
-package com.lenis0012.bukkit.ls.event;
+package com.lenis0012.bukkit.ls.util;
 
 import com.lenis0012.bukkit.ls.LoginSecurity;
 import org.bukkit.Bukkit;
@@ -8,29 +8,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerEditBookEvent;
-import org.bukkit.event.player.PlayerFishEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerSwapHandItemsEvent;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.*;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.*;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class PlayerHook implements Listener {
+public class EventHook implements Listener {
     private static final List<String> ALLOWED_COMMANDS = Arrays.asList("/login ", "/log ", "/l ", "/register ", "/reg ");
     private final LoginSecurity plugin;
 
-    public PlayerHook(LoginSecurity plugin) {
+    public EventHook(LoginSecurity plugin) {
         this.plugin = plugin;
     }
 
@@ -46,6 +37,8 @@ public class PlayerHook implements Listener {
 
         return false;
     }
+
+    //////////////////////////////////////////////////////////////////////
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
@@ -91,6 +84,89 @@ public class PlayerHook implements Listener {
 
         plugin.timeout.remove(uuid);
     }
+
+    //////////////////////////// BLOCK ///////////////////////////////////
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onBlockPlace(BlockPlaceEvent event) {
+        Player player = event.getPlayer();
+        if (authEntity(player)) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onBlockBreak(BlockBreakEvent event) {
+        Player player = event.getPlayer();
+        if (authEntity(player)) {
+            event.setCancelled(true);
+        }
+    }
+
+    //////////////////////// INVENTORY ////////////////////////////////////
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onInventoryClick(InventoryClickEvent event) {
+        Entity entity = event.getWhoClicked();
+        if (authEntity(entity)) {
+            event.setCancelled(true);
+        }
+    }
+
+    ///////////////////////////////// ENTITY //////////////////////////////
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onFoodLevelChange(FoodLevelChangeEvent event) {
+        Entity entity = event.getEntity();
+        if (authEntity(entity)) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onPlayerAirChange(EntityAirChangeEvent event) {
+        Entity entity = event.getEntity();
+        if (authEntity(entity)) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+        Entity defender = event.getEntity();
+        Entity damager = event.getDamager();
+
+        if (authEntity(defender) || authEntity(damager)) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onEntityTarget(EntityTargetEvent event) {
+        Entity entity = event.getTarget();
+        if (authEntity(entity)) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onEntityShootBow(EntityShootBowEvent event) {
+        Entity entity = event.getEntity();
+        if (authEntity(entity)) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onPotionSplash(PotionSplashEvent event) {
+        for (Entity entity : event.getAffectedEntities()) {
+            if (authEntity(entity)) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    //////////////////////////////// PLAYER ///////////////////////////////
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerChat(AsyncPlayerChatEvent chat) {
