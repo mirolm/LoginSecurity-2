@@ -38,6 +38,16 @@ public class EventHook implements Listener {
         return false;
     }
 
+    private boolean allowCommand(String message) {
+        for (String cmd : ALLOWED_COMMANDS) {
+            if (message.startsWith(cmd)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     //////////////////////////////////////////////////////////////////////
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -83,6 +93,19 @@ public class EventHook implements Listener {
         String uuid = player.getUniqueId().toString();
 
         plugin.timeout.remove(uuid);
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
+        Player player = event.getPlayer();
+        if (authEntity(player)) {
+            String message = event.getMessage().toLowerCase();
+            if (allowCommand(message)) {
+                return;
+            }
+
+            event.setCancelled(true);
+        }
     }
 
     //////////////////////////// BLOCK ///////////////////////////////////
@@ -249,26 +272,6 @@ public class EventHook implements Listener {
     public void onPlayerFish(PlayerFishEvent event) {
         Player player = event.getPlayer();
         if (authEntity(player)) {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
-        Player player = event.getPlayer();
-        if (authEntity(player)) {
-            String message = event.getMessage().toLowerCase();
-
-            for (String cmd : ALLOWED_COMMANDS) {
-                if (message.startsWith(cmd)) {
-                    return;
-                }
-            }
-
-            if (message.startsWith("/f")) {
-                event.setMessage("/LOGIN_SECURITY_FACTION_REPLACEMENT_FIX");
-            }
-
             event.setCancelled(true);
         }
     }
