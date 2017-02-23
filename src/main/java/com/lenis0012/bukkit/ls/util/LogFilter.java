@@ -13,15 +13,20 @@ import java.util.List;
 public class LogFilter extends AbstractFilter {
     private static final List<String> filteredWords = Arrays.asList("/register ", "/reg ", "/login ", "/log ", "/l ", "/changepassword ", "/changepass ", "/cp ");
 
-    private Result handle(String message) {
-        message = message.toLowerCase();
+    private boolean filter(String message) {
         for (String word : filteredWords) {
             if (message.contains(word)) {
-                return Result.DENY;
+                return true;
             }
         }
 
-        return Result.NEUTRAL;
+        return false;
+    }
+
+    private Result handle(String message) {
+        message = message.toLowerCase();
+
+        return filter(message) ? Result.DENY : Result.NEUTRAL;
     }
 
     @Override
