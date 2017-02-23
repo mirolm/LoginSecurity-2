@@ -15,8 +15,8 @@ public class InventoryHook implements Listener {
         this.plugin = plugin;
     }
 
-    private boolean authEntity(org.bukkit.entity.Entity entity) {
-        if (entity instanceof org.bukkit.entity.Player) {
+    private boolean authEntity(Entity entity) {
+        if (entity instanceof Player) {
             Player player = (Player) entity;
             if (player.isOnline() && !player.hasMetadata("NPC")) {
                 String uuid = player.getUniqueId().toString();

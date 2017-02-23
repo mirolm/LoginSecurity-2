@@ -2,6 +2,7 @@ package com.lenis0012.bukkit.ls.event;
 
 import com.lenis0012.bukkit.ls.LoginSecurity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -15,8 +16,8 @@ public class BlockHook implements Listener {
         this.plugin = plugin;
     }
 
-    private boolean authEntity(org.bukkit.entity.Entity entity) {
-        if (entity instanceof org.bukkit.entity.Player) {
+    private boolean authEntity(Entity entity) {
+        if (entity instanceof Player) {
             Player player = (Player) entity;
             if (player.isOnline() && !player.hasMetadata("NPC")) {
                 String uuid = player.getUniqueId().toString();
