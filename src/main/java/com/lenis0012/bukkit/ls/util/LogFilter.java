@@ -11,10 +11,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class LogFilter extends AbstractFilter {
-    private static final List<String> filteredWords = Arrays.asList("/register ", "/reg ", "/login ", "/log ", "/l ", "/changepassword ", "/changepass ", "/cp ");
+    private static final List<String> FILTERED_COMMANDS = Arrays.asList("/register ", "/reg ", "/login ", "/log ", "/l ", "/changepassword ", "/changepass ", "/cp ");
 
     private boolean filter(String message) {
-        for (String word : filteredWords) {
+        for (String word : FILTERED_COMMANDS) {
             if (message.contains(word)) {
                 return true;
             }
