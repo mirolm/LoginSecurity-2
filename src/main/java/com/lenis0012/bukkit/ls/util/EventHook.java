@@ -40,14 +40,6 @@ public class EventHook implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        String uuid = player.getUniqueId().toString();
-
-        plugin.timeout.add(uuid, plugin.account.checkuser(uuid));
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
         String pname = event.getName();
         //Check for valid user name
@@ -76,7 +68,15 @@ public class EventHook implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        String uuid = player.getUniqueId().toString();
+
+        plugin.timeout.add(uuid, plugin.account.checkuser(uuid));
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         String uuid = player.getUniqueId().toString();
@@ -137,7 +137,7 @@ public class EventHook implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerChat(AsyncPlayerChatEvent chat) {
         Player player = chat.getPlayer();
         if (authEntity(player)) {
@@ -198,13 +198,7 @@ public class EventHook implements Listener {
         Entity defender = event.getEntity();
         Entity damager = event.getDamager();
 
-        if (authEntity(defender)) {
-            event.setCancelled(true);
-
-            return;
-        }
-
-        if (authEntity(damager)) {
+        if (authEntity(defender) || authEntity(damager)) {
             event.setCancelled(true);
         }
     }
@@ -250,7 +244,7 @@ public class EventHook implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
         if (authEntity(player)) {

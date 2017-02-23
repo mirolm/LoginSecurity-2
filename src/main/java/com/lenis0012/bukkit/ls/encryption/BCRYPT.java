@@ -5,8 +5,7 @@ import org.mindrot.jbcrypt.BCrypt;
 public class BCRYPT implements CryptoManager {
     @Override
     public String hash(String pw) {
-        String salt = BCrypt.gensalt();
-        return BCrypt.hashpw(pw, salt);
+        return BCrypt.hashpw(pw, BCrypt.gensalt());
     }
 
     @Override
