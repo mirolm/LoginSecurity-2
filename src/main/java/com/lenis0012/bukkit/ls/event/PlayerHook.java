@@ -93,6 +93,14 @@ public class PlayerHook implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onPlayerChat(AsyncPlayerChatEvent chat) {
+        Player player = chat.getPlayer();
+        if (authEntity(player)) {
+            chat.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         if (authEntity(player)) {
@@ -102,6 +110,22 @@ public class PlayerHook implements Listener {
             if (from.getBlockX() != to.getBlockX() || from.getBlockZ() != to.getBlockZ()) {
                 event.setTo(event.getFrom());
             }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        if (authEntity(player)) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+        Player player = event.getPlayer();
+        if (authEntity(player)) {
+            event.setCancelled(true);
         }
     }
 
@@ -122,7 +146,7 @@ public class PlayerHook implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onPlayerSwapHandItems(PlayerSwapHandItemsEvent event) {
+    public void onPlayerItemConsume(PlayerItemConsumeEvent event) {
         Player player = event.getPlayer();
         if (authEntity(player)) {
             event.setCancelled(true);
@@ -130,15 +154,7 @@ public class PlayerHook implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onPlayerChat(AsyncPlayerChatEvent chat) {
-        Player player = chat.getPlayer();
-        if (authEntity(player)) {
-            chat.setCancelled(true);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onPlayerItemConsume(PlayerItemConsumeEvent event) {
+    public void onPlayerSwapHandItems(PlayerSwapHandItemsEvent event) {
         Player player = event.getPlayer();
         if (authEntity(player)) {
             event.setCancelled(true);
@@ -155,22 +171,6 @@ public class PlayerHook implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerFish(PlayerFishEvent event) {
-        Player player = event.getPlayer();
-        if (authEntity(player)) {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onPlayerInteract(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-        if (authEntity(player)) {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
         if (authEntity(player)) {
             event.setCancelled(true);

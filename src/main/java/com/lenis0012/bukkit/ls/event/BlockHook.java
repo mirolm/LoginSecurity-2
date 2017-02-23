@@ -1,8 +1,8 @@
 package com.lenis0012.bukkit.ls.event;
 
 import com.lenis0012.bukkit.ls.LoginSecurity;
-import org.bukkit.entity.Player;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;

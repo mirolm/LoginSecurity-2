@@ -60,15 +60,6 @@ public class EntityHook implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onPotionSplash(PotionSplashEvent event) {
-        for (Entity entity : event.getAffectedEntities()) {
-            if (authEntity(entity)) {
-                event.setCancelled(true);
-            }
-        }
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onEntityTarget(EntityTargetEvent event) {
         Entity entity = event.getTarget();
         if (authEntity(entity)) {
@@ -81,6 +72,15 @@ public class EntityHook implements Listener {
         Entity entity = event.getEntity();
         if (authEntity(entity)) {
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onPotionSplash(PotionSplashEvent event) {
+        for (Entity entity : event.getAffectedEntities()) {
+            if (authEntity(entity)) {
+                event.setCancelled(true);
+            }
         }
     }
 }
