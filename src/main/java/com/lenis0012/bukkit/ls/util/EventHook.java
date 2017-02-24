@@ -71,7 +71,7 @@ public class EventHook implements Listener {
         }
 
         //Check if the player is already online
-        for (org.bukkit.entity.Player p : Bukkit.getServer().getOnlinePlayers()) {
+        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
             if (uuid.equalsIgnoreCase(p.getUniqueId().toString())) {
                 event.disallow(Result.KICK_OTHER, plugin.lang.get("already_online"));
 
