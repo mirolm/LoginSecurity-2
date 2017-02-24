@@ -24,9 +24,7 @@ public class LogFilter extends AbstractFilter {
     }
 
     private Result handle(String message) {
-        message = message.toLowerCase();
-
-        return filter(message) ? Result.DENY : Result.NEUTRAL;
+        return filter(message.toLowerCase()) ? Result.DENY : Result.NEUTRAL;
     }
 
     @Override
