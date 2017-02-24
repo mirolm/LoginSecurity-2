@@ -7,6 +7,7 @@ import com.lenis0012.bukkit.ls.thread.Lockout;
 import com.lenis0012.bukkit.ls.thread.Timeout;
 import com.lenis0012.bukkit.ls.util.*;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -38,9 +39,7 @@ public class LoginSecurity extends JavaPlugin {
         getCommand("changepass").setExecutor(new ChangePass(this));
 
         //filter log
-        org.apache.logging.log4j.core.Logger logger;
-
-        logger = (org.apache.logging.log4j.core.Logger) LogManager.getRootLogger();
+        Logger logger = (Logger) LogManager.getRootLogger();
         logger.addFilter(new LogFilter());
 
         //threads
