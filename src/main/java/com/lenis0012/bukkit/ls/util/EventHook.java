@@ -95,19 +95,6 @@ public class EventHook implements Listener {
         plugin.timeout.remove(uuid);
     }
 
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
-        Player player = event.getPlayer();
-        if (authEntity(player)) {
-            String message = event.getMessage().toLowerCase();
-            if (allowCommand(message)) {
-                return;
-            }
-
-            event.setCancelled(true);
-        }
-    }
-
     //////////////////////////// BLOCK ///////////////////////////////////
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -198,6 +185,21 @@ public class EventHook implements Listener {
             chat.setCancelled(true);
         }
     }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
+        Player player = event.getPlayer();
+        if (authEntity(player)) {
+            String message = event.getMessage().toLowerCase();
+            if (allowCommand(message)) {
+                return;
+            }
+
+            event.setCancelled(true);
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////////
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerMove(PlayerMoveEvent event) {
