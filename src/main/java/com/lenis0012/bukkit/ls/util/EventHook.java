@@ -39,6 +39,18 @@ public class EventHook implements Listener {
         return false;
     }
 
+    private boolean allowCommand(String message) {
+        for (String cmd : ALLOWED_COMMANDS) {
+            if (message.startsWith(cmd)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    //////////////////////////////////////////////////////////////////////
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
         String pname = event.getName();
@@ -84,6 +96,112 @@ public class EventHook implements Listener {
         plugin.timeout.remove(uuid);
     }
 
+    //////////////////////////// BLOCK ///////////////////////////////////
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onBlockPlace(BlockPlaceEvent event) {
+        Player player = event.getPlayer();
+        if (authEntity(player)) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onBlockBreak(BlockBreakEvent event) {
+        Player player = event.getPlayer();
+        if (authEntity(player)) {
+            event.setCancelled(true);
+        }
+    }
+
+    //////////////////////// INVENTORY ////////////////////////////////////
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onInventoryClick(InventoryClickEvent event) {
+        Entity entity = event.getWhoClicked();
+        if (authEntity(entity)) {
+            event.setCancelled(true);
+        }
+    }
+
+    ///////////////////////////////// ENTITY //////////////////////////////
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onFoodLevelChange(FoodLevelChangeEvent event) {
+        Entity entity = event.getEntity();
+        if (authEntity(entity)) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onPlayerAirChange(EntityAirChangeEvent event) {
+        Entity entity = event.getEntity();
+        if (authEntity(entity)) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+        Entity defender = event.getEntity();
+        Entity damager = event.getDamager();
+
+        if (authEntity(defender) || authEntity(damager)) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onEntityTarget(EntityTargetEvent event) {
+        Entity entity = event.getTarget();
+        if (authEntity(entity)) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onEntityShootBow(EntityShootBowEvent event) {
+        Entity entity = event.getEntity();
+        if (authEntity(entity)) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onPotionSplash(PotionSplashEvent event) {
+        for (Entity entity : event.getAffectedEntities()) {
+            if (authEntity(entity)) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    //////////////////////////////// PLAYER ///////////////////////////////
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onPlayerChat(AsyncPlayerChatEvent chat) {
+        Player player = chat.getPlayer();
+        if (authEntity(player)) {
+            chat.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
+        Player player = event.getPlayer();
+        if (authEntity(player)) {
+            String message = event.getMessage().toLowerCase();
+            if (allowCommand(message)) {
+                return;
+            }
+
+            event.setCancelled(true);
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////////
+
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
@@ -98,7 +216,7 @@ public class EventHook implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onBlockPlace(BlockPlaceEvent event) {
+    public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         if (authEntity(player)) {
             event.setCancelled(true);
@@ -106,7 +224,7 @@ public class EventHook implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onBlockBreak(BlockBreakEvent event) {
+    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
         if (authEntity(player)) {
             event.setCancelled(true);
@@ -130,7 +248,7 @@ public class EventHook implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onPlayerSwapHandItems(PlayerSwapHandItemsEvent event) {
+    public void onPlayerItemConsume(PlayerItemConsumeEvent event) {
         Player player = event.getPlayer();
         if (authEntity(player)) {
             event.setCancelled(true);
@@ -138,31 +256,7 @@ public class EventHook implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onPlayerChat(AsyncPlayerChatEvent chat) {
-        Player player = chat.getPlayer();
-        if (authEntity(player)) {
-            chat.setCancelled(true);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onFoodLevelChange(FoodLevelChangeEvent event) {
-        Entity entity = event.getEntity();
-        if (authEntity(entity)) {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onPlayerAirChange(EntityAirChangeEvent event) {
-        Entity entity = event.getEntity();
-        if (authEntity(entity)) {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onPlayerItemConsume(PlayerItemConsumeEvent event) {
+    public void onPlayerSwapHandItems(PlayerSwapHandItemsEvent event) {
         Player player = event.getPlayer();
         if (authEntity(player)) {
             event.setCancelled(true);
@@ -181,85 +275,6 @@ public class EventHook implements Listener {
     public void onPlayerFish(PlayerFishEvent event) {
         Player player = event.getPlayer();
         if (authEntity(player)) {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onInventoryClick(InventoryClickEvent event) {
-        Entity entity = event.getWhoClicked();
-        if (authEntity(entity)) {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        Entity defender = event.getEntity();
-        Entity damager = event.getDamager();
-
-        if (authEntity(defender) || authEntity(damager)) {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onPotionSplash(PotionSplashEvent event) {
-        for (Entity entity : event.getAffectedEntities()) {
-            if (authEntity(entity)) {
-                event.setCancelled(true);
-            }
-        }
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onEntityTarget(EntityTargetEvent event) {
-        Entity entity = event.getTarget();
-        if (authEntity(entity)) {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onEntityShootBow(EntityShootBowEvent event) {
-        Entity entity = event.getEntity();
-        if (authEntity(entity)) {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onPlayerInteract(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-        if (authEntity(player)) {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
-        Player player = event.getPlayer();
-        if (authEntity(player)) {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
-        Player player = event.getPlayer();
-        if (authEntity(player)) {
-            String message = event.getMessage().toLowerCase();
-
-            for (String cmd : ALLOWED_COMMANDS) {
-                if (message.startsWith(cmd)) {
-                    return;
-                }
-            }
-
-            if (message.startsWith("/f")) {
-                event.setMessage("/LOGIN_SECURITY_FACTION_REPLACEMENT_FIX");
-            }
-
             event.setCancelled(true);
         }
     }

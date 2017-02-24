@@ -11,17 +11,20 @@ import java.util.Arrays;
 import java.util.List;
 
 public class LogFilter extends AbstractFilter {
-    private static final List<String> filteredWords = Arrays.asList("/register ", "/reg ", "/login ", "/log ", "/l ", "/changepassword ", "/changepass ", "/cp ");
+    private static final List<String> FILTERED_COMMANDS = Arrays.asList("/register ", "/reg ", "/login ", "/log ", "/l ", "/changepassword ", "/changepass ", "/cp ");
 
-    private Result handle(String message) {
-        message = message.toLowerCase();
-        for (String word : filteredWords) {
+    private boolean filter(String message) {
+        for (String word : FILTERED_COMMANDS) {
             if (message.contains(word)) {
-                return Result.DENY;
+                return true;
             }
         }
 
-        return Result.NEUTRAL;
+        return false;
+    }
+
+    private Result handle(String message) {
+        return filter(message.toLowerCase()) ? Result.DENY : Result.NEUTRAL;
     }
 
     @Override
