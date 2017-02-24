@@ -38,10 +38,7 @@ public class LoginSecurity extends JavaPlugin {
         getCommand("changepass").setExecutor(new ChangePass(this));
 
         //filter log
-        org.apache.logging.log4j.core.Logger logger;
-
-        logger = (org.apache.logging.log4j.core.Logger) LogManager.getRootLogger();
-        logger.addFilter(new LogFilter());
+        LogManager.getRootLogger().addFilter(new LogFilter());
 
         //threads
         timeout = new Timeout(this);
