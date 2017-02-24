@@ -13,6 +13,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 
 import java.util.Arrays;
 import java.util.List;
@@ -55,7 +56,7 @@ public class EventHook implements Listener {
         String pname = event.getName();
         //Check for valid user name
         if (!pname.matches("^\\w{3,16}$")) {
-            event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, plugin.lang.get("invalid_username"));
+            event.disallow(Result.KICK_OTHER, plugin.lang.get("invalid_username"));
 
             return;
         }
@@ -64,7 +65,7 @@ public class EventHook implements Listener {
         String addr = event.getAddress().toString();
         //Check account locked due to failed logins
         if (plugin.lockout.check(uuid, addr)) {
-            event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, plugin.lang.get("account_locked"));
+            event.disallow(Result.KICK_OTHER, plugin.lang.get("account_locked"));
 
             return;
         }
@@ -72,7 +73,7 @@ public class EventHook implements Listener {
         //Check if the player is already online
         for (org.bukkit.entity.Player p : Bukkit.getServer().getOnlinePlayers()) {
             if (uuid.equalsIgnoreCase(p.getUniqueId().toString())) {
-                event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, plugin.lang.get("already_online"));
+                event.disallow(Result.KICK_OTHER, plugin.lang.get("already_online"));
 
                 return;
             }
