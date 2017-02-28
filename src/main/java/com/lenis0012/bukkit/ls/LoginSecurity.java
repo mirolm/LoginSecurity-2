@@ -30,6 +30,8 @@ public class LoginSecurity extends JavaPlugin {
         //account
         account = new Account(this);
 
+        // gpg test
+
         //events
         getServer().getPluginManager().registerEvents(new EventHook(this), this);
 
