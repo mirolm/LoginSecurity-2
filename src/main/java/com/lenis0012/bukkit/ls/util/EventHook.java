@@ -39,16 +39,6 @@ public class EventHook implements Listener {
         return false;
     }
 
-    private boolean allowCommand(String message) {
-        for (String cmd : ALLOWED_COMMANDS) {
-            if (message.startsWith(cmd)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     //////////////////////////////////////////////////////////////////////
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -191,8 +181,8 @@ public class EventHook implements Listener {
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
         if (authEntity(player)) {
-            String message = event.getMessage().toLowerCase();
-            if (allowCommand(message)) {
+            String message = event.getMessage();
+            if (Common.contains(message, ALLOWED_COMMANDS)) {
                 return;
             }
 

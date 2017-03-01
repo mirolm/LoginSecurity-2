@@ -13,18 +13,8 @@ import java.util.List;
 public class LogFilter extends AbstractFilter {
     private static final List<String> FILTERED_COMMANDS = Arrays.asList("/register ", "/reg ", "/login ", "/log ", "/l ", "/changepassword ", "/changepass ", "/cp ");
 
-    private boolean filter(String message) {
-        for (String word : FILTERED_COMMANDS) {
-            if (message.contains(word)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     private Result handle(String message) {
-        return filter(message.toLowerCase()) ? Result.DENY : Result.NEUTRAL;
+        return Common.contains(message, FILTERED_COMMANDS) ? Result.DENY : Result.NEUTRAL;
     }
 
     @Override
