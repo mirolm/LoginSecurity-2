@@ -2,6 +2,7 @@ package com.lenis0012.bukkit.ls.thread;
 
 import com.google.common.collect.Maps;
 import com.lenis0012.bukkit.ls.LoginSecurity;
+import com.lenis0012.bukkit.ls.util.Common;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -22,7 +23,7 @@ public class Timeout implements Runnable {
     @Override
     public void run() {
         Iterator<String> it = authlist.keySet().iterator();
-        long cycle = seconds();
+        long cycle = Common.seconds();
 
         while (it.hasNext()) {
             String puuid = it.next();
@@ -79,10 +80,6 @@ public class Timeout implements Runnable {
         }
     }
 
-    private long seconds() {
-        return System.currentTimeMillis() / 1000L;
-    }
-
     class TimeoutData {
         final String uuid;
         final boolean registered;
@@ -91,7 +88,7 @@ public class Timeout implements Runnable {
         TimeoutData(String uuid, boolean registered) {
             this.uuid = uuid;
             this.registered = registered;
-            this.timeout = seconds();
+            this.timeout = Common.seconds();
         }
     }
 }

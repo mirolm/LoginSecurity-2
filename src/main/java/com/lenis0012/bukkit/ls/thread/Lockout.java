@@ -2,9 +2,9 @@ package com.lenis0012.bukkit.ls.thread;
 
 import com.google.common.collect.Maps;
 import com.lenis0012.bukkit.ls.LoginSecurity;
+import com.lenis0012.bukkit.ls.util.Common;
 
 import java.util.Iterator;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentMap;
 
 public class Lockout implements Runnable {
@@ -18,7 +18,7 @@ public class Lockout implements Runnable {
     @Override
     public void run() {
         Iterator<String> it = faillist.keySet().iterator();
-        long cycle = seconds();
+        long cycle = Common.seconds();
 
         while (it.hasNext()) {
             String puuid = it.next();
@@ -31,13 +31,13 @@ public class Lockout implements Runnable {
     }
 
     public boolean failed(String uuid, String addr) {
-        String fuuid = fulluuid(uuid, addr);
+        String fuuid = Common.fulluuid(uuid, addr);
 
         if (faillist.containsKey(fuuid)) {
             LockoutData current = faillist.get(fuuid);
 
             current.failed += 1;
-            current.timeout = seconds();
+            current.timeout = Common.seconds();
 
             return faillist.replace(fuuid, current).failed >= plugin.conf.countFail;
         } else {
@@ -48,23 +48,15 @@ public class Lockout implements Runnable {
     }
 
     public boolean check(String uuid, String addr) {
-        String fuuid = fulluuid(uuid, addr);
+        String fuuid = Common.fulluuid(uuid, addr);
 
         return faillist.containsKey(fuuid) && (faillist.get(fuuid).failed >= plugin.conf.countFail);
     }
 
     public void remove(String uuid, String addr) {
-        String fuuid = fulluuid(uuid, addr);
+        String fuuid = Common.fulluuid(uuid, addr);
 
         faillist.remove(fuuid);
-    }
-
-    private String fulluuid(String uuid, String addr) {
-        return UUID.nameUUIDFromBytes(("|#" + uuid + "^|^" + addr + "#|").getBytes()).toString();
-    }
-
-    private long seconds() {
-        return System.currentTimeMillis() / 1000L;
     }
 
     class LockoutData {
@@ -73,7 +65,7 @@ public class Lockout implements Runnable {
 
         LockoutData() {
             this.failed = 1;
-            this.timeout = seconds();
+            this.timeout = Common.seconds();
         }
     }
 }
