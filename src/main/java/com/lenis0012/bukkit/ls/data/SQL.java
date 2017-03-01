@@ -25,11 +25,11 @@ public abstract class SQL implements SQLManager {
     private String SELECT_LOGIN = "SELECT unique_user_id, password, encryption FROM <TABLE> WHERE unique_user_id = ?";
     private String SELECT_USERS = "SELECT unique_user_id, password, encryption FROM <TABLE>";
 
-    protected SQL(Plugin plugin) {
+    SQL(Plugin plugin) {
         this.logger = plugin.getLogger();
     }
 
-    protected void init(String table, HikariConfig config) {
+    void init(String table, HikariConfig config) {
         CREATE_TABLE = CREATE_TABLE.replace("<TABLE>", table);
         CHECK_REG = CHECK_REG.replace("<TABLE>", table);
         INSERT_LOGIN = INSERT_LOGIN.replace("<TABLE>", table);
