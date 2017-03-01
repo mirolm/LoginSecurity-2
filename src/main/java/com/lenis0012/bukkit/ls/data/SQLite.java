@@ -4,7 +4,7 @@ import com.lenis0012.bukkit.ls.LoginSecurity;
 import com.lenis0012.bukkit.ls.util.Common;
 import com.zaxxer.hikari.HikariConfig;
 
-public class SQLite extends SQL {
+class SQLite extends SQL {
     private static final String dbname = "users.db";
 
     public SQLite(LoginSecurity plugin) {
