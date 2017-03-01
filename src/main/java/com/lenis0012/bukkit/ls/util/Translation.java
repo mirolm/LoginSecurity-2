@@ -24,7 +24,7 @@ public class Translation {
         for (String key : conf.getKeys(false)) {
             String message = ChatColor.translateAlternateColorCodes('&', conf.getString(key));
             if (!message.isEmpty()) {
-                langs.put(key, message);
+                langs.putIfAbsent(key, message);
             }
         }
     }
