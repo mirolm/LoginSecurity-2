@@ -30,16 +30,6 @@ public class Account {
         return executor.check(uuid);
     }
 
-    private boolean checkplayer(Player player) {
-        if (player != null) {
-            if (player.isOnline() && !player.hasMetadata("NPC")) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     private boolean checkpass(String uuid, String password) {
         LoginData login = executor.get(uuid);
 
@@ -52,7 +42,7 @@ public class Account {
     }
 
     public void register(Player player, String pass) {
-        if (checkplayer(player)) {
+        if (Common.checkplayer(player)) {
             String uuid = player.getUniqueId().toString();
 
             if (checkuser(uuid)) {
@@ -78,7 +68,7 @@ public class Account {
     }
 
     public void changepass(Player player, String oldpass, String newpass) {
-        if (checkplayer(player)) {
+        if (Common.checkplayer(player)) {
             String uuid = player.getUniqueId().toString();
 
             if (!checkpass(uuid, oldpass)) {
@@ -103,7 +93,7 @@ public class Account {
     }
 
     public void login(Player player, String pass) {
-        if (checkplayer(player)) {
+        if (Common.checkplayer(player)) {
             String uuid = player.getUniqueId().toString();
             String addr = player.getAddress().getAddress().toString();
 

@@ -35,7 +35,7 @@ public class Timeout implements Runnable {
                 it.remove();
 
                 Player player = Bukkit.getPlayer(UUID.fromString(puuid));
-                if (player != null && player.isOnline()) {
+                if (Common.checkplayer(player)) {
                     player.kickPlayer(plugin.lang.get("timed_out"));
                 }
             }
@@ -48,7 +48,7 @@ public class Timeout implements Runnable {
         notify(current);
 
         Player player = Bukkit.getPlayer(UUID.fromString(uuid));
-        if (player != null && player.isOnline()) {
+        if (Common.checkplayer(player)) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 1), true);
         }
 
@@ -57,7 +57,7 @@ public class Timeout implements Runnable {
 
     public void remove(String uuid) {
         Player player = Bukkit.getPlayer(UUID.fromString(uuid));
-        if (player != null && player.isOnline()) {
+        if (Common.checkplayer(player)) {
             player.removePotionEffect(PotionEffectType.BLINDNESS);
 
             // ensure that player does not drown after logging in
@@ -73,7 +73,7 @@ public class Timeout implements Runnable {
 
     private void notify(TimeoutData current) {
         Player player = Bukkit.getPlayer(UUID.fromString(current.uuid));
-        if (player != null && player.isOnline()) {
+        if (Common.checkplayer(player)) {
             String message = current.registered ? plugin.lang.get("log_msg") : plugin.lang.get("reg_msg");
 
             player.sendMessage(message);

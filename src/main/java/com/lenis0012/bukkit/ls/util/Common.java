@@ -1,5 +1,6 @@
 package com.lenis0012.bukkit.ls.util;
 
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
@@ -30,5 +31,15 @@ public final class Common {
 
     public static File getpath(Plugin plugin, String filename) {
         return Paths.get(plugin.getDataFolder().toString(), filename).normalize().toFile();
+    }
+
+    public static boolean checkplayer(Player player) {
+        if (player != null) {
+            if (player.isOnline() && !player.hasMetadata("NPC")) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

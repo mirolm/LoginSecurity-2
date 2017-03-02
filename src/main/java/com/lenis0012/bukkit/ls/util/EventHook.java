@@ -29,7 +29,7 @@ public class EventHook implements Listener {
     private boolean authEntity(Entity entity) {
         if (entity instanceof Player) {
             Player player = (Player) entity;
-            if (player.isOnline() && !player.hasMetadata("NPC")) {
+            if (Common.checkplayer(player)) {
                 String uuid = player.getUniqueId().toString();
 
                 return plugin.timeout.check(uuid);
