@@ -1,6 +1,8 @@
 package com.lenis0012.bukkit.ls.util;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
@@ -11,10 +13,6 @@ import java.util.UUID;
 public final class Common {
     public static long seconds() {
         return System.currentTimeMillis() / 1000L;
-    }
-
-    public static String fulluuid(String uuid, String addr) {
-        return UUID.nameUUIDFromBytes(("|#" + uuid + "^|^" + addr + "#|").getBytes()).toString();
     }
 
     public static boolean contains(String message, List<String> list) {
@@ -41,5 +39,35 @@ public final class Common {
         }
 
         return false;
+    }
+
+    public static Player getplayer(String uuid) {
+        return Bukkit.getPlayer(UUID.fromString(uuid));
+    }
+
+    public static String getuuid(Player player) {
+        return player.getUniqueId().toString();
+    }
+
+    public static String getuuid(AsyncPlayerPreLoginEvent event) {
+        return event.getUniqueId().toString();
+    }
+
+    private static String fulluuid(String uuid, String addr) {
+        return UUID.nameUUIDFromBytes(("|#" + uuid + "^|^" + addr + "#|").getBytes()).toString();
+    }
+
+    public static String fulluuid(Player player) {
+        String uuid = player.getUniqueId().toString();
+        String addr = player.getAddress().getAddress().getHostAddress();
+
+        return fulluuid(uuid, addr);
+    }
+
+    public static String fulluuid(AsyncPlayerPreLoginEvent event) {
+        String uuid = event.getUniqueId().toString();
+        String addr = event.getAddress().getHostAddress();
+
+        return Common.fulluuid(uuid, addr);
     }
 }

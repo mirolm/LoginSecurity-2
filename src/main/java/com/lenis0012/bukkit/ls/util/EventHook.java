@@ -30,7 +30,7 @@ public class EventHook implements Listener {
         if (entity instanceof Player) {
             Player player = (Player) entity;
             if (Common.checkplayer(player)) {
-                String uuid = player.getUniqueId().toString();
+                String uuid = Common.getuuid(player);
 
                 return plugin.timeout.check(uuid);
             }
@@ -52,18 +52,18 @@ public class EventHook implements Listener {
             return;
         }
 
-        String uuid = event.getUniqueId().toString();
-        String addr = event.getAddress().toString();
+        String fuuid = Common.fulluuid(event);
         //Check account locked due to failed logins
-        if (plugin.lockout.check(uuid, addr)) {
+        if (plugin.lockout.check(fuuid)) {
             event.disallow(Result.KICK_OTHER, plugin.lang.get("account_locked"));
 
             return;
         }
 
+        String uuid = Common.getuuid(event);
         //Check if the player is already online
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-            if (uuid.equalsIgnoreCase(p.getUniqueId().toString())) {
+            if (uuid.equalsIgnoreCase(Common.getuuid(p))) {
                 event.disallow(Result.KICK_OTHER, plugin.lang.get("already_online"));
 
                 return;
@@ -75,7 +75,7 @@ public class EventHook implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        String uuid = player.getUniqueId().toString();
+        String uuid = Common.getuuid(player);
 
         plugin.timeout.add(uuid, plugin.account.checkuser(uuid));
     }
@@ -84,7 +84,7 @@ public class EventHook implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        String uuid = player.getUniqueId().toString();
+        String uuid = Common.getuuid(player);
 
         plugin.timeout.remove(uuid);
     }

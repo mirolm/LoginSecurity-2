@@ -3,13 +3,11 @@ package com.lenis0012.bukkit.ls.thread;
 import com.google.common.collect.Maps;
 import com.lenis0012.bukkit.ls.LoginSecurity;
 import com.lenis0012.bukkit.ls.util.Common;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.Iterator;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentMap;
 
 public class Timeout implements Runnable {
@@ -34,7 +32,7 @@ public class Timeout implements Runnable {
             } else {
                 it.remove();
 
-                Player player = Bukkit.getPlayer(UUID.fromString(puuid));
+                Player player = Common.getplayer(puuid);
                 if (Common.checkplayer(player)) {
                     player.kickPlayer(plugin.lang.get("timed_out"));
                 }
@@ -47,7 +45,7 @@ public class Timeout implements Runnable {
 
         notify(current);
 
-        Player player = Bukkit.getPlayer(UUID.fromString(uuid));
+        Player player = Common.getplayer(uuid);
         if (Common.checkplayer(player)) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 1), true);
         }
@@ -56,7 +54,7 @@ public class Timeout implements Runnable {
     }
 
     public void remove(String uuid) {
-        Player player = Bukkit.getPlayer(UUID.fromString(uuid));
+        Player player = Common.getplayer(uuid);
         if (Common.checkplayer(player)) {
             player.removePotionEffect(PotionEffectType.BLINDNESS);
 
@@ -72,7 +70,7 @@ public class Timeout implements Runnable {
     }
 
     private void notify(TimeoutData current) {
-        Player player = Bukkit.getPlayer(UUID.fromString(current.uuid));
+        Player player = Common.getplayer(current.uuid);
         if (Common.checkplayer(player)) {
             String message = current.registered ? plugin.lang.get("log_msg") : plugin.lang.get("reg_msg");
 

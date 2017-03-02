@@ -30,9 +30,7 @@ public class Lockout implements Runnable {
         }
     }
 
-    public boolean failed(String uuid, String addr) {
-        String fuuid = Common.fulluuid(uuid, addr);
-
+    public boolean failed(String fuuid) {
         if (faillist.containsKey(fuuid)) {
             LockoutData current = faillist.get(fuuid);
 
@@ -47,15 +45,11 @@ public class Lockout implements Runnable {
         }
     }
 
-    public boolean check(String uuid, String addr) {
-        String fuuid = Common.fulluuid(uuid, addr);
-
+    public boolean check(String fuuid) {
         return faillist.containsKey(fuuid) && (faillist.get(fuuid).failed >= plugin.conf.countFail);
     }
 
-    public void remove(String uuid, String addr) {
-        String fuuid = Common.fulluuid(uuid, addr);
-
+    public void remove(String fuuid) {
         faillist.remove(fuuid);
     }
 

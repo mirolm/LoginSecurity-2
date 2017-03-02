@@ -43,7 +43,7 @@ public class Account {
 
     public void register(Player player, String pass) {
         if (Common.checkplayer(player)) {
-            String uuid = player.getUniqueId().toString();
+            String uuid = Common.getuuid(player);
 
             if (checkuser(uuid)) {
                 player.sendMessage(plugin.lang.get("already_reg"));
@@ -69,7 +69,7 @@ public class Account {
 
     public void changepass(Player player, String oldpass, String newpass) {
         if (Common.checkplayer(player)) {
-            String uuid = player.getUniqueId().toString();
+            String uuid = Common.getuuid(player);
 
             if (!checkpass(uuid, oldpass)) {
                 player.sendMessage(plugin.lang.get("invalid_psw"));
@@ -94,8 +94,7 @@ public class Account {
 
     public void login(Player player, String pass) {
         if (Common.checkplayer(player)) {
-            String uuid = player.getUniqueId().toString();
-            String addr = player.getAddress().getAddress().toString();
+            String uuid = Common.getuuid(player);
 
             if (!plugin.timeout.check(uuid)) {
                 player.sendMessage(plugin.lang.get("already_login"));
@@ -109,9 +108,11 @@ public class Account {
                 return;
             }
 
+            String fuuid = Common.fulluuid(player);
+
             if (checkpass(uuid, pass)) {
                 plugin.timeout.remove(uuid);
-                plugin.lockout.remove(uuid, addr);
+                plugin.lockout.remove(fuuid);
 
                 player.sendMessage(plugin.lang.get("login"));
 
@@ -122,7 +123,7 @@ public class Account {
 
                 logger.log(Level.INFO, "{0} authenticated", player.getName());
             } else {
-                if (plugin.lockout.failed(uuid, addr)) {
+                if (plugin.lockout.failed(fuuid)) {
                     player.kickPlayer(plugin.lang.get("fail_count"));
                 } else {
                     player.sendMessage(plugin.lang.get("invalid_psw"));
