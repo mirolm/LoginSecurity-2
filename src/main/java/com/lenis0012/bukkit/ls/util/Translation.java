@@ -9,13 +9,13 @@ import java.io.File;
 import java.util.concurrent.ConcurrentMap;
 
 public class Translation {
-    private static final String langname = "lang.yml";
+    private static final String LANG_NAME = "lang.yml";
     private final ConcurrentMap<String, String> langs = Maps.newConcurrentMap();
 
     public Translation(Plugin plugin) {
-        File langFile = Common.getpath(plugin, langname);
+        File langFile = Common.getpath(plugin, LANG_NAME);
         if (!langFile.exists()) {
-            plugin.saveResource(langname, false);
+            plugin.saveResource(LANG_NAME, false);
         }
 
         YamlConfiguration conf = YamlConfiguration.loadConfiguration(langFile);

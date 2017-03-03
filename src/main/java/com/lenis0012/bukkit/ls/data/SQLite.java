@@ -5,12 +5,12 @@ import com.lenis0012.bukkit.ls.util.Common;
 import com.zaxxer.hikari.HikariConfig;
 
 class SQLite extends SQL {
-    private static final String dbname = "users.db";
+    private static final String DB_NAME = "users.db";
 
     public SQLite(LoginSecurity plugin) {
         super(plugin);
 
-        String path = Common.getpath(plugin, dbname).toString();
+        String path = Common.getpath(plugin, DB_NAME).toString();
 
         HikariConfig dbcfg = new HikariConfig();
 
@@ -25,6 +25,6 @@ class SQLite extends SQL {
     }
 
     public static boolean exists(LoginSecurity plugin) {
-        return Common.getpath(plugin, dbname).exists();
+        return Common.getpath(plugin, DB_NAME).exists();
     }
 }
