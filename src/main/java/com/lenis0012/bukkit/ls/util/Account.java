@@ -36,6 +36,11 @@ public class Account {
         return (hasher.gettype() == login.encryption) && hasher.check(password, login.password);
     }
 
+    public boolean wrongname(String name) {
+        // 3-16 chars long, letters and numbers
+        return !name.matches("^\\w{3,16}$");
+    }
+
     private boolean weakpass(String password) {
         // 6+ chars long, letters and number or symbol
         return !password.matches("^(?=.*[a-zA-Z])(?=.*([0-9]|[!@#$%\\^&*])).{6,}+$");
