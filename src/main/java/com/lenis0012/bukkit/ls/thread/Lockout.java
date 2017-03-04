@@ -30,27 +30,27 @@ public class Lockout implements Runnable {
         }
     }
 
-    public boolean failed(String fuuid) {
-        if (faillist.containsKey(fuuid)) {
-            LockoutData current = faillist.get(fuuid);
+    public boolean failed(String uuid) {
+        if (faillist.containsKey(uuid)) {
+            LockoutData current = faillist.get(uuid);
 
             current.failed += 1;
             current.timeout = Common.seconds();
 
-            return faillist.replace(fuuid, current).failed >= plugin.conf.countFail;
+            return faillist.replace(uuid, current).failed >= plugin.conf.countFail;
         } else {
-            faillist.putIfAbsent(fuuid, new LockoutData());
+            faillist.putIfAbsent(uuid, new LockoutData());
 
             return false;
         }
     }
 
-    public boolean check(String fuuid) {
-        return faillist.containsKey(fuuid) && (faillist.get(fuuid).failed >= plugin.conf.countFail);
+    public boolean check(String uuid) {
+        return faillist.containsKey(uuid) && (faillist.get(uuid).failed >= plugin.conf.countFail);
     }
 
-    public void remove(String fuuid) {
-        faillist.remove(fuuid);
+    public void remove(String uuid) {
+        faillist.remove(uuid);
     }
 
     class LockoutData {
