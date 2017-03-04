@@ -36,7 +36,7 @@ public class Account {
         return (hasher.gettype() == login.encryption) && hasher.check(password, login.password);
     }
 
-    public boolean wrongname(String name) {
+    public boolean badname(String name) {
         // 3-16 chars long, letters and numbers
         return !name.matches("^\\w{3,16}$");
     }

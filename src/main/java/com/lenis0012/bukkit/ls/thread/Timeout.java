@@ -27,7 +27,7 @@ public class Timeout implements Runnable {
             String puuid = it.next();
 
             TimeoutData current = authlist.get(puuid);
-            if (!((cycle - current.timeout) >= plugin.conf.timeDelay)) {
+            if (!((cycle - current.timeout) >= plugin.conf.timedelay)) {
                 notify(current);
             } else {
                 it.remove();

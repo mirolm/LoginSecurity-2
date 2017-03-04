@@ -5,7 +5,7 @@ import org.bukkit.plugin.Plugin;
 
 public class Config {
     public final boolean usemysql;
-    public final int timeDelay, countFail, minFail;
+    public final int timedelay, countfail, minfail;
     public final String hasher;
     public final String host, port, database, user, pass, table;
 
@@ -28,9 +28,9 @@ public class Config {
         plugin.saveConfig();
 
         //read values
-        timeDelay = config.getInt("settings.timeout", 60);
-        countFail = config.getInt("settings.failed.count", 3);
-        minFail = config.getInt("settings.failed.minutes", 120);
+        timedelay = config.getInt("settings.timeout", 60);
+        countfail = config.getInt("settings.failed.count", 3);
+        minfail = config.getInt("settings.failed.minutes", 120);
         hasher = config.getString("settings.encryption");
 
         usemysql = config.getBoolean("MySQL.use");
