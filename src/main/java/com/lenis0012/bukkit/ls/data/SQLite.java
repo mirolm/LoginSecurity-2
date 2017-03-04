@@ -17,7 +17,7 @@ class SQLite extends SQL {
         dbcfg.setDriverClassName("org.sqlite.JDBC");
         dbcfg.setJdbcUrl("jdbc:sqlite:" + path);
 
-        dbcfg.setMaximumPoolSize(1);
+        dbcfg.setMaximumPoolSize(2);
 
         super.init(plugin.conf.table, dbcfg);
     }

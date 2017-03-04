@@ -11,6 +11,7 @@ public class Config {
 
     public Config(Plugin plugin) {
         FileConfiguration config = plugin.getConfig();
+        String prefix;
 
         //setup config
         config.addDefault("settings.encryption", "BCRYPT");
@@ -24,21 +25,24 @@ public class Config {
         config.addDefault("MySQL.username", "");
         config.addDefault("MySQL.password", "");
         config.addDefault("MySQL.prefix", "");
+
         config.options().copyDefaults(true);
         plugin.saveConfig();
 
         //read values
-        timedelay = config.getInt("settings.timeout", 60);
-        countfail = config.getInt("settings.failed.count", 3);
-        minfail = config.getInt("settings.failed.minutes", 120);
         hasher = config.getString("settings.encryption");
+        timedelay = config.getInt("settings.timeout");
+        countfail = config.getInt("settings.failed.count");
+        minfail = config.getInt("settings.failed.minutes");
 
         usemysql = config.getBoolean("MySQL.use");
-        host = config.getString("MySQL.host", "localhost");
-        port = String.valueOf(config.getInt("MySQL.port", 3306));
-        database = config.getString("MySQL.database", "");
-        user = config.getString("MySQL.username", "");
-        pass = config.getString("MySQL.password", "");
-        table = config.getString("MySQL.prefix", "") + "users";
+        host = config.getString("MySQL.host");
+        port = config.getString("MySQL.port");
+        database = config.getString("MySQL.database");
+        user = config.getString("MySQL.username");
+        pass = config.getString("MySQL.password");
+
+        prefix = config.getString("MySQL.prefix");
+        table = prefix.isEmpty() ? "users" : String.format("%s_users", prefix);
     }
 }
