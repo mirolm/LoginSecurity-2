@@ -16,8 +16,6 @@ class SQLite extends SQL {
 
         dbcfg.setDriverClassName("org.sqlite.JDBC");
         dbcfg.setJdbcUrl("jdbc:sqlite:" + path);
-        dbcfg.setUsername("");
-        dbcfg.setPassword("");
 
         dbcfg.setMaximumPoolSize(1);
 
