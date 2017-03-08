@@ -2,19 +2,12 @@ package com.lenis0012.bukkit.ls.data;
 
 import com.lenis0012.bukkit.ls.LoginSecurity;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 public class Executor {
     private final LoginSecurity plugin;
-    private final Logger logger;
     private final SQLManager data;
 
     public Executor(LoginSecurity plugin) {
         this.plugin = plugin;
-        this.logger = plugin.getLogger();
 
         this.data = plugin.conf.usemysql ? new MySQL(plugin) : new SQLite(plugin);
 
@@ -26,52 +19,34 @@ public class Executor {
     }
 
     public boolean check(String uuid) {
-        return data.checkUser(uuid);
+        return data.checkLogin(uuid);
     }
 
     public LoginData get(String uuid) {
-        return data.getUser(uuid);
+        return data.getLogin(uuid);
     }
 
     public void register(LoginData login) {
-        if (!data.checkUser(login.uuid)) {
-            data.regUser(login);
+        if (!data.checkLogin(login.uuid)) {
+            data.registerLogin(login);
         }
     }
 
     public void update(LoginData login) {
-        if (data.checkUser(login.uuid)) {
-            data.updateUser(login);
+        if (data.checkLogin(login.uuid)) {
+            data.updateLogin(login);
         }
     }
 
     private void convert() {
         SQLManager manager;
-        Connection conn = null;
-        ResultSet result = null;
-        LoginData login;
 
         if (SQLite.exists(plugin) && plugin.conf.usemysql) {
             manager = new SQLite(plugin);
 
             try {
-                conn = manager.getConn();
-                result = manager.getAllUsers(conn);
-
-                logger.log(Level.INFO, "Starting to convert.");
-
-                while (result.next()) {
-                    login = manager.parseData(result);
-
-                    register(login);
-                }
-
-                logger.log(Level.INFO, "Finished.");
-            } catch (Exception e) {
-                logger.log(Level.WARNING, "Failed to convert from SQLite to MySQL");
+                data.convertAllLogin(manager);
             } finally {
-                manager.closeQuietly(result);
-                manager.closeQuietly(conn);
                 manager.close();
             }
         }

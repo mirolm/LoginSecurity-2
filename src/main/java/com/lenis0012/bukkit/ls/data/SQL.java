@@ -48,7 +48,7 @@ public abstract class SQL implements SQLManager {
     }
 
     @Override
-    public Connection getConn() {
+    public Connection getConnection() {
         try {
             return dataSource.getConnection();
         } catch (Exception e) {
@@ -76,7 +76,7 @@ public abstract class SQL implements SQLManager {
     }
 
     @Override
-    public boolean checkUser(String uuid) {
+    public boolean checkLogin(String uuid) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet result = null;
@@ -100,7 +100,7 @@ public abstract class SQL implements SQLManager {
     }
 
     @Override
-    public void regUser(LoginData login) {
+    public void registerLogin(LoginData login) {
         Connection conn = null;
         PreparedStatement stmt = null;
 
@@ -122,7 +122,7 @@ public abstract class SQL implements SQLManager {
     }
 
     @Override
-    public void updateUser(LoginData login) {
+    public void updateLogin(LoginData login) {
         Connection conn = null;
         PreparedStatement stmt = null;
 
@@ -144,7 +144,7 @@ public abstract class SQL implements SQLManager {
     }
 
     @Override
-    public LoginData getUser(String uuid) {
+    public LoginData getLogin(String uuid) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet result = null;
@@ -157,7 +157,7 @@ public abstract class SQL implements SQLManager {
 
             result = stmt.executeQuery();
             if (result.next()) {
-                return parseData(result);
+                return parseLogin(result);
             } else {
                 return null;
             }
@@ -172,20 +172,37 @@ public abstract class SQL implements SQLManager {
     }
 
     @Override
-    public ResultSet getAllUsers(Connection conn) {
-        PreparedStatement stmt;
+    public void convertAllLogin(SQLManager manager) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet result = null;
+        LoginData login;
 
         try {
-            stmt = conn.prepareStatement(SELECT_USERS);
+            conn = manager.getConnection();
 
-            return stmt.executeQuery();
+            stmt = conn.prepareStatement(SELECT_USERS);
+            result = stmt.executeQuery();
+
+            logger.log(Level.INFO, "Starting to convert.");
+
+            while (result.next()) {
+                login = parseLogin(result);
+
+                registerLogin(login);
+            }
+
+            logger.log(Level.INFO, "Finished.");
         } catch (Exception e) {
-            return null;
+            logger.log(Level.WARNING, "Failed to convert.");
+        } finally {
+            closeQuietly(result);
+            closeQuietly(stmt);
+            closeQuietly(conn);
         }
     }
 
-    @Override
-    public LoginData parseData(ResultSet data) {
+    private LoginData parseLogin(ResultSet data) {
         try {
             String uuid = data.getString("unique_user_id");
             String password = data.getString("password");
@@ -197,8 +214,7 @@ public abstract class SQL implements SQLManager {
         }
     }
 
-    @Override
-    public void closeQuietly(AutoCloseable closeable) {
+    private void closeQuietly(AutoCloseable closeable) {
         try {
             if (closeable != null) {
                 closeable.close();

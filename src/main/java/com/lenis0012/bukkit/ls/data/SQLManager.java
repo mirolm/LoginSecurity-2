@@ -1,7 +1,6 @@
 package com.lenis0012.bukkit.ls.data;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 
 interface SQLManager {
 
@@ -13,7 +12,7 @@ interface SQLManager {
     /**
      * Get Connection from Pool
      */
-    Connection getConn();
+    Connection getConnection();
 
     /**
      * Check if player is registered
@@ -21,21 +20,21 @@ interface SQLManager {
      * @param uuid PlayerUUID
      * @return user registered
      */
-    boolean checkUser(String uuid);
+    boolean checkLogin(String uuid);
 
     /**
      * Register a user
      *
      * @param login LoginData
      */
-    void regUser(LoginData login);
+    void registerLogin(LoginData login);
 
     /**
      * Update player data
      *
      * @param login LoginData
      */
-    void updateUser(LoginData login);
+    void updateLogin(LoginData login);
 
     /**
      * Get user stored data
@@ -43,25 +42,13 @@ interface SQLManager {
      * @param uuid PlayerUUID
      * @return LoginData
      */
-    LoginData getUser(String uuid);
+    LoginData getLogin(String uuid);
 
     /**
-     * Get all users data
+     * Convert all data
      *
-     * @return All registered users
+     * @param manager SQLManager
      */
-    ResultSet getAllUsers(Connection con);
+    void convertAllLogin(SQLManager manager);
 
-    /**
-     * Parse single user row
-     *
-     * @param data ResultSet
-     * @return LoginData
-     */
-    LoginData parseData(ResultSet data);
-
-    /**
-     * Close Database Object
-     */
-    void closeQuietly(AutoCloseable closeable);
 }
