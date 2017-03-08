@@ -44,17 +44,17 @@ public class EventHook implements Listener {
     @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
-        String pname = event.getName();
+        String pName = event.getName();
         //Check for valid user name
-        if (plugin.account.invalidName(pname)) {
+        if (plugin.account.invalidName(pName)) {
             event.disallow(Result.KICK_OTHER, plugin.lang.get("invalid_username"));
 
             return;
         }
 
-        String fuuid = Common.fullUuid(event);
-        //Check account locked due to failed logins
-        if (plugin.lockout.check(fuuid)) {
+        String fUuid = Common.fullUuid(event);
+        //Check account locked due to failed login attempts
+        if (plugin.lockout.check(fUuid)) {
             event.disallow(Result.KICK_OTHER, plugin.lang.get("account_locked"));
 
             return;
@@ -144,9 +144,9 @@ public class EventHook implements Listener {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         Entity defender = event.getEntity();
-        Entity damager = event.getDamager();
+        Entity attacker = event.getDamager();
 
-        if (authEntity(defender) || authEntity(damager)) {
+        if (authEntity(defender) || authEntity(attacker)) {
             event.setCancelled(true);
         }
     }
