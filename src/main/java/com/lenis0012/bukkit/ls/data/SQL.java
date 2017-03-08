@@ -189,7 +189,9 @@ public abstract class SQL implements SQLManager {
             while (result.next()) {
                 login = parseLogin(result);
 
-                registerLogin(login);
+                if ((login != null) && !checkLogin(login.uuid)) {
+                    registerLogin(login);
+                }
             }
 
             logger.log(Level.INFO, "Finished.");
