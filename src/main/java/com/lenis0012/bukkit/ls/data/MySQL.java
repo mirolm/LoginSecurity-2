@@ -10,7 +10,7 @@ class MySQL extends SQL {
     public MySQL(LoginSecurity plugin) {
         super(plugin);
 
-        Config conf = plugin.conf;
+        Config config = plugin.config;
 
         HikariConfig dbConfig = new HikariConfig();
         Properties prop = new Properties();
@@ -21,13 +21,13 @@ class MySQL extends SQL {
         prop.setProperty("prepStmtCacheSqlLimit", "2048");
 
         dbConfig.setDriverClassName("com.mysql.jdbc.Driver");
-        dbConfig.setJdbcUrl("jdbc:mysql:" + "//" + conf.host + ":" + conf.port + "/" + conf.database);
-        dbConfig.setUsername(conf.user);
-        dbConfig.setPassword(conf.pass);
+        dbConfig.setJdbcUrl("jdbc:mysql:" + "//" + config.host + ":" + config.port + "/" + config.database);
+        dbConfig.setUsername(config.username);
+        dbConfig.setPassword(config.password);
 
         dbConfig.setMaximumPoolSize(6);
         dbConfig.setDataSourceProperties(prop);
 
-        super.init(conf.table, dbConfig);
+        super.init(config.table, dbConfig);
     }
 }

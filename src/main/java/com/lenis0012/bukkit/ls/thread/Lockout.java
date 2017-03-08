@@ -24,7 +24,7 @@ public class Lockout implements Runnable {
             String uuid = it.next();
 
             LockoutData current = failList.get(uuid);
-            if ((cycle - current.timeout) / 60 >= plugin.conf.minfail) {
+            if ((cycle - current.timeout) / 60 >= plugin.config.minFail) {
                 it.remove();
             }
         }
@@ -37,7 +37,7 @@ public class Lockout implements Runnable {
             current.failed += 1;
             current.timeout = Common.currentTime();
 
-            return failList.replace(uuid, current).failed >= plugin.conf.countfail;
+            return failList.replace(uuid, current).failed >= plugin.config.countFail;
         } else {
             failList.putIfAbsent(uuid, new LockoutData());
 
@@ -46,7 +46,7 @@ public class Lockout implements Runnable {
     }
 
     public boolean check(String uuid) {
-        return failList.containsKey(uuid) && (failList.get(uuid).failed >= plugin.conf.countfail);
+        return failList.containsKey(uuid) && (failList.get(uuid).failed >= plugin.config.countFail);
     }
 
     public void remove(String uuid) {

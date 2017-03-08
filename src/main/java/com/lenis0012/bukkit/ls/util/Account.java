@@ -11,14 +11,14 @@ import java.util.logging.Logger;
 
 public class Account {
     private final LoginSecurity plugin;
-    private final Encryptor hasher;
+    private final Encryptor crypt;
     private final Logger logger;
     private final Executor executor;
 
     public Account(LoginSecurity plugin) {
         this.plugin = plugin;
         this.logger = plugin.getLogger();
-        this.hasher = Encryptor.gethasher(plugin.conf.hasher);
+        this.crypt = Encryptor.getCrypt(plugin.config.encryption);
         this.executor = new Executor(plugin);
     }
 
@@ -33,7 +33,7 @@ public class Account {
     private boolean checkpass(String uuid, String password) {
         LoginData login = executor.get(uuid);
 
-        return (hasher.gettype() == login.encryption) && hasher.check(password, login.password);
+        return (crypt.getType() == login.encryption) && crypt.check(password, login.password);
     }
 
     public boolean badname(String name) {
@@ -63,7 +63,7 @@ public class Account {
                 return;
             }
 
-            executor.register(new LoginData(uuid, hasher.hash(pass), hasher.gettype()));
+            executor.register(new LoginData(uuid, crypt.hash(pass), crypt.getType()));
 
             plugin.timeout.remove(uuid);
 
@@ -90,7 +90,7 @@ public class Account {
                 return;
             }
 
-            executor.update(new LoginData(uuid, hasher.hash(newpass), hasher.gettype()));
+            executor.update(new LoginData(uuid, crypt.hash(newpass), crypt.getType()));
 
             player.sendMessage(plugin.lang.get("psw_changed"));
             logger.log(Level.INFO, "{0} successfully changed password", player.getName());

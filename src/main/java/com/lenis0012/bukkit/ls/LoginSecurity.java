@@ -14,17 +14,17 @@ import org.bukkit.scheduler.BukkitTask;
 public class LoginSecurity extends JavaPlugin {
     public Account account;
     public Translation lang;
-    public Config conf;
+    public Config config;
     public Lockout lockout;
     public Timeout timeout;
 
-    private BukkitTask locktask;
-    private BukkitTask timetask;
+    private BukkitTask lockTask;
+    private BukkitTask timeTask;
 
     @Override
     public void onEnable() {
         //configuration
-        conf = new Config(this);
+        config = new Config(this);
         lang = new Translation(this);
 
         //account
@@ -46,15 +46,15 @@ public class LoginSecurity extends JavaPlugin {
         timeout = new Timeout(this);
         lockout = new Lockout(this);
 
-        timetask = getServer().getScheduler().runTaskTimer(this, timeout, 0L, 200L);
-        locktask = getServer().getScheduler().runTaskTimer(this, lockout, 0L, 1200L);
+        timeTask = getServer().getScheduler().runTaskTimer(this, timeout, 0L, 200L);
+        lockTask = getServer().getScheduler().runTaskTimer(this, lockout, 0L, 1200L);
     }
 
     @Override
     public void onDisable() {
         //threads
-        timetask.cancel();
-        locktask.cancel();
+        timeTask.cancel();
+        lockTask.cancel();
 
         //account
         account.disable();

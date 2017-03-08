@@ -19,7 +19,7 @@ class SQLite extends SQL {
 
         dbConfig.setMaximumPoolSize(2);
 
-        super.init(plugin.conf.table, dbConfig);
+        super.init(plugin.config.table, dbConfig);
     }
 
     public static boolean exists(LoginSecurity plugin) {

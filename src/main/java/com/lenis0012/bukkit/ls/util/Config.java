@@ -4,10 +4,10 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
 public class Config {
-    public final boolean usemysql;
-    public final int timedelay, countfail, minfail;
-    public final String hasher;
-    public final String host, port, database, user, pass, table;
+    public final boolean useMysql;
+    public final int timeDelay, countFail, minFail;
+    public final String encryption;
+    public final String host, port, database, username, password, table;
 
     public Config(Plugin plugin) {
         FileConfiguration config = plugin.getConfig();
@@ -30,17 +30,17 @@ public class Config {
         plugin.saveConfig();
 
         //read values
-        hasher = config.getString("settings.encryption");
-        timedelay = config.getInt("settings.timeout");
-        countfail = config.getInt("settings.failed.count");
-        minfail = config.getInt("settings.failed.minutes");
+        encryption = config.getString("settings.encryption");
+        timeDelay = config.getInt("settings.timeout");
+        countFail = config.getInt("settings.failed.count");
+        minFail = config.getInt("settings.failed.minutes");
 
-        usemysql = config.getBoolean("MySQL.use");
+        useMysql = config.getBoolean("MySQL.use");
         host = config.getString("MySQL.host");
         port = config.getString("MySQL.port");
         database = config.getString("MySQL.database");
-        user = config.getString("MySQL.username");
-        pass = config.getString("MySQL.password");
+        username = config.getString("MySQL.username");
+        password = config.getString("MySQL.password");
 
         prefix = config.getString("MySQL.prefix");
         table = prefix.isEmpty() ? "users" : String.format("%s_users", prefix);
