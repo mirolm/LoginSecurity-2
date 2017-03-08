@@ -23,11 +23,11 @@ public class Translation {
         InputStreamReader reader = new InputStreamReader(plugin.getResource(LANG_NAME), Charsets.UTF_8);
         YamlConfiguration defaults = YamlConfiguration.loadConfiguration(reader);
 
-        YamlConfiguration conf = YamlConfiguration.loadConfiguration(langFile);
-        conf.setDefaults(defaults);
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(langFile);
+        config.setDefaults(defaults);
 
-        for (String key : conf.getKeys(false)) {
-            String message = ChatColor.translateAlternateColorCodes('&', conf.getString(key));
+        for (String key : config.getKeys(false)) {
+            String message = ChatColor.translateAlternateColorCodes('&', config.getString(key));
             if (!message.isEmpty()) {
                 langList.putIfAbsent(key, message);
             }
