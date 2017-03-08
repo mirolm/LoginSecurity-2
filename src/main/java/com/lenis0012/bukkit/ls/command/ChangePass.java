@@ -17,7 +17,7 @@ public class ChangePass implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            plugin.account.changepass(player, args[0], args[1]);
+            plugin.account.changePassword(player, args[0], args[1]);
         }
 
         return true;

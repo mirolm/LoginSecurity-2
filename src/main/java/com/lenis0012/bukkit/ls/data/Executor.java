@@ -18,21 +18,21 @@ public class Executor {
         data.close();
     }
 
-    public boolean check(String uuid) {
+    public boolean checkLogin(String uuid) {
         return data.checkLogin(uuid);
     }
 
-    public LoginData get(String uuid) {
+    public LoginData getLogin(String uuid) {
         return data.getLogin(uuid);
     }
 
-    public void register(LoginData login) {
+    public void registerLogin(LoginData login) {
         if (!data.checkLogin(login.uuid)) {
             data.registerLogin(login);
         }
     }
 
-    public void update(LoginData login) {
+    public void updateLogin(LoginData login) {
         if (data.checkLogin(login.uuid)) {
             data.updateLogin(login);
         }

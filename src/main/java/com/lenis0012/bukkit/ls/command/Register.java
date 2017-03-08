@@ -17,7 +17,7 @@ public class Register implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            plugin.account.register(player, args[0]);
+            plugin.account.registerPlayer(player, args[0]);
         }
 
         return true;

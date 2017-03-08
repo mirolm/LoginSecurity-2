@@ -46,7 +46,7 @@ public class EventHook implements Listener {
     public void onPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
         String pname = event.getName();
         //Check for valid user name
-        if (plugin.account.badname(pname)) {
+        if (plugin.account.invalidName(pname)) {
             event.disallow(Result.KICK_OTHER, plugin.lang.get("invalid_username"));
 
             return;
@@ -77,7 +77,7 @@ public class EventHook implements Listener {
         Player player = event.getPlayer();
         String uuid = Common.getUuid(player);
 
-        plugin.timeout.add(uuid, plugin.account.checkuser(uuid));
+        plugin.timeout.add(uuid, plugin.account.checkLogin(uuid));
     }
 
     @SuppressWarnings("unused")

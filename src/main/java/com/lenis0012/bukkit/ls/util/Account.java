@@ -26,44 +26,44 @@ public class Account {
         executor.disable();
     }
 
-    public boolean checkuser(String uuid) {
-        return executor.check(uuid);
+    public boolean checkLogin(String uuid) {
+        return executor.checkLogin(uuid);
     }
 
-    private boolean checkpass(String uuid, String password) {
-        LoginData login = executor.get(uuid);
+    private boolean checkPassword(String uuid, String password) {
+        LoginData login = executor.getLogin(uuid);
 
         return (crypt.getType() == login.encryption) && crypt.check(password, login.password);
     }
 
-    public boolean badname(String name) {
+    public boolean invalidName(String name) {
         // 3-16 chars long, letters and numbers
         return !name.matches("^\\w{3,16}$");
     }
 
-    private boolean weakpass(String password) {
+    private boolean weakPassword(String password) {
         // 6+ chars long, letters and number or symbol
         return !password.matches("^(?=.*[a-zA-Z])(?=.*([0-9]|[!@#$%\\^&*])).{6,}+$");
     }
 
-    public void register(Player player, String pass) {
+    public void registerPlayer(Player player, String pass) {
         if (Common.checkPlayer(player)) {
             String uuid = Common.getUuid(player);
 
-            if (checkuser(uuid)) {
+            if (checkLogin(uuid)) {
                 player.sendMessage(plugin.lang.get("already_reg"));
 
                 return;
             }
 
-            if (weakpass(pass)) {
+            if (weakPassword(pass)) {
                 player.sendMessage(plugin.lang.get("verify_psw"));
                 logger.log(Level.WARNING, "{0} failed to register", player.getName());
 
                 return;
             }
 
-            executor.register(new LoginData(uuid, crypt.hash(pass), crypt.getType()));
+            executor.registerLogin(new LoginData(uuid, crypt.hash(pass), crypt.getType()));
 
             plugin.timeout.remove(uuid);
 
@@ -72,32 +72,32 @@ public class Account {
         }
     }
 
-    public void changepass(Player player, String oldpass, String newpass) {
+    public void changePassword(Player player, String oldPass, String newPass) {
         if (Common.checkPlayer(player)) {
             String uuid = Common.getUuid(player);
 
-            if (!checkpass(uuid, oldpass)) {
+            if (!checkPassword(uuid, oldPass)) {
                 player.sendMessage(plugin.lang.get("invalid_psw"));
                 logger.log(Level.WARNING, "{0} failed to change password", player.getName());
 
                 return;
             }
 
-            if (weakpass(newpass)) {
+            if (weakPassword(newPass)) {
                 player.sendMessage(plugin.lang.get("verify_psw"));
                 logger.log(Level.WARNING, "{0} failed to change password", player.getName());
 
                 return;
             }
 
-            executor.update(new LoginData(uuid, crypt.hash(newpass), crypt.getType()));
+            executor.updateLogin(new LoginData(uuid, crypt.hash(newPass), crypt.getType()));
 
             player.sendMessage(plugin.lang.get("psw_changed"));
             logger.log(Level.INFO, "{0} successfully changed password", player.getName());
         }
     }
 
-    public void login(Player player, String pass) {
+    public void loginPlayer(Player player, String pass) {
         if (Common.checkPlayer(player)) {
             String uuid = Common.getUuid(player);
 
@@ -107,28 +107,28 @@ public class Account {
                 return;
             }
 
-            if (!checkuser(uuid)) {
+            if (!checkLogin(uuid)) {
                 player.sendMessage(plugin.lang.get("no_psw_set"));
 
                 return;
             }
 
-            String fuuid = Common.fullUuid(player);
+            String fUuid = Common.fullUuid(player);
 
-            if (checkpass(uuid, pass)) {
+            if (checkPassword(uuid, pass)) {
                 plugin.timeout.remove(uuid);
-                plugin.lockout.remove(fuuid);
+                plugin.lockout.remove(fUuid);
 
                 player.sendMessage(plugin.lang.get("login"));
 
-                if (weakpass(pass)) {
+                if (weakPassword(pass)) {
                     player.sendMessage(plugin.lang.get("weak_psw"));
                     logger.log(Level.INFO, "{0} uses weak password", player.getName());
                 }
 
                 logger.log(Level.INFO, "{0} authenticated", player.getName());
             } else {
-                if (plugin.lockout.failed(fuuid)) {
+                if (plugin.lockout.failed(fUuid)) {
                     player.kickPlayer(plugin.lang.get("fail_count"));
                 } else {
                     player.sendMessage(plugin.lang.get("invalid_psw"));
