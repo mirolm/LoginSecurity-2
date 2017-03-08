@@ -11,15 +11,15 @@ import java.util.List;
 import java.util.UUID;
 
 public final class Common {
-    public static long seconds() {
+    public static long currentTime() {
         return System.currentTimeMillis() / 1000L;
     }
 
-    public static boolean contains(String message, List<String> list) {
+    public static boolean messageContains(String message, List<String> list) {
 
-        String lowermsg = message.toLowerCase();
+        String lowerMsg = message.toLowerCase();
         for (String word : list) {
-            if (lowermsg.contains(word)) {
+            if (lowerMsg.contains(word)) {
                 return true;
             }
         }
@@ -27,11 +27,11 @@ public final class Common {
         return false;
     }
 
-    public static File getpath(Plugin plugin, String filename) {
+    public static File getPath(Plugin plugin, String filename) {
         return Paths.get(plugin.getDataFolder().toString(), filename).normalize().toFile();
     }
 
-    public static boolean checkplayer(Player player) {
+    public static boolean checkPlayer(Player player) {
         if (player != null) {
             if (player.isOnline() && !player.hasMetadata("NPC")) {
                 return true;
@@ -41,33 +41,33 @@ public final class Common {
         return false;
     }
 
-    public static Player getplayer(String uuid) {
+    public static Player getPlayer(String uuid) {
         return Bukkit.getPlayer(UUID.fromString(uuid));
     }
 
-    public static String getuuid(Player player) {
+    public static String getUuid(Player player) {
         return player.getUniqueId().toString();
     }
 
-    public static String getuuid(AsyncPlayerPreLoginEvent event) {
+    public static String getUuid(AsyncPlayerPreLoginEvent event) {
         return event.getUniqueId().toString();
     }
 
-    private static String fulluuid(String uuid, String addr) {
-        return UUID.nameUUIDFromBytes(("|#" + uuid + "^|^" + addr + "#|").getBytes()).toString();
+    private static String fullUuid(String uuid, String address) {
+        return UUID.nameUUIDFromBytes(("|#" + uuid + "^|^" + address + "#|").getBytes()).toString();
     }
 
-    public static String fulluuid(Player player) {
+    public static String fullUuid(Player player) {
         String uuid = player.getUniqueId().toString();
-        String addr = player.getAddress().getAddress().getHostAddress();
+        String address = player.getAddress().getAddress().getHostAddress();
 
-        return fulluuid(uuid, addr);
+        return fullUuid(uuid, address);
     }
 
-    public static String fulluuid(AsyncPlayerPreLoginEvent event) {
+    public static String fullUuid(AsyncPlayerPreLoginEvent event) {
         String uuid = event.getUniqueId().toString();
-        String addr = event.getAddress().getHostAddress();
+        String address = event.getAddress().getHostAddress();
 
-        return Common.fulluuid(uuid, addr);
+        return fullUuid(uuid, address);
     }
 }

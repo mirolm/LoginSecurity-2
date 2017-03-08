@@ -47,8 +47,8 @@ public class Account {
     }
 
     public void register(Player player, String pass) {
-        if (Common.checkplayer(player)) {
-            String uuid = Common.getuuid(player);
+        if (Common.checkPlayer(player)) {
+            String uuid = Common.getUuid(player);
 
             if (checkuser(uuid)) {
                 player.sendMessage(plugin.lang.get("already_reg"));
@@ -73,8 +73,8 @@ public class Account {
     }
 
     public void changepass(Player player, String oldpass, String newpass) {
-        if (Common.checkplayer(player)) {
-            String uuid = Common.getuuid(player);
+        if (Common.checkPlayer(player)) {
+            String uuid = Common.getUuid(player);
 
             if (!checkpass(uuid, oldpass)) {
                 player.sendMessage(plugin.lang.get("invalid_psw"));
@@ -98,8 +98,8 @@ public class Account {
     }
 
     public void login(Player player, String pass) {
-        if (Common.checkplayer(player)) {
-            String uuid = Common.getuuid(player);
+        if (Common.checkPlayer(player)) {
+            String uuid = Common.getUuid(player);
 
             if (!plugin.timeout.check(uuid)) {
                 player.sendMessage(plugin.lang.get("already_login"));
@@ -113,7 +113,7 @@ public class Account {
                 return;
             }
 
-            String fuuid = Common.fulluuid(player);
+            String fuuid = Common.fullUuid(player);
 
             if (checkpass(uuid, pass)) {
                 plugin.timeout.remove(uuid);

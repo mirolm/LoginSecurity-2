@@ -11,7 +11,7 @@ import java.util.Iterator;
 import java.util.concurrent.ConcurrentMap;
 
 public class Timeout implements Runnable {
-    private final ConcurrentMap<String, TimeoutData> authlist = Maps.newConcurrentMap();
+    private final ConcurrentMap<String, TimeoutData> authList = Maps.newConcurrentMap();
     private final LoginSecurity plugin;
 
     public Timeout(LoginSecurity plugin) {
@@ -20,20 +20,20 @@ public class Timeout implements Runnable {
 
     @Override
     public void run() {
-        Iterator<String> it = authlist.keySet().iterator();
-        long cycle = Common.seconds();
+        Iterator<String> it = authList.keySet().iterator();
+        long cycle = Common.currentTime();
 
         while (it.hasNext()) {
-            String puuid = it.next();
+            String uuid = it.next();
 
-            TimeoutData current = authlist.get(puuid);
+            TimeoutData current = authList.get(uuid);
             if (!((cycle - current.timeout) >= plugin.conf.timedelay)) {
                 notify(current);
             } else {
                 it.remove();
 
-                Player player = Common.getplayer(puuid);
-                if (Common.checkplayer(player)) {
+                Player player = Common.getPlayer(uuid);
+                if (Common.checkPlayer(player)) {
                     player.kickPlayer(plugin.lang.get("timed_out"));
                 }
             }
@@ -45,33 +45,33 @@ public class Timeout implements Runnable {
 
         notify(current);
 
-        Player player = Common.getplayer(uuid);
-        if (Common.checkplayer(player)) {
+        Player player = Common.getPlayer(uuid);
+        if (Common.checkPlayer(player)) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 1), true);
         }
 
-        authlist.putIfAbsent(uuid, current);
+        authList.putIfAbsent(uuid, current);
     }
 
     public void remove(String uuid) {
-        Player player = Common.getplayer(uuid);
-        if (Common.checkplayer(player)) {
+        Player player = Common.getPlayer(uuid);
+        if (Common.checkPlayer(player)) {
             player.removePotionEffect(PotionEffectType.BLINDNESS);
 
             // ensure that player does not drown after logging in
             player.setRemainingAir(player.getMaximumAir());
         }
 
-        authlist.remove(uuid);
+        authList.remove(uuid);
     }
 
     public boolean check(String uuid) {
-        return authlist.containsKey(uuid);
+        return authList.containsKey(uuid);
     }
 
     private void notify(TimeoutData current) {
-        Player player = Common.getplayer(current.uuid);
-        if (Common.checkplayer(player)) {
+        Player player = Common.getPlayer(current.uuid);
+        if (Common.checkPlayer(player)) {
             String message = current.registered ? plugin.lang.get("log_msg") : plugin.lang.get("reg_msg");
 
             player.sendMessage(message);
@@ -86,7 +86,7 @@ public class Timeout implements Runnable {
         TimeoutData(String uuid, boolean registered) {
             this.uuid = uuid;
             this.registered = registered;
-            this.timeout = Common.seconds();
+            this.timeout = Common.currentTime();
         }
     }
 }

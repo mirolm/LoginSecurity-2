@@ -14,7 +14,7 @@ public class LogFilter extends AbstractFilter {
     private static final List<String> FILTERED_COMMANDS = Arrays.asList("/register ", "/reg ", "/login ", "/log ", "/l ", "/changepassword ", "/changepass ", "/cp ");
 
     private Result handle(String message) {
-        return Common.contains(message, FILTERED_COMMANDS) ? Result.DENY : Result.NEUTRAL;
+        return Common.messageContains(message, FILTERED_COMMANDS) ? Result.DENY : Result.NEUTRAL;
     }
 
     @Override

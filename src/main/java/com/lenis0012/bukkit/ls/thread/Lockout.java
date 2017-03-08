@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.concurrent.ConcurrentMap;
 
 public class Lockout implements Runnable {
-    private final ConcurrentMap<String, LockoutData> faillist = Maps.newConcurrentMap();
+    private final ConcurrentMap<String, LockoutData> failList = Maps.newConcurrentMap();
     private final LoginSecurity plugin;
 
     public Lockout(LoginSecurity plugin) {
@@ -17,13 +17,13 @@ public class Lockout implements Runnable {
 
     @Override
     public void run() {
-        Iterator<String> it = faillist.keySet().iterator();
-        long cycle = Common.seconds();
+        Iterator<String> it = failList.keySet().iterator();
+        long cycle = Common.currentTime();
 
         while (it.hasNext()) {
-            String puuid = it.next();
+            String uuid = it.next();
 
-            LockoutData current = faillist.get(puuid);
+            LockoutData current = failList.get(uuid);
             if ((cycle - current.timeout) / 60 >= plugin.conf.minfail) {
                 it.remove();
             }
@@ -31,26 +31,26 @@ public class Lockout implements Runnable {
     }
 
     public boolean failed(String uuid) {
-        if (faillist.containsKey(uuid)) {
-            LockoutData current = faillist.get(uuid);
+        if (failList.containsKey(uuid)) {
+            LockoutData current = failList.get(uuid);
 
             current.failed += 1;
-            current.timeout = Common.seconds();
+            current.timeout = Common.currentTime();
 
-            return faillist.replace(uuid, current).failed >= plugin.conf.countfail;
+            return failList.replace(uuid, current).failed >= plugin.conf.countfail;
         } else {
-            faillist.putIfAbsent(uuid, new LockoutData());
+            failList.putIfAbsent(uuid, new LockoutData());
 
             return false;
         }
     }
 
     public boolean check(String uuid) {
-        return faillist.containsKey(uuid) && (faillist.get(uuid).failed >= plugin.conf.countfail);
+        return failList.containsKey(uuid) && (failList.get(uuid).failed >= plugin.conf.countfail);
     }
 
     public void remove(String uuid) {
-        faillist.remove(uuid);
+        failList.remove(uuid);
     }
 
     class LockoutData {
@@ -59,7 +59,7 @@ public class Lockout implements Runnable {
 
         LockoutData() {
             this.failed = 1;
-            this.timeout = Common.seconds();
+            this.timeout = Common.currentTime();
         }
     }
 }

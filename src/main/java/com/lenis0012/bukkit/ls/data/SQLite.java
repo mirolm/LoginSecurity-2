@@ -10,7 +10,7 @@ class SQLite extends SQL {
     public SQLite(LoginSecurity plugin) {
         super(plugin);
 
-        String path = Common.getpath(plugin, DB_NAME).toString();
+        String path = Common.getPath(plugin, DB_NAME).toString();
 
         HikariConfig dbConfig = new HikariConfig();
 
@@ -23,6 +23,6 @@ class SQLite extends SQL {
     }
 
     public static boolean exists(LoginSecurity plugin) {
-        return Common.getpath(plugin, DB_NAME).exists();
+        return Common.getPath(plugin, DB_NAME).exists();
     }
 }

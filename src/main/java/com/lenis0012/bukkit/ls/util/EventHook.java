@@ -29,8 +29,8 @@ public class EventHook implements Listener {
     private boolean authEntity(Entity entity) {
         if (entity instanceof Player) {
             Player player = (Player) entity;
-            if (Common.checkplayer(player)) {
-                String uuid = Common.getuuid(player);
+            if (Common.checkPlayer(player)) {
+                String uuid = Common.getUuid(player);
 
                 return plugin.timeout.check(uuid);
             }
@@ -52,7 +52,7 @@ public class EventHook implements Listener {
             return;
         }
 
-        String fuuid = Common.fulluuid(event);
+        String fuuid = Common.fullUuid(event);
         //Check account locked due to failed logins
         if (plugin.lockout.check(fuuid)) {
             event.disallow(Result.KICK_OTHER, plugin.lang.get("account_locked"));
@@ -60,10 +60,10 @@ public class EventHook implements Listener {
             return;
         }
 
-        String uuid = Common.getuuid(event);
+        String uuid = Common.getUuid(event);
         //Check if the player is already online
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-            if (uuid.equalsIgnoreCase(Common.getuuid(p))) {
+            if (uuid.equalsIgnoreCase(Common.getUuid(p))) {
                 event.disallow(Result.KICK_OTHER, plugin.lang.get("already_online"));
 
                 return;
@@ -75,7 +75,7 @@ public class EventHook implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        String uuid = Common.getuuid(player);
+        String uuid = Common.getUuid(player);
 
         plugin.timeout.add(uuid, plugin.account.checkuser(uuid));
     }
@@ -84,7 +84,7 @@ public class EventHook implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        String uuid = Common.getuuid(player);
+        String uuid = Common.getUuid(player);
 
         plugin.timeout.remove(uuid);
     }
@@ -196,7 +196,7 @@ public class EventHook implements Listener {
         Player player = event.getPlayer();
         if (authEntity(player)) {
             String message = event.getMessage();
-            if (Common.contains(message, ALLOWED_COMMANDS)) {
+            if (Common.messageContains(message, ALLOWED_COMMANDS)) {
                 return;
             }
 

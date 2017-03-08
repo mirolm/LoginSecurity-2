@@ -12,10 +12,10 @@ import java.util.concurrent.ConcurrentMap;
 
 public class Translation {
     private static final String LANG_NAME = "lang.yml";
-    private final ConcurrentMap<String, String> langs = Maps.newConcurrentMap();
+    private final ConcurrentMap<String, String> langList = Maps.newConcurrentMap();
 
     public Translation(Plugin plugin) {
-        File langFile = Common.getpath(plugin, LANG_NAME);
+        File langFile = Common.getPath(plugin, LANG_NAME);
         if (!langFile.exists()) {
             plugin.saveResource(LANG_NAME, false);
         }
@@ -29,12 +29,12 @@ public class Translation {
         for (String key : conf.getKeys(false)) {
             String message = ChatColor.translateAlternateColorCodes('&', conf.getString(key));
             if (!message.isEmpty()) {
-                langs.putIfAbsent(key, message);
+                langList.putIfAbsent(key, message);
             }
         }
     }
 
     public String get(String key) {
-        return langs.get(key);
+        return langList.get(key);
     }
 }
