@@ -12,14 +12,14 @@ class SQLite extends SQL {
 
         String path = Common.getpath(plugin, DB_NAME).toString();
 
-        HikariConfig dbcfg = new HikariConfig();
+        HikariConfig dbConfig = new HikariConfig();
 
-        dbcfg.setDriverClassName("org.sqlite.JDBC");
-        dbcfg.setJdbcUrl("jdbc:sqlite:" + path);
+        dbConfig.setDriverClassName("org.sqlite.JDBC");
+        dbConfig.setJdbcUrl("jdbc:sqlite:" + path);
 
-        dbcfg.setMaximumPoolSize(2);
+        dbConfig.setMaximumPoolSize(2);
 
-        super.init(plugin.conf.table, dbcfg);
+        super.init(plugin.conf.table, dbConfig);
     }
 
     public static boolean exists(LoginSecurity plugin) {

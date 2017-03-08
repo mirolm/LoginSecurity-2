@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 public abstract class SQL implements SQLManager {
     private final Logger logger;
-    private HikariDataSource datasrc;
+    private HikariDataSource dataSource;
 
     private String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS <TABLE> ("
             + "unique_user_id VARCHAR(130) NOT NULL UNIQUE,"
@@ -37,33 +37,33 @@ public abstract class SQL implements SQLManager {
         SELECT_LOGIN = SELECT_LOGIN.replace("<TABLE>", table);
         SELECT_USERS = SELECT_USERS.replace("<TABLE>", table);
 
-        datasrc = new HikariDataSource(config);
+        dataSource = new HikariDataSource(config);
 
         createTables();
     }
 
     @Override
     public void close() {
-        closeQuietly(datasrc);
+        closeQuietly(dataSource);
     }
 
     @Override
     public Connection getConn() {
         try {
-            return datasrc.getConnection();
+            return dataSource.getConnection();
         } catch (Exception e) {
             return null;
         }
     }
 
     private void createTables() {
-        Connection con = null;
+        Connection conn = null;
         PreparedStatement stmt = null;
 
         try {
-            con = datasrc.getConnection();
+            conn = dataSource.getConnection();
 
-            stmt = con.prepareStatement(CREATE_TABLE);
+            stmt = conn.prepareStatement(CREATE_TABLE);
             stmt.setQueryTimeout(30);
 
             stmt.executeUpdate();
@@ -71,20 +71,20 @@ public abstract class SQL implements SQLManager {
             logger.log(Level.SEVERE, "Failed to create tables");
         } finally {
             closeQuietly(stmt);
-            closeQuietly(con);
+            closeQuietly(conn);
         }
     }
 
     @Override
     public boolean checkUser(String uuid) {
-        Connection con = null;
+        Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet result = null;
 
         try {
-            con = datasrc.getConnection();
+            conn = dataSource.getConnection();
 
-            stmt = con.prepareStatement(CHECK_REG);
+            stmt = conn.prepareStatement(CHECK_REG);
             stmt.setString(1, uuid.replaceAll("-", ""));
 
             result = stmt.executeQuery();
@@ -95,19 +95,19 @@ public abstract class SQL implements SQLManager {
         } finally {
             closeQuietly(result);
             closeQuietly(stmt);
-            closeQuietly(con);
+            closeQuietly(conn);
         }
     }
 
     @Override
     public void regUser(LoginData login) {
-        Connection con = null;
+        Connection conn = null;
         PreparedStatement stmt = null;
 
         try {
-            con = datasrc.getConnection();
+            conn = dataSource.getConnection();
 
-            stmt = con.prepareStatement(INSERT_LOGIN);
+            stmt = conn.prepareStatement(INSERT_LOGIN);
             stmt.setString(1, login.uuid.replaceAll("-", ""));
             stmt.setString(2, login.password);
             stmt.setInt(3, login.encryption);
@@ -117,19 +117,19 @@ public abstract class SQL implements SQLManager {
             logger.log(Level.SEVERE, "Failed to create user");
         } finally {
             closeQuietly(stmt);
-            closeQuietly(con);
+            closeQuietly(conn);
         }
     }
 
     @Override
     public void updateUser(LoginData login) {
-        Connection con = null;
+        Connection conn = null;
         PreparedStatement stmt = null;
 
         try {
-            con = datasrc.getConnection();
+            conn = dataSource.getConnection();
 
-            stmt = con.prepareStatement(UPDATE_PASS);
+            stmt = conn.prepareStatement(UPDATE_PASS);
             stmt.setString(1, login.password);
             stmt.setInt(2, login.encryption);
             stmt.setString(3, login.uuid.replaceAll("-", ""));
@@ -139,20 +139,20 @@ public abstract class SQL implements SQLManager {
             logger.log(Level.SEVERE, "Failed to update user");
         } finally {
             closeQuietly(stmt);
-            closeQuietly(con);
+            closeQuietly(conn);
         }
     }
 
     @Override
     public LoginData getUser(String uuid) {
-        Connection con = null;
+        Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet result = null;
 
         try {
-            con = datasrc.getConnection();
+            conn = dataSource.getConnection();
 
-            stmt = con.prepareStatement(SELECT_LOGIN);
+            stmt = conn.prepareStatement(SELECT_LOGIN);
             stmt.setString(1, uuid.replaceAll("-", ""));
 
             result = stmt.executeQuery();
@@ -167,16 +167,16 @@ public abstract class SQL implements SQLManager {
         } finally {
             closeQuietly(result);
             closeQuietly(stmt);
-            closeQuietly(con);
+            closeQuietly(conn);
         }
     }
 
     @Override
-    public ResultSet getAllUsers(Connection con) {
+    public ResultSet getAllUsers(Connection conn) {
         PreparedStatement stmt;
 
         try {
-            stmt = con.prepareStatement(SELECT_USERS);
+            stmt = conn.prepareStatement(SELECT_USERS);
 
             return stmt.executeQuery();
         } catch (Exception e) {

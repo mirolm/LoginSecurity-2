@@ -12,7 +12,7 @@ class MySQL extends SQL {
 
         Config conf = plugin.conf;
 
-        HikariConfig dbcfg = new HikariConfig();
+        HikariConfig dbConfig = new HikariConfig();
         Properties prop = new Properties();
 
         prop.setProperty("useConfigs", "maxPerformance");
@@ -20,14 +20,14 @@ class MySQL extends SQL {
         prop.setProperty("prepStmtCacheSize", "250");
         prop.setProperty("prepStmtCacheSqlLimit", "2048");
 
-        dbcfg.setDriverClassName("com.mysql.jdbc.Driver");
-        dbcfg.setJdbcUrl("jdbc:mysql:" + "//" + conf.host + ":" + conf.port + "/" + conf.database);
-        dbcfg.setUsername(conf.user);
-        dbcfg.setPassword(conf.pass);
+        dbConfig.setDriverClassName("com.mysql.jdbc.Driver");
+        dbConfig.setJdbcUrl("jdbc:mysql:" + "//" + conf.host + ":" + conf.port + "/" + conf.database);
+        dbConfig.setUsername(conf.user);
+        dbConfig.setPassword(conf.pass);
 
-        dbcfg.setMaximumPoolSize(6);
-        dbcfg.setDataSourceProperties(prop);
+        dbConfig.setMaximumPoolSize(6);
+        dbConfig.setDataSourceProperties(prop);
 
-        super.init(conf.table, dbcfg);
+        super.init(conf.table, dbConfig);
     }
 }
