@@ -1,7 +1,6 @@
 LoginSecurity 2
 ==============
-The #1 Auth plugin for minecraft, since 1.2.5.
-Worlds must-known plugin for security & control
+The #1 Auth plugin for minecraft, since 1.2.5. Worlds must-known plugin for security & control
 
 Features:
 ========
@@ -15,6 +14,7 @@ Features:
 - Automatic LockDown when MySQL connection is lost
 - Converter from SQLite to MySQL when switching
 - More than 15 events being blocked when not logged in
+- Simple and clean codebase
 
 License:
 =======

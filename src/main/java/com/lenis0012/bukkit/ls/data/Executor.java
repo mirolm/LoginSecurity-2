@@ -9,7 +9,7 @@ public class Executor {
     public Executor(LoginSecurity plugin) {
         this.plugin = plugin;
 
-        this.data = plugin.config.useMysql ? new MySQL(plugin) : new SQLite(plugin);
+        this.data = plugin.config.useMySQL ? new MySQL(plugin) : new SQLite(plugin);
 
         convert();
     }
@@ -41,7 +41,7 @@ public class Executor {
     private void convert() {
         SQLManager manager;
 
-        if (SQLite.exists(plugin) && plugin.config.useMysql) {
+        if (SQLite.exists(plugin) && plugin.config.useMySQL) {
             manager = new SQLite(plugin);
 
             try {

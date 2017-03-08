@@ -4,14 +4,20 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
 public class Config {
-    public final boolean useMysql;
-    public final int timeout, failedCount, failedMinutes;
+    public final boolean useMySQL;
+    public final int timeout;
+    public final int failedCount;
+    public final int failedMinutes;
     public final String encryption;
-    public final String host, port, database, username, password, table;
+    public final String host;
+    public final String port;
+    public final String database;
+    public final String username;
+    public final String password;
+    public final String table;
 
     public Config(Plugin plugin) {
         FileConfiguration config = plugin.getConfig();
-        String prefix;
 
         //setup config
         config.addDefault("settings.encryption", "BCRYPT");
@@ -35,14 +41,14 @@ public class Config {
         failedCount = config.getInt("settings.failed.count");
         failedMinutes = config.getInt("settings.failed.minutes");
 
-        useMysql = config.getBoolean("MySQL.use");
+        useMySQL = config.getBoolean("MySQL.use");
         host = config.getString("MySQL.host");
         port = config.getString("MySQL.port");
         database = config.getString("MySQL.database");
         username = config.getString("MySQL.username");
         password = config.getString("MySQL.password");
 
-        prefix = config.getString("MySQL.prefix");
+        String prefix = config.getString("MySQL.prefix");
         table = prefix.isEmpty() ? "users" : String.format("%s_users", prefix);
     }
 }
