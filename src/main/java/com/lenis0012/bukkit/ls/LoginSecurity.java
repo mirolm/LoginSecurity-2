@@ -46,8 +46,8 @@ public class LoginSecurity extends JavaPlugin {
         timeout = new Timeout(this);
         lockout = new Lockout(this);
 
-        timeTask = getServer().getScheduler().runTaskTimer(this, timeout, 0L, 200L);
-        lockTask = getServer().getScheduler().runTaskTimer(this, lockout, 0L, 1200L);
+        timeTask = getServer().getScheduler().runTaskTimer(this, timeout, 100L, 200L);
+        lockTask = getServer().getScheduler().runTaskTimer(this, lockout, 100L, 1200L);
     }
 
     @Override
