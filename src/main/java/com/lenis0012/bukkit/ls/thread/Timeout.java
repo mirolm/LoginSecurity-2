@@ -20,17 +20,17 @@ public class Timeout implements Runnable {
 
     @Override
     public void run() {
-        Iterator<String> it = authList.keySet().iterator();
+        Iterator<String> iterator = authList.keySet().iterator();
         long cycle = Common.currentTime();
 
-        while (it.hasNext()) {
-            String uuid = it.next();
+        while (iterator.hasNext()) {
+            String uuid = iterator.next();
 
             TimeoutData current = authList.get(uuid);
             if (!((cycle - current.timeout) >= plugin.config.timeout)) {
                 notify(current);
             } else {
-                it.remove();
+                iterator.remove();
 
                 Player player = Common.getPlayer(uuid);
                 if (Common.checkPlayer(player)) {

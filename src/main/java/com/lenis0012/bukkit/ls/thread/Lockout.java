@@ -17,15 +17,15 @@ public class Lockout implements Runnable {
 
     @Override
     public void run() {
-        Iterator<String> it = failList.keySet().iterator();
+        Iterator<String> iterator = failList.keySet().iterator();
         long cycle = Common.currentTime();
 
-        while (it.hasNext()) {
-            String uuid = it.next();
+        while (iterator.hasNext()) {
+            String uuid = iterator.next();
 
             LockoutData current = failList.get(uuid);
             if ((cycle - current.timeout) / 60 >= plugin.config.failedMinutes) {
-                it.remove();
+                iterator.remove();
             }
         }
     }
