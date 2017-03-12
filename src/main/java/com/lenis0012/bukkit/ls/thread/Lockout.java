@@ -18,13 +18,13 @@ public class Lockout implements Runnable {
     @Override
     public void run() {
         Iterator<String> iterator = failList.keySet().iterator();
-        long cycle = Common.currentTime();
+        long cycle = Common.currentTime(false);
 
         while (iterator.hasNext()) {
             String uuid = iterator.next();
 
             LockoutData current = failList.get(uuid);
-            if ((cycle - current.timeout) / 60 >= plugin.config.failedMinutes) {
+            if ((cycle - current.timeout) >= plugin.config.failedMinutes) {
                 iterator.remove();
             }
         }
@@ -35,7 +35,7 @@ public class Lockout implements Runnable {
             LockoutData current = failList.get(uuid);
 
             current.failed += 1;
-            current.timeout = Common.currentTime();
+            current.timeout = Common.currentTime(false);
 
             return failList.replace(uuid, current).failed >= plugin.config.failedCount;
         } else {
@@ -59,7 +59,7 @@ public class Lockout implements Runnable {
 
         LockoutData() {
             this.failed = 1;
-            this.timeout = Common.currentTime();
+            this.timeout = Common.currentTime(false);
         }
     }
 }

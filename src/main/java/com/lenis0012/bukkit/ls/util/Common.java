@@ -9,10 +9,13 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public final class Common {
-    public static long currentTime() {
-        return System.currentTimeMillis() / 1000L;
+    public static long currentTime(boolean getSeconds) {
+        long current = System.currentTimeMillis();
+
+        return getSeconds ? TimeUnit.MILLISECONDS.toSeconds(current) : TimeUnit.MILLISECONDS.toMinutes(current);
     }
 
     public static boolean messageContains(String message, List<String> list) {
