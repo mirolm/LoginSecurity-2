@@ -88,7 +88,6 @@
     </dependencies>
     <build>
         <defaultGoal>clean install</defaultGoal>
-        <sourceDirectory>src/main/java</sourceDirectory>
         <finalName>${project.artifactId}</finalName>
         <resources>
             <resource>
@@ -103,7 +102,6 @@
                 <version>3.0.0</version>
                 <configuration>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
-                    <shadedArtifactAttached>false</shadedArtifactAttached>
                     <artifactSet>
                         <includes>
                             <include>com.zaxxer:HikariCP</include>
