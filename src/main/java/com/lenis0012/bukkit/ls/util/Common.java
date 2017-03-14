@@ -19,7 +19,6 @@ public final class Common {
     }
 
     public static boolean messageContains(String message, List<String> list) {
-
         String lowerMsg = message.toLowerCase();
         for (String word : list) {
             if (lowerMsg.contains(word)) {
