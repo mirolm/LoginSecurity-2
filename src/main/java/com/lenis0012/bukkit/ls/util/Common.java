@@ -1,5 +1,6 @@
 package com.lenis0012.bukkit.ls.util;
 
+import com.google.common.base.Strings;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
@@ -19,10 +20,12 @@ public final class Common {
     }
 
     public static boolean messageContains(String message, List<String> list) {
-        String lowerMsg = message.toLowerCase();
-        for (String word : list) {
-            if (lowerMsg.contains(word)) {
-                return true;
+        if (!Strings.isNullOrEmpty(message)) {
+            String lowerMsg = message.toLowerCase();
+            for (String word : list) {
+                if (lowerMsg.contains(word)) {
+                    return true;
+                }
             }
         }
 
