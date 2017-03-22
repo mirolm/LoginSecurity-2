@@ -12,7 +12,6 @@ class MySQL extends SQL {
 
         HikariConfig dbConfig = new HikariConfig();
 
-        dbConfig.setDriverClassName("com.mysql.jdbc.Driver");
         dbConfig.setJdbcUrl("jdbc:mysql:" + "//" + config.host + ":" + config.port + "/" + config.database);
         dbConfig.setUsername(config.username);
         dbConfig.setPassword(config.password);

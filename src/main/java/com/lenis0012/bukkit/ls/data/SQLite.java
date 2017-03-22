@@ -14,7 +14,6 @@ class SQLite extends SQL {
 
         HikariConfig dbConfig = new HikariConfig();
 
-        dbConfig.setDriverClassName("org.sqlite.JDBC");
         dbConfig.setJdbcUrl("jdbc:sqlite:" + path);
 
         dbConfig.setMaximumPoolSize(2);
