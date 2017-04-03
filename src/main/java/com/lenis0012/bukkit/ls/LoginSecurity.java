@@ -3,6 +3,7 @@ package com.lenis0012.bukkit.ls;
 import com.lenis0012.bukkit.ls.command.ChangePass;
 import com.lenis0012.bukkit.ls.command.Login;
 import com.lenis0012.bukkit.ls.command.Register;
+import com.lenis0012.bukkit.ls.thread.Cache;
 import com.lenis0012.bukkit.ls.thread.Lockout;
 import com.lenis0012.bukkit.ls.thread.Timeout;
 import com.lenis0012.bukkit.ls.util.*;
@@ -17,9 +18,11 @@ public class LoginSecurity extends JavaPlugin {
     public Config config;
     public Lockout lockout;
     public Timeout timeout;
+    public Cache cache;
 
     private BukkitTask lockTask;
     private BukkitTask timeTask;
+    private BukkitTask cacheTask;
 
     @Override
     public void onEnable() {
@@ -45,18 +48,21 @@ public class LoginSecurity extends JavaPlugin {
         //threads
         timeout = new Timeout(this);
         lockout = new Lockout(this);
+        cache = new Cache(this);
 
         timeTask = getServer().getScheduler().runTaskTimer(this, timeout, 100L, 200L);
         lockTask = getServer().getScheduler().runTaskTimer(this, lockout, 100L, 1200L);
+        cacheTask = getServer().getScheduler().runTaskTimer(this, cache, 100L, 1200L);
     }
 
     @Override
     public void onDisable() {
+        //cache
+        cache.disable();
+
         //threads
         timeTask.cancel();
         lockTask.cancel();
-
-        //account
-        account.disable();
+        cacheTask.cancel();
     }
 }

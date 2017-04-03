@@ -18,10 +18,6 @@ public class Executor {
         data.close();
     }
 
-    public boolean checkLogin(String uuid) {
-        return data.checkLogin(uuid);
-    }
-
     public LoginData getLogin(String uuid) {
         return data.getLogin(uuid);
     }

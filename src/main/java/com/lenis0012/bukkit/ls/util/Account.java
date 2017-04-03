@@ -1,9 +1,9 @@
 package com.lenis0012.bukkit.ls.util;
 
 import com.lenis0012.bukkit.ls.LoginSecurity;
-import com.lenis0012.bukkit.ls.data.Executor;
 import com.lenis0012.bukkit.ls.data.LoginData;
 import com.lenis0012.bukkit.ls.encryption.Encryptor;
+import com.lenis0012.bukkit.ls.thread.Cache;
 import org.bukkit.entity.Player;
 
 import java.util.logging.Level;
@@ -11,27 +11,23 @@ import java.util.logging.Logger;
 
 public class Account {
     private final LoginSecurity plugin;
+    private final Cache cache;
     private final Encryptor crypt;
     private final Logger logger;
-    private final Executor executor;
 
     public Account(LoginSecurity plugin) {
         this.plugin = plugin;
         this.logger = plugin.getLogger();
+        this.cache = plugin.cache;
         this.crypt = Encryptor.getCrypt(plugin.config.encryption);
-        this.executor = new Executor(plugin);
-    }
-
-    public void disable() {
-        executor.disable();
     }
 
     public boolean checkLogin(String uuid) {
-        return executor.checkLogin(uuid);
+        return cache.checkLogin(uuid);
     }
 
     private boolean checkPassword(String uuid, String password) {
-        LoginData login = executor.getLogin(uuid);
+        LoginData login = cache.getLogin(uuid);
 
         return (crypt.getType() == login.encryption) && crypt.check(password, login.password);
     }
@@ -63,7 +59,7 @@ public class Account {
                 return;
             }
 
-            executor.registerLogin(new LoginData(uuid, crypt.hash(pass), crypt.getType()));
+            cache.registerLogin(new LoginData(uuid, crypt.hash(pass), crypt.getType()));
 
             plugin.timeout.remove(uuid);
 
@@ -90,7 +86,7 @@ public class Account {
                 return;
             }
 
-            executor.updateLogin(new LoginData(uuid, crypt.hash(newPass), crypt.getType()));
+            cache.updateLogin(new LoginData(uuid, crypt.hash(newPass), crypt.getType()));
 
             player.sendMessage(plugin.lang.get("psw_changed"));
             logger.log(Level.INFO, "{0} successfully changed password", player.getName());
