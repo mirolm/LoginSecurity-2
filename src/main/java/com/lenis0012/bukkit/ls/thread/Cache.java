@@ -5,6 +5,7 @@ import com.lenis0012.bukkit.ls.LoginSecurity;
 import com.lenis0012.bukkit.ls.data.Executor;
 import com.lenis0012.bukkit.ls.data.LoginData;
 import com.lenis0012.bukkit.ls.util.Common;
+import org.bukkit.entity.Player;
 
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentMap;
@@ -26,6 +27,14 @@ public class Cache implements Runnable {
             String uuid = iterator.next();
 
             CacheData current = loginList.get(uuid);
+
+            if ((cycle - current.timeout) >= 5) {
+                Player player = Common.getPlayer(uuid);
+                if (Common.checkPlayer(player)) {
+                    refresh(uuid, false);
+                }
+            }
+
             if ((cycle - current.timeout) >= 15) {
                 iterator.remove();
             }
