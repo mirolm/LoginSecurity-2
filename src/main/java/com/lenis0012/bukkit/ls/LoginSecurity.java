@@ -30,6 +30,11 @@ public class LoginSecurity extends JavaPlugin {
         config = new Config(this);
         lang = new Translation(this);
 
+        //threads
+        timeout = new Timeout(this);
+        lockout = new Lockout(this);
+        cache = new Cache(this);
+
         //account
         account = new Account(this);
 
@@ -45,11 +50,7 @@ public class LoginSecurity extends JavaPlugin {
         Logger logger = (Logger) LogManager.getRootLogger();
         logger.addFilter(new LogFilter());
 
-        //threads
-        timeout = new Timeout(this);
-        lockout = new Lockout(this);
-        cache = new Cache(this);
-
+        //register threads
         timeTask = getServer().getScheduler().runTaskTimer(this, timeout, 100L, 200L);
         lockTask = getServer().getScheduler().runTaskTimer(this, lockout, 100L, 1200L);
         cacheTask = getServer().getScheduler().runTaskTimer(this, cache, 100L, 1200L);
