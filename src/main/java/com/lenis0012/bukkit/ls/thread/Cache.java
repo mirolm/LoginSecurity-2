@@ -31,7 +31,7 @@ public class Cache implements Runnable {
             if ((cycle - current.timeout) >= 5) {
                 Player player = Common.getPlayer(uuid);
                 if (Common.checkPlayer(player)) {
-                    refresh(uuid, false);
+                    refresh(uuid, null);
                 }
             }
 
@@ -41,12 +41,12 @@ public class Cache implements Runnable {
         }
     }
 
-    private void refresh(String uuid, boolean reload) {
+    private void refresh(String uuid, LoginData reload) {
         if (loginList.containsKey(uuid)) {
             CacheData current = loginList.get(uuid);
 
-            if (reload) {
-                current.login = executor.getLogin(uuid);
+            if (reload != null) {
+                current.login = reload;
             }
 
             current.timeout = Common.currentTime(false);
@@ -64,13 +64,13 @@ public class Cache implements Runnable {
     }
 
     public boolean checkLogin(String uuid) {
-        refresh(uuid, false);
+        refresh(uuid, null);
 
         return loginList.get(uuid).login != null;
     }
 
     public LoginData getLogin(String uuid) {
-        refresh(uuid, false);
+        refresh(uuid, null);
 
         return loginList.get(uuid).login;
     }
@@ -78,13 +78,13 @@ public class Cache implements Runnable {
     public void registerLogin(LoginData login) {
         executor.registerLogin(login);
 
-        refresh(login.uuid, true);
+        refresh(login.uuid, login);
     }
 
     public void updateLogin(LoginData login) {
         executor.updateLogin(login);
 
-        refresh(login.uuid, true);
+        refresh(login.uuid, login);
     }
 
     class CacheData {
