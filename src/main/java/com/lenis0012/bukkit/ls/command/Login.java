@@ -15,7 +15,7 @@ public class Login implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (sender instanceof Player) {
+        if ((sender instanceof Player) && (args.length == 1)) {
             Player player = (Player) sender;
             plugin.account.loginPlayer(player, args[0]);
         }
