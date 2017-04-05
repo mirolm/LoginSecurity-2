@@ -29,14 +29,18 @@ public class Cache implements Runnable {
             CacheData current = loginList.get(uuid);
 
             if ((cycle - current.timeout) >= 5) {
-                Player player = Common.getPlayer(uuid);
-                if (Common.checkPlayer(player)) {
-                    refresh(uuid, null);
+                if (current.login != null) {
+                    if ((cycle - current.timeout) <= 15) {
+                        Player player = Common.getPlayer(uuid);
+                        if (Common.checkPlayer(player)) {
+                            refresh(uuid, null);
+                        }
+                    } else {
+                        iterator.remove();
+                    }
+                } else {
+                    iterator.remove();
                 }
-            }
-
-            if ((cycle - current.timeout) >= 15) {
-                iterator.remove();
             }
         }
     }
