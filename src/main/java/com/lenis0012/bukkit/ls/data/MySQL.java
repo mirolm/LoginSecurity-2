@@ -16,10 +16,13 @@ class MySQL extends SQL {
         dbConfig.setUsername(config.username);
         dbConfig.setPassword(config.password);
 
-        dbConfig.addDataSourceProperty("useConfigs", "maxPerformance");
-        dbConfig.addDataSourceProperty("useServerPrepStmts", "true");
+        dbConfig.addDataSourceProperty("cacheResultSetMetadata", "true");
+        dbConfig.addDataSourceProperty("maintainTimeStats", "false");
         dbConfig.addDataSourceProperty("prepStmtCacheSize", "250");
         dbConfig.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        dbConfig.addDataSourceProperty("useConfigs", "maxPerformance");
+        dbConfig.addDataSourceProperty("useLocalTransactionState", "true");
+        dbConfig.addDataSourceProperty("useServerPrepStmts", "true");
 
         dbConfig.setMaximumPoolSize(6);
 
