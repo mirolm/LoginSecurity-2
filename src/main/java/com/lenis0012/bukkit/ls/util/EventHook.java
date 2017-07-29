@@ -153,6 +153,15 @@ public class EventHook implements Listener {
 
     @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onEntityPickupItem(EntityPickupItemEvent event) {
+        Entity entity = event.getEntity();
+        if (authEntity(entity)) {
+            event.setCancelled(true);
+        }
+    }
+
+    @SuppressWarnings("unused")
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onEntityTarget(EntityTargetEvent event) {
         Entity entity = event.getTarget();
         if (authEntity(entity)) {
@@ -241,15 +250,6 @@ public class EventHook implements Listener {
     @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerDropItem(PlayerDropItemEvent event) {
-        Player player = event.getPlayer();
-        if (authEntity(player)) {
-            event.setCancelled(true);
-        }
-    }
-
-    @SuppressWarnings("unused")
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onPlayerPickupItem(PlayerPickupItemEvent event) {
         Player player = event.getPlayer();
         if (authEntity(player)) {
             event.setCancelled(true);
