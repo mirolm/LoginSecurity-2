@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export M3_HOME=/opt/apache-maven-3.3.9
+export M3_HOME=/opt/maven_default
 export M3=$M3_HOME/bin
 export PATH=$M3:$PATH
 export JAVA_HOME=/opt/jdk_default
