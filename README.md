@@ -10,7 +10,7 @@ Features:
 - No Cross-Thread access
 - MySQL and SQLite support
 - Fast handling
-- MD5, BCRYPT Encryption
+- MD5, BCRYPT, SCRYPT Encryption
 - Automatic LockDown when MySQL connection is lost
 - Converter from SQLite to MySQL when switching
 - More than 15 events being blocked when not logged in
