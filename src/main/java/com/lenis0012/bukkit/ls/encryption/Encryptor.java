@@ -1,7 +1,6 @@
 package com.lenis0012.bukkit.ls.encryption;
 
 public enum Encryptor {
-    MD5(1, new MD5()),
     BCRYPT(7, new BCRYPT()),
     SCRYPT(21, new SCRYPT());
 

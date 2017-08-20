@@ -8,12 +8,12 @@ Features:
 - Blindness effect on join
 - Completely optimized code
 - No Cross-Thread access
-- MySQL and SQLite support
 - Fast handling
-- MD5, BCRYPT, SCRYPT Encryption
-- Automatic LockDown when MySQL connection is lost
+- BCRYPT, SCRYPT password hashing
+- SQLite, MySQL database support
+- Automatic lockdown when database connection is lost
 - Converter from SQLite to MySQL when switching
-- More than 15 events being blocked when not logged in
+- More than 15 events being blocked
 - Simple and clean codebase
 
 License:
