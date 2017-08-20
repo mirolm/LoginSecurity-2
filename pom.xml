@@ -82,6 +82,12 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>com.lambdaworks</groupId>
+            <artifactId>scrypt</artifactId>
+            <version>1.4.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
             <version>2.8.2</version>
@@ -112,20 +118,39 @@
                             <include>org.slf4j:slf4j-api</include>
                             <include>org.slf4j:slf4j-nop</include>
                             <include>org.mindrot:jbcrypt</include>
+                            <include>com.lambdaworks:scrypt</include>
                         </includes>
                     </artifactSet>
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <exclude>META-INF/*.SF</exclude>
+                                <exclude>META-INF/*.DSA</exclude>
+                                <exclude>META-INF/*.RSA</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
                     <relocations>
                         <relocation>
                             <pattern>com.zaxxer.hikari</pattern>
-                            <shadedPattern>com.lenis0012.bukkit.ls.libs.hikari</shadedPattern>
+                            <shadedPattern>com.lenis0012.shade.hikari</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>org.slf4j</pattern>
-                            <shadedPattern>com.lenis0012.bukkit.ls.libs.slf4j</shadedPattern>
+                            <shadedPattern>com.lenis0012.shade.slf4j</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>org.mindrot.jbcrypt</pattern>
-                            <shadedPattern>com.lenis0012.bukkit.ls.libs.jbcrypt</shadedPattern>
+                            <shadedPattern>com.lenis0012.shade.jbcrypt</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.lambdaworks</pattern>
+                            <shadedPattern>com.lenis0012.shade.scrypt</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>lib</pattern>
+                            <shadedPattern>com.lenis0012.lib</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>

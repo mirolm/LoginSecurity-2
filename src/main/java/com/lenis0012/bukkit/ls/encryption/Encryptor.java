@@ -2,7 +2,8 @@ package com.lenis0012.bukkit.ls.encryption;
 
 public enum Encryptor {
     MD5(1, new MD5()),
-    BCRYPT(7, new BCRYPT());
+    BCRYPT(7, new BCRYPT()),
+    SCRYPT(21, new SCRYPT());
 
     private final CryptManager crypt;
     private final int type;
@@ -17,6 +18,8 @@ public enum Encryptor {
             return MD5;
         } else if (from.equalsIgnoreCase("BCRYPT")) {
             return BCRYPT;
+        } else if (from.equalsIgnoreCase("SCRYPT")) {
+            return SCRYPT;
         } else {
             return BCRYPT;
         }
