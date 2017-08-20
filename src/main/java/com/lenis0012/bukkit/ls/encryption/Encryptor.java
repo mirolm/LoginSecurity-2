@@ -13,16 +13,14 @@ public enum Encryptor {
         this.crypt = crypt;
     }
 
-    public static Encryptor getCrypt(String from) {
-        if (from.equalsIgnoreCase("MD5")) {
-            return MD5;
-        } else if (from.equalsIgnoreCase("BCRYPT")) {
-            return BCRYPT;
-        } else if (from.equalsIgnoreCase("SCRYPT")) {
-            return SCRYPT;
-        } else {
-            return BCRYPT;
+    public static Encryptor getCrypt(String name) {
+        for (Encryptor encryptor : values()) {
+            if (name.equalsIgnoreCase(encryptor.name())) {
+                return encryptor;
+            }
         }
+
+        return BCRYPT;
     }
 
     public static Encryptor getCrypt(int type) {
