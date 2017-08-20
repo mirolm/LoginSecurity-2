@@ -12,14 +12,12 @@ import java.util.logging.Logger;
 public class Account {
     private final LoginSecurity plugin;
     private final Cache cache;
-    private final Encryptor crypt;
     private final Logger logger;
 
     public Account(LoginSecurity plugin) {
         this.plugin = plugin;
         this.logger = plugin.getLogger();
         this.cache = plugin.cache;
-        this.crypt = Encryptor.getCrypt(plugin.config.encryption);
     }
 
     public boolean checkLogin(String uuid) {
@@ -28,8 +26,9 @@ public class Account {
 
     private boolean checkPassword(String uuid, String password) {
         LoginData login = cache.getLogin(uuid);
+        Encryptor crypt = Encryptor.getCrypt(login.encryption);
 
-        return (crypt.getType() == login.encryption) && crypt.check(password, login.password);
+        return crypt.check(password, login.password);
     }
 
     public boolean invalidName(String name) {
@@ -59,6 +58,7 @@ public class Account {
                 return;
             }
 
+            Encryptor crypt = Encryptor.getCrypt(plugin.config.encryption);
             cache.registerLogin(new LoginData(uuid, crypt.hash(pass), crypt.getType()));
 
             plugin.timeout.remove(uuid);
@@ -86,6 +86,7 @@ public class Account {
                 return;
             }
 
+            Encryptor crypt = Encryptor.getCrypt(plugin.config.encryption);
             cache.updateLogin(new LoginData(uuid, crypt.hash(newPass), crypt.getType()));
 
             player.sendMessage(plugin.lang.get("psw_changed"));

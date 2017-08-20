@@ -25,6 +25,16 @@ public enum Encryptor {
         }
     }
 
+    public static Encryptor getCrypt(int type) {
+        for (Encryptor encryptor : values()) {
+            if (encryptor.type == type) {
+                return encryptor;
+            }
+        }
+
+        return BCRYPT;
+    }
+
     public int getType() {
         return this.type;
     }
