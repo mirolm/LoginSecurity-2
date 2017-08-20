@@ -12,7 +12,7 @@ Features:
 - BCRYPT, SCRYPT password hashing
 - SQLite, MySQL database support
 - Automatic lockdown when database connection is lost
-- Converter from SQLite to MySQL when switching
+- Convert from SQLite to MySQL when switching
 - More than 15 events being blocked
 - Simple and clean codebase
 
