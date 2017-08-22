@@ -38,7 +38,7 @@ public class Account {
 
     private boolean weakPassword(String password) {
         // 6+ chars long, letters and number or symbol
-        return !password.matches("^(?=.*[a-zA-Z])(?=.*([0-9]|[!@#$%&*])).{6,72}+$");
+        return !password.matches("^(?=.*[a-zA-Z])(?=.*([0-9]|[!@#$%&*])).{6,64}+$");
     }
 
     public void registerPlayer(Player player, String pass) {

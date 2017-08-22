@@ -30,7 +30,7 @@ public class Cache implements Runnable {
 
             if ((cycle - current.timeout) >= 5) {
                 if (current.login != null) {
-                    if ((cycle - current.timeout) <= 15) {
+                    if ((cycle - current.timeout) <= 30) {
                         Player player = Common.getPlayer(uuid);
                         if (Common.checkPlayer(player)) {
                             refresh(uuid, null);
