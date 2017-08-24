@@ -18,7 +18,7 @@ public final class Common {
         return getSeconds ? TimeUnit.MILLISECONDS.toSeconds(current) : TimeUnit.MILLISECONDS.toMinutes(current);
     }
 
-    public static boolean messageContains(String message, List<String> list) {
+    static boolean messageContains(String message, List<String> list) {
         if (message != null && message.length() > 0) {
             String lowerMsg = message.toLowerCase();
             for (String word : list) {
@@ -49,11 +49,11 @@ public final class Common {
         return Bukkit.getPlayer(UUID.fromString(uuid));
     }
 
-    public static String getUuid(Player player) {
+    static String getUuid(Player player) {
         return player.getUniqueId().toString();
     }
 
-    public static String getUuid(AsyncPlayerPreLoginEvent event) {
+    static String getUuid(AsyncPlayerPreLoginEvent event) {
         return event.getUniqueId().toString();
     }
 
@@ -61,14 +61,14 @@ public final class Common {
         return UUID.nameUUIDFromBytes(("|#" + uuid + "^|^" + address + "#|").getBytes()).toString();
     }
 
-    public static String fullUuid(Player player) {
+    static String fullUuid(Player player) {
         String uuid = player.getUniqueId().toString();
         String address = player.getAddress().getAddress().getHostAddress();
 
         return fullUuid(uuid, address);
     }
 
-    public static String fullUuid(AsyncPlayerPreLoginEvent event) {
+    static String fullUuid(AsyncPlayerPreLoginEvent event) {
         String uuid = event.getUniqueId().toString();
         String address = event.getAddress().getHostAddress();
 

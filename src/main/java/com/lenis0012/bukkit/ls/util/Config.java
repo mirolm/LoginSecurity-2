@@ -8,13 +8,13 @@ public class Config {
     public final int timeout;
     public final int failedCount;
     public final int failedMinutes;
-    public final String encryption;
     public final String host;
     public final String port;
     public final String database;
     public final String username;
     public final String password;
     public final String table;
+    final String encryption;
 
     public Config(Plugin plugin) {
         FileConfiguration config = plugin.getConfig();

@@ -20,7 +20,7 @@ public class Account {
         this.cache = plugin.cache;
     }
 
-    public boolean checkLogin(String uuid) {
+    boolean checkLogin(String uuid) {
         return cache.checkLogin(uuid);
     }
 
@@ -31,7 +31,7 @@ public class Account {
         return crypt.check(password, login.password);
     }
 
-    public boolean invalidName(String name) {
+    boolean invalidName(String name) {
         // 3-16 chars long, letters and numbers
         return !name.matches("^\\w{3,16}$");
     }
