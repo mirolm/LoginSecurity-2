@@ -85,7 +85,7 @@ public abstract class SQL implements SQLManager {
             conn = dataSource.getConnection();
 
             stmt = conn.prepareStatement(CHECK_REG);
-            stmt.setString(1, uuid.replaceAll("-", ""));
+            stmt.setString(1, cleanUUID(uuid));
 
             result = stmt.executeQuery();
             return result.next();
@@ -108,7 +108,7 @@ public abstract class SQL implements SQLManager {
             conn = dataSource.getConnection();
 
             stmt = conn.prepareStatement(INSERT_LOGIN);
-            stmt.setString(1, login.uuid.replaceAll("-", ""));
+            stmt.setString(1, cleanUUID(login.uuid));
             stmt.setString(2, login.password);
             stmt.setInt(3, login.encryption);
 
@@ -132,7 +132,7 @@ public abstract class SQL implements SQLManager {
             stmt = conn.prepareStatement(UPDATE_PASS);
             stmt.setString(1, login.password);
             stmt.setInt(2, login.encryption);
-            stmt.setString(3, login.uuid.replaceAll("-", ""));
+            stmt.setString(3, cleanUUID(login.uuid));
 
             stmt.executeUpdate();
         } catch (Exception e) {
@@ -153,7 +153,7 @@ public abstract class SQL implements SQLManager {
             conn = dataSource.getConnection();
 
             stmt = conn.prepareStatement(SELECT_LOGIN);
-            stmt.setString(1, uuid.replaceAll("-", ""));
+            stmt.setString(1, cleanUUID(uuid));
 
             result = stmt.executeQuery();
             if (result.next()) {
@@ -214,6 +214,10 @@ public abstract class SQL implements SQLManager {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    private String cleanUUID(String uuid) {
+        return uuid.replaceAll("-", "");
     }
 
     private void closeQuietly(AutoCloseable closeable) {
