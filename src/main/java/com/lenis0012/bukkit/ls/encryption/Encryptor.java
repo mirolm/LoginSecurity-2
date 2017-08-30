@@ -36,11 +36,11 @@ public enum Encryptor {
         return this.type;
     }
 
-    public String hash(String pass) {
-        return crypt.hash(pass);
+    public String hash(String passwd) {
+        return crypt.hash(passwd);
     }
 
-    public boolean check(String pass, String hash) {
-        return crypt.check(pass, hash);
+    public boolean check(String passwd, String hashed) {
+        return crypt.check(passwd, hashed);
     }
 }

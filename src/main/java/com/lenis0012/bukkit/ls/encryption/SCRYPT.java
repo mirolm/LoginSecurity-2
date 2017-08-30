@@ -4,12 +4,12 @@ import com.lambdaworks.crypto.SCryptUtil;
 
 public class SCRYPT implements CryptManager {
     @Override
-    public String hash(String pass) {
-        return SCryptUtil.scrypt(pass, 16384, 8, 1);
+    public String hash(String passwd) {
+        return SCryptUtil.scrypt(passwd, 16384, 8, 1);
     }
 
     @Override
-    public boolean check(String pass, String hash) {
-        return SCryptUtil.check(pass, hash);
+    public boolean check(String passwd, String hashed) {
+        return SCryptUtil.check(passwd, hashed);
     }
 }

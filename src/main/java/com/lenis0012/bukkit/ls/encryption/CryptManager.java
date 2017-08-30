@@ -4,17 +4,17 @@ interface CryptManager {
     /**
      * Check if passwords mach
      *
-     * @param pass password to check
-     * @param hash hashed password from database
+     * @param passwd password to check
+     * @param hashed hashed password from database
      * @return password match
      */
-    boolean check(String pass, String hash);
+    boolean check(String passwd, String hashed);
 
     /**
      * Hash a password
      *
-     * @param pass password to hash
+     * @param passwd password to hash
      * @return hashed value
      */
-    String hash(String pass);
+    String hash(String passwd);
 }
