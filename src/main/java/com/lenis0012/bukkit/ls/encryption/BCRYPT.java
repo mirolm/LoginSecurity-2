@@ -4,12 +4,12 @@ import org.mindrot.jbcrypt.BCrypt;
 
 public class BCRYPT implements CryptManager {
     @Override
-    public String hash(String pw) {
-        return BCrypt.hashpw(pw, BCrypt.gensalt());
+    public String hash(String pass) {
+        return BCrypt.hashpw(pass, BCrypt.gensalt());
     }
 
     @Override
-    public boolean check(String pw, String hashed) {
-        return BCrypt.checkpw(pw, hashed);
+    public boolean check(String pass, String hash) {
+        return BCrypt.checkpw(pass, hash);
     }
 }

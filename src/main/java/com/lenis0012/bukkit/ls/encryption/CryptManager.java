@@ -2,19 +2,19 @@ package com.lenis0012.bukkit.ls.encryption;
 
 interface CryptManager {
     /**
-     * Check if 2 passwords mach
+     * Check if passwords mach
      *
-     * @param check password to check
-     * @param real  real password from database
-     * @return passwords the same?
+     * @param pass password to check
+     * @param hash hashed password from database
+     * @return password match
      */
-    boolean check(String check, String real);
+    boolean check(String pass, String hash);
 
     /**
-     * Hash a value
+     * Hash a password
      *
-     * @param value Value
-     * @return Hashed value
+     * @param pass password to hash
+     * @return hashed value
      */
-    String hash(String value);
+    String hash(String pass);
 }
