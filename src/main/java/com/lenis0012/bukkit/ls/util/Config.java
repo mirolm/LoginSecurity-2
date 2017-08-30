@@ -14,7 +14,7 @@ public class Config {
     public final String username;
     public final String password;
     public final String table;
-    final String encryption;
+    public final String encryption;
 
     public Config(Plugin plugin) {
         FileConfiguration config = plugin.getConfig();

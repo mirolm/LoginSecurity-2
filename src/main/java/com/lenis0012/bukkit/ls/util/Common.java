@@ -74,4 +74,15 @@ public final class Common {
 
         return fullUuid(uuid, address);
     }
+
+
+    static boolean invalidName(String name) {
+        // 3-16 characters long, letters and numbers
+        return !name.matches("^\\w{3,16}$");
+    }
+
+    static boolean invalidPassword(String password) {
+        // 6-64 characters long, letters and number or symbol
+        return !password.matches("^(?=.*[a-zA-Z])(?=.*([0-9]|[!@#$%&*])).{6,64}+$");
+    }
 }

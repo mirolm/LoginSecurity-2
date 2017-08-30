@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.lenis0012.bukkit.ls.LoginSecurity;
 import com.lenis0012.bukkit.ls.data.Executor;
 import com.lenis0012.bukkit.ls.data.LoginData;
+import com.lenis0012.bukkit.ls.encryption.Encryptor;
 import com.lenis0012.bukkit.ls.util.Common;
 import org.bukkit.entity.Player;
 
@@ -13,9 +14,11 @@ import java.util.concurrent.ConcurrentMap;
 public class Cache implements Runnable {
     private final ConcurrentMap<String, CacheData> loginList = Maps.newConcurrentMap();
     private final Executor executor;
+    private final LoginSecurity plugin;
 
     public Cache(LoginSecurity plugin) {
         this.executor = new Executor(plugin);
+        this.plugin = plugin;
     }
 
     @Override
@@ -67,28 +70,35 @@ public class Cache implements Runnable {
         executor.disable();
     }
 
-    public boolean checkLogin(String uuid) {
-        refresh(uuid, null);
-
-        return loginList.get(uuid).login != null;
-    }
-
-    public LoginData getLogin(String uuid) {
+    private LoginData getLogin(String uuid) {
         refresh(uuid, null);
 
         return loginList.get(uuid).login;
     }
 
-    public void registerLogin(LoginData login) {
-        executor.registerLogin(login);
+    public void modifyLogin(String uuid, String pass) {
+        Encryptor crypt = Encryptor.getCrypt(plugin.config.encryption);
+        LoginData login = new LoginData(uuid, crypt.hash(pass), crypt.getType());
+
+        executor.modifyLogin(login);
 
         refresh(login.uuid, login);
     }
 
-    public void updateLogin(LoginData login) {
-        executor.updateLogin(login);
+    public boolean checkLogin(String uuid) {
+        return getLogin(uuid) != null;
+    }
 
-        refresh(login.uuid, login);
+    public boolean checkPassword(String uuid, String pass) {
+        LoginData login = getLogin(uuid);
+
+        if (login != null) {
+            Encryptor crypt = Encryptor.getCrypt(login.encryption);
+
+            return crypt.check(pass, login.password);
+        }
+
+        return false;
     }
 
     class CacheData {

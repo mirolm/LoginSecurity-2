@@ -22,15 +22,11 @@ public class Executor {
         return data.getLogin(uuid);
     }
 
-    public void registerLogin(LoginData login) {
-        if (!data.checkLogin(login.uuid)) {
-            data.registerLogin(login);
-        }
-    }
-
-    public void updateLogin(LoginData login) {
+    public void modifyLogin(LoginData login) {
         if (data.checkLogin(login.uuid)) {
             data.updateLogin(login);
+        } else {
+            data.registerLogin(login);
         }
     }
 
