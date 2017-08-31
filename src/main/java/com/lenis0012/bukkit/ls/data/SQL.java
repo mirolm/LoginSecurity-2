@@ -16,7 +16,7 @@ public abstract class SQL implements SQLManager {
 
     private String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS <TABLE> ("
             + "unique_user_id VARCHAR(64) NOT NULL UNIQUE,"
-            + "password VARCHAR(256) NOT NULL, encryption INT,"
+            + "password VARCHAR(256) NOT NULL, encryption TINYINT,"
             + "last_login TIMESTAMP DEFAULT CURRENT_TIMESTAMP)";
 
     private String CHECK_REG = "SELECT 1 FROM <TABLE> WHERE unique_user_id = ?";
