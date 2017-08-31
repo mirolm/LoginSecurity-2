@@ -37,6 +37,13 @@ interface SQLManager {
     void updateLogin(LoginData login);
 
     /**
+     * Update player last login
+     *
+     * @param uuid PlayerUUID
+     */
+    void updateDate(String uuid);
+
+    /**
      * Get user stored data
      *
      * @param uuid PlayerUUID

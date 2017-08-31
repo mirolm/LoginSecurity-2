@@ -85,6 +85,10 @@ public class Cache implements Runnable {
         refresh(login.uuid, login);
     }
 
+    public void modifyDate(String uuid) {
+        executor.modifyDate(uuid);
+    }
+
     public boolean checkLogin(String uuid) {
         return getLogin(uuid) != null;
     }

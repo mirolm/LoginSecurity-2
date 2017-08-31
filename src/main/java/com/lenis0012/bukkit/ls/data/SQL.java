@@ -15,13 +15,14 @@ public abstract class SQL implements SQLManager {
     private HikariDataSource dataSource;
 
     private String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS <TABLE> ("
-            + "unique_user_id VARCHAR(130) NOT NULL UNIQUE,"
-            + "password VARCHAR(300) NOT NULL,"
-            + "encryption INT)";
+            + "unique_user_id VARCHAR(64) NOT NULL UNIQUE,"
+            + "password VARCHAR(256) NOT NULL, encryption INT,"
+            + "last_login TIMESTAMP DEFAULT CURRENT_TIMESTAMP)";
 
     private String CHECK_REG = "SELECT 1 FROM <TABLE> WHERE unique_user_id = ?";
     private String INSERT_LOGIN = "INSERT INTO <TABLE>(unique_user_id, password, encryption) VALUES(?, ?, ?)";
-    private String UPDATE_PASS = "UPDATE <TABLE> SET password = ?, encryption = ? WHERE unique_user_id = ?";
+    private String UPDATE_PASSWD = "UPDATE <TABLE> SET password = ?, encryption = ? WHERE unique_user_id = ?";
+    private String UPDATE_DATE = "UPDATE <TABLE> SET last_login = CURRENT_TIMESTAMP WHERE unique_user_id = ?";
     private String SELECT_LOGIN = "SELECT unique_user_id, password, encryption FROM <TABLE> WHERE unique_user_id = ?";
     private String SELECT_USERS = "SELECT unique_user_id, password, encryption FROM <TABLE>";
 
@@ -33,7 +34,8 @@ public abstract class SQL implements SQLManager {
         CREATE_TABLE = CREATE_TABLE.replace("<TABLE>", table);
         CHECK_REG = CHECK_REG.replace("<TABLE>", table);
         INSERT_LOGIN = INSERT_LOGIN.replace("<TABLE>", table);
-        UPDATE_PASS = UPDATE_PASS.replace("<TABLE>", table);
+        UPDATE_PASSWD = UPDATE_PASSWD.replace("<TABLE>", table);
+        UPDATE_DATE = UPDATE_DATE.replace("<TABLE>", table);
         SELECT_LOGIN = SELECT_LOGIN.replace("<TABLE>", table);
         SELECT_USERS = SELECT_USERS.replace("<TABLE>", table);
 
@@ -129,7 +131,7 @@ public abstract class SQL implements SQLManager {
         try {
             conn = dataSource.getConnection();
 
-            stmt = conn.prepareStatement(UPDATE_PASS);
+            stmt = conn.prepareStatement(UPDATE_PASSWD);
             stmt.setString(1, login.password);
             stmt.setInt(2, login.encryption);
             stmt.setString(3, cleanUUID(login.uuid));
@@ -137,6 +139,26 @@ public abstract class SQL implements SQLManager {
             stmt.executeUpdate();
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Failed to update user");
+        } finally {
+            closeQuietly(stmt);
+            closeQuietly(conn);
+        }
+    }
+
+    @Override
+    public void updateDate(String uuid) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        try {
+            conn = dataSource.getConnection();
+
+            stmt = conn.prepareStatement(UPDATE_DATE);
+            stmt.setString(1, cleanUUID(uuid));
+
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Failed to update date");
         } finally {
             closeQuietly(stmt);
             closeQuietly(conn);

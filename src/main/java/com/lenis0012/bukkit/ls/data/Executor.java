@@ -30,6 +30,10 @@ public class Executor {
         }
     }
 
+    public void modifyDate(String uuid) {
+        data.updateDate(uuid);
+    }
+
     private void convert() {
         SQLManager manager;
 

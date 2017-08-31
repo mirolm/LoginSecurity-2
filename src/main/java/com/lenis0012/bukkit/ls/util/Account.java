@@ -88,6 +88,8 @@ public class Account {
                 plugin.timeout.remove(uuid);
                 plugin.lockout.remove(fUuid);
 
+                plugin.cache.modifyDate(uuid);
+
                 player.sendMessage(plugin.lang.get("login"));
 
                 if (Common.invalidPassword(pass)) {
