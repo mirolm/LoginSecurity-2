@@ -20,8 +20,4 @@ class SQLite extends SQL {
 
         super.init(plugin.config.table, dbConfig);
     }
-
-    static boolean exists(LoginSecurity plugin) {
-        return Common.getPath(plugin, DB_NAME).exists();
-    }
 }

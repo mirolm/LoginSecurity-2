@@ -4,6 +4,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
 public class Config {
+    public final boolean convert;
     public final boolean useMySQL;
     public final int timeout;
     public final int failedCount;
@@ -24,6 +25,7 @@ public class Config {
         config.addDefault("settings.timeout", 60);
         config.addDefault("settings.failed.count", 3);
         config.addDefault("settings.failed.minutes", 120);
+        config.addDefault("settings.convert", false);
         config.addDefault("MySQL.use", false);
         config.addDefault("MySQL.host", "localhost");
         config.addDefault("MySQL.port", 3306);
@@ -40,6 +42,7 @@ public class Config {
         timeout = config.getInt("settings.timeout");
         failedCount = config.getInt("settings.failed.count");
         failedMinutes = config.getInt("settings.failed.minutes");
+        convert = config.getBoolean("settings.convert");
 
         useMySQL = config.getBoolean("MySQL.use");
         host = config.getString("MySQL.host");
