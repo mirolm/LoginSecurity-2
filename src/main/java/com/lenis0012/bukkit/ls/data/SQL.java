@@ -19,7 +19,6 @@ public abstract class SQL implements SQLManager {
             + "password VARCHAR(256) NOT NULL, encryption TINYINT,"
             + "last_login TIMESTAMP DEFAULT CURRENT_TIMESTAMP)";
 
-    private String CHECK_REG = "SELECT 1 FROM <TABLE> WHERE unique_user_id = ?";
     private String MODIFY_LOGIN = "REPLACE INTO <TABLE>(unique_user_id, password, encryption) VALUES(?, ?, ?)";
     private String UPDATE_DATE = "UPDATE <TABLE> SET last_login = CURRENT_TIMESTAMP WHERE unique_user_id = ?";
     private String SELECT_LOGIN = "SELECT unique_user_id, password, encryption FROM <TABLE> WHERE unique_user_id = ?";
@@ -31,7 +30,6 @@ public abstract class SQL implements SQLManager {
 
     void init(String table, HikariConfig config) {
         CREATE_TABLE = CREATE_TABLE.replace("<TABLE>", table);
-        CHECK_REG = CHECK_REG.replace("<TABLE>", table);
         MODIFY_LOGIN = MODIFY_LOGIN.replace("<TABLE>", table);
         UPDATE_DATE = UPDATE_DATE.replace("<TABLE>", table);
         SELECT_LOGIN = SELECT_LOGIN.replace("<TABLE>", table);
