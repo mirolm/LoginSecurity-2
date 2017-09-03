@@ -28,11 +28,7 @@ public class Executor {
     }
 
     public void modifyLogin(LoginData login) {
-        if (data.checkLogin(login.uuid)) {
-            data.updateLogin(login);
-        } else {
-            data.registerLogin(login);
-        }
+        data.modifyLogin(login);
     }
 
     public void modifyDate(String uuid) {

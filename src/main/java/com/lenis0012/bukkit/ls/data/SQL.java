@@ -20,8 +20,7 @@ public abstract class SQL implements SQLManager {
             + "last_login TIMESTAMP DEFAULT CURRENT_TIMESTAMP)";
 
     private String CHECK_REG = "SELECT 1 FROM <TABLE> WHERE unique_user_id = ?";
-    private String INSERT_LOGIN = "INSERT INTO <TABLE>(unique_user_id, password, encryption) VALUES(?, ?, ?)";
-    private String UPDATE_PASSWD = "UPDATE <TABLE> SET password = ?, encryption = ? WHERE unique_user_id = ?";
+    private String MODIFY_LOGIN = "REPLACE INTO <TABLE>(unique_user_id, password, encryption) VALUES(?, ?, ?)";
     private String UPDATE_DATE = "UPDATE <TABLE> SET last_login = CURRENT_TIMESTAMP WHERE unique_user_id = ?";
     private String SELECT_LOGIN = "SELECT unique_user_id, password, encryption FROM <TABLE> WHERE unique_user_id = ?";
     private String SELECT_USERS = "SELECT unique_user_id, password, encryption FROM <TABLE>";
@@ -33,8 +32,7 @@ public abstract class SQL implements SQLManager {
     void init(String table, HikariConfig config) {
         CREATE_TABLE = CREATE_TABLE.replace("<TABLE>", table);
         CHECK_REG = CHECK_REG.replace("<TABLE>", table);
-        INSERT_LOGIN = INSERT_LOGIN.replace("<TABLE>", table);
-        UPDATE_PASSWD = UPDATE_PASSWD.replace("<TABLE>", table);
+        MODIFY_LOGIN = MODIFY_LOGIN.replace("<TABLE>", table);
         UPDATE_DATE = UPDATE_DATE.replace("<TABLE>", table);
         SELECT_LOGIN = SELECT_LOGIN.replace("<TABLE>", table);
         SELECT_USERS = SELECT_USERS.replace("<TABLE>", table);
@@ -78,67 +76,21 @@ public abstract class SQL implements SQLManager {
     }
 
     @Override
-    public boolean checkLogin(String uuid) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet result = null;
-
-        try {
-            conn = dataSource.getConnection();
-
-            stmt = conn.prepareStatement(CHECK_REG);
-            stmt.setString(1, cleanUUID(uuid));
-
-            result = stmt.executeQuery();
-            return result.next();
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Failed to check user");
-            return false;
-        } finally {
-            closeQuietly(result);
-            closeQuietly(stmt);
-            closeQuietly(conn);
-        }
-    }
-
-    @Override
-    public void registerLogin(LoginData login) {
+    public void modifyLogin(LoginData login) {
         Connection conn = null;
         PreparedStatement stmt = null;
 
         try {
             conn = dataSource.getConnection();
 
-            stmt = conn.prepareStatement(INSERT_LOGIN);
+            stmt = conn.prepareStatement(MODIFY_LOGIN);
             stmt.setString(1, cleanUUID(login.uuid));
             stmt.setString(2, login.password);
             stmt.setInt(3, login.encryption);
 
             stmt.executeUpdate();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Failed to create user");
-        } finally {
-            closeQuietly(stmt);
-            closeQuietly(conn);
-        }
-    }
-
-    @Override
-    public void updateLogin(LoginData login) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-
-        try {
-            conn = dataSource.getConnection();
-
-            stmt = conn.prepareStatement(UPDATE_PASSWD);
-            stmt.setString(1, login.password);
-            stmt.setInt(2, login.encryption);
-            stmt.setString(3, cleanUUID(login.uuid));
-
-            stmt.executeUpdate();
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Failed to update user");
+            logger.log(Level.SEVERE, "Failed to modify user");
         } finally {
             closeQuietly(stmt);
             closeQuietly(conn);
@@ -198,7 +150,6 @@ public abstract class SQL implements SQLManager {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet result = null;
-        LoginData login;
 
         try {
             conn = manager.getConnection();
@@ -209,11 +160,7 @@ public abstract class SQL implements SQLManager {
             logger.log(Level.INFO, "Starting to convert.");
 
             while (result.next()) {
-                login = parseLogin(result);
-
-                if ((login != null) && !checkLogin(login.uuid)) {
-                    registerLogin(login);
-                }
+                modifyLogin(parseLogin(result));
             }
 
             logger.log(Level.INFO, "Finished.");
