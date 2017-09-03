@@ -1,18 +1,24 @@
 name: ${project.name}
 version: ${project.version}
 main: com.lenis0012.bukkit.ls.LoginSecurity
-author: lenis0012
-description: The #1 Auth plugin
+author: lenis0012, mirolm
+description: ${project.description}
+website: ${project.url}
 commands:
   login:
-    description: Login with your account.
-    usage: /login <password>
-    aliases: [l,log]
+    description: Log in to account
+    usage: /login [password]
+    aliases:
+      - l
+      - log
   register:
-    description: Set a password for your account.
-    usage: /register <password>
-    aliases: [reg]
-  changepass:
-    description: Change the password for your account.
-    usage: /changepass <old> <new>
-    aliases: [cp,changepassword]
+    description: Register an account
+    usage: /register [password]
+    aliases:
+      - reg
+  changepassword:
+    description: Change password of an account
+    usage: /changepassword [old] [new]
+    aliases:
+      - cp
+      - changepass
