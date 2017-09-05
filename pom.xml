@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.lenis0012</groupId>
-    <artifactId>LoginSecurity</artifactId>
+    <artifactId>loginsecurity</artifactId>
     <version>2.0.27</version>
     <packaging>jar</packaging>
     <name>LoginSecurity</name>
@@ -97,7 +97,7 @@
     </dependencies>
     <build>
         <defaultGoal>clean install</defaultGoal>
-        <finalName>${project.artifactId}</finalName>
+        <finalName>${project.name}</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources/</directory>
