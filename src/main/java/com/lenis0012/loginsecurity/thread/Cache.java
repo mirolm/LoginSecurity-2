@@ -1,11 +1,11 @@
-package com.lenis0012.bukkit.ls.thread;
+package com.lenis0012.loginsecurity.thread;
 
 import com.google.common.collect.Maps;
-import com.lenis0012.bukkit.ls.LoginSecurity;
-import com.lenis0012.bukkit.ls.data.Executor;
-import com.lenis0012.bukkit.ls.data.LoginData;
-import com.lenis0012.bukkit.ls.encryption.Encryptor;
-import com.lenis0012.bukkit.ls.util.Common;
+import com.lenis0012.loginsecurity.LoginSecurity;
+import com.lenis0012.loginsecurity.data.Executor;
+import com.lenis0012.loginsecurity.data.LoginData;
+import com.lenis0012.loginsecurity.encryption.Encryptor;
+import com.lenis0012.loginsecurity.util.Common;
 import org.bukkit.entity.Player;
 
 import java.util.Iterator;

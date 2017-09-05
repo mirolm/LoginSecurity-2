@@ -1,8 +1,8 @@
-package com.lenis0012.bukkit.ls.thread;
+package com.lenis0012.loginsecurity.thread;
 
 import com.google.common.collect.Maps;
-import com.lenis0012.bukkit.ls.LoginSecurity;
-import com.lenis0012.bukkit.ls.util.Common;
+import com.lenis0012.loginsecurity.LoginSecurity;
+import com.lenis0012.loginsecurity.util.Common;
 
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentMap;

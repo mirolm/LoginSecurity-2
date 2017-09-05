@@ -1,6 +1,6 @@
-package com.lenis0012.bukkit.ls.data;
+package com.lenis0012.loginsecurity.data;
 
-import com.lenis0012.bukkit.ls.LoginSecurity;
+import com.lenis0012.loginsecurity.LoginSecurity;
 
 public class Executor {
     private final SQLManager data;

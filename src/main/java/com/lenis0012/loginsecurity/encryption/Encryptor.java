@@ -1,4 +1,4 @@
-package com.lenis0012.bukkit.ls.encryption;
+package com.lenis0012.loginsecurity.encryption;
 
 public enum Encryptor {
     BCRYPT(7, new BCRYPT()),

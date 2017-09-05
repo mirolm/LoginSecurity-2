@@ -1,4 +1,4 @@
-package com.lenis0012.bukkit.ls.util;
+package com.lenis0012.loginsecurity.util;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.Maps;

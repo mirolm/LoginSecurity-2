@@ -1,12 +1,12 @@
-package com.lenis0012.bukkit.ls;
+package com.lenis0012.loginsecurity;
 
-import com.lenis0012.bukkit.ls.command.ChangePass;
-import com.lenis0012.bukkit.ls.command.Login;
-import com.lenis0012.bukkit.ls.command.Register;
-import com.lenis0012.bukkit.ls.thread.Cache;
-import com.lenis0012.bukkit.ls.thread.Lockout;
-import com.lenis0012.bukkit.ls.thread.Timeout;
-import com.lenis0012.bukkit.ls.util.*;
+import com.lenis0012.loginsecurity.command.ChangePass;
+import com.lenis0012.loginsecurity.command.Login;
+import com.lenis0012.loginsecurity.command.Register;
+import com.lenis0012.loginsecurity.thread.Cache;
+import com.lenis0012.loginsecurity.thread.Lockout;
+import com.lenis0012.loginsecurity.thread.Timeout;
+import com.lenis0012.loginsecurity.util.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.bukkit.plugin.java.JavaPlugin;

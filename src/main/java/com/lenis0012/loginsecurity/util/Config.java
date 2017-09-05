@@ -1,4 +1,4 @@
-package com.lenis0012.bukkit.ls.util;
+package com.lenis0012.loginsecurity.util;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;

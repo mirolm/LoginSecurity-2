@@ -1,4 +1,4 @@
-package com.lenis0012.bukkit.ls.data;
+package com.lenis0012.loginsecurity.data;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

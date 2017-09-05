@@ -1,4 +1,4 @@
-package com.lenis0012.bukkit.ls.data;
+package com.lenis0012.loginsecurity.data;
 
 public class LoginData {
     public final String uuid;

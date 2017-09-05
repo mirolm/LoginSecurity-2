@@ -1,6 +1,6 @@
-package com.lenis0012.bukkit.ls.util;
+package com.lenis0012.loginsecurity.util;
 
-import com.lenis0012.bukkit.ls.LoginSecurity;
+import com.lenis0012.loginsecurity.LoginSecurity;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;

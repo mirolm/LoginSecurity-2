@@ -1,4 +1,4 @@
-package com.lenis0012.bukkit.ls.util;
+package com.lenis0012.loginsecurity.util;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Marker;
