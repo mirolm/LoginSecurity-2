@@ -15,9 +15,13 @@ public class Register implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if ((sender instanceof Player) && (args.length == 1)) {
+        if (sender instanceof Player) {
             Player player = (Player) sender;
-            plugin.account.registerPlayer(player, args[0]);
+            if (args.length == 1) {
+                plugin.account.registerPlayer(player, args[0]);
+            } else {
+                player.sendMessage(plugin.lang.get("cmd_usage").replace("<command>", cmd.getUsage()));
+            }
         }
 
         return true;

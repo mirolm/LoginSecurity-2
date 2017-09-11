@@ -18,7 +18,7 @@ commands:
       - reg
   changepassword:
     description: Change password of an account
-    usage: /changepassword [old] [new]
+    usage: /changepass [old] [new]
     aliases:
       - cp
       - changepass
