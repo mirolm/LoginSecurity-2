@@ -10,7 +10,6 @@ import com.lenis0012.loginsecurity.util.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitTask;
 
 public class LoginSecurity extends JavaPlugin {
     public AccountManager account;
@@ -19,10 +18,6 @@ public class LoginSecurity extends JavaPlugin {
     public LockoutTask lockout;
     public TimeoutTask timeout;
     public CacheTask cache;
-
-    private BukkitTask lockTask;
-    private BukkitTask timeTask;
-    private BukkitTask cacheTask;
 
     @Override
     public void onEnable() {
@@ -44,17 +39,15 @@ public class LoginSecurity extends JavaPlugin {
         Logger logger = (Logger) LogManager.getRootLogger();
         logger.addFilter(new LogFilter());
 
-        timeTask = getServer().getScheduler().runTaskTimer(this, timeout, 100L, 200L);
-        lockTask = getServer().getScheduler().runTaskTimer(this, lockout, 100L, 1200L);
-        cacheTask = getServer().getScheduler().runTaskTimer(this, cache, 100L, 1200L);
+        getServer().getScheduler().runTaskTimer(this, timeout, 100L, 200L);
+        getServer().getScheduler().runTaskTimer(this, lockout, 100L, 1200L);
+        getServer().getScheduler().runTaskTimer(this, cache, 100L, 1200L);
     }
 
     @Override
     public void onDisable() {
         cache.disable();
 
-        timeTask.cancel();
-        lockTask.cancel();
-        cacheTask.cancel();
+        getServer().getScheduler().cancelTasks(this);
     }
 }
