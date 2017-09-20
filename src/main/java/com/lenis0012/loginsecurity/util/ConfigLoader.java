@@ -3,7 +3,7 @@ package com.lenis0012.loginsecurity.util;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
-public class Config {
+public class ConfigLoader {
     public final boolean convert;
     public final boolean useMySQL;
     public final int timeout;
@@ -17,7 +17,7 @@ public class Config {
     public final String table;
     public final String encryption;
 
-    public Config(Plugin plugin) {
+    public ConfigLoader(Plugin plugin) {
         FileConfiguration config = plugin.getConfig();
 
         //setup config

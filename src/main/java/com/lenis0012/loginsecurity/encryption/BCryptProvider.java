@@ -2,7 +2,7 @@ package com.lenis0012.loginsecurity.encryption;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-public class BCRYPT implements CryptManager {
+public class BCryptProvider implements EncryptionManager {
     @Override
     public String hash(String passwd) {
         return BCrypt.hashpw(passwd, BCrypt.gensalt());

@@ -6,10 +6,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class Register implements CommandExecutor {
+public class LoginCommand implements CommandExecutor {
     private final LoginSecurity plugin;
 
-    public Register(LoginSecurity plugin) {
+    public LoginCommand(LoginSecurity plugin) {
         this.plugin = plugin;
     }
 
@@ -18,7 +18,7 @@ public class Register implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (args.length == 1) {
-                plugin.account.registerPlayer(player, args[0]);
+                plugin.account.loginPlayer(player, args[0]);
             } else {
                 player.sendMessage(plugin.lang.get("cmd_usage").replace("<command>", cmd.getUsage()));
             }

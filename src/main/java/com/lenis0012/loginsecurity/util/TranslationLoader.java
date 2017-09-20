@@ -10,12 +10,12 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.util.concurrent.ConcurrentMap;
 
-public class Translation {
+public class TranslationLoader {
     private static final String LANG_NAME = "lang.yml";
     private final ConcurrentMap<String, String> langList = Maps.newConcurrentMap();
 
-    public Translation(Plugin plugin) {
-        File langFile = Common.getPath(plugin, LANG_NAME);
+    public TranslationLoader(Plugin plugin) {
+        File langFile = CommonRoutines.getPath(plugin, LANG_NAME);
         if (!langFile.exists()) {
             plugin.saveResource(LANG_NAME, false);
         }

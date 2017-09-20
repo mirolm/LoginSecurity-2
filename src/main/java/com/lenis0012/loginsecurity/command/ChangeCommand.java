@@ -6,10 +6,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class ChangePass implements CommandExecutor {
+public class ChangeCommand implements CommandExecutor {
     private final LoginSecurity plugin;
 
-    public ChangePass(LoginSecurity plugin) {
+    public ChangeCommand(LoginSecurity plugin) {
         this.plugin = plugin;
     }
 

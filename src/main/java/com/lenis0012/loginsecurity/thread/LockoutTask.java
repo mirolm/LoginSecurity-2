@@ -2,23 +2,23 @@ package com.lenis0012.loginsecurity.thread;
 
 import com.google.common.collect.Maps;
 import com.lenis0012.loginsecurity.LoginSecurity;
-import com.lenis0012.loginsecurity.util.Common;
+import com.lenis0012.loginsecurity.util.CommonRoutines;
 
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentMap;
 
-public class Lockout implements Runnable {
+public class LockoutTask implements Runnable {
     private final ConcurrentMap<String, LockoutData> failList = Maps.newConcurrentMap();
     private final LoginSecurity plugin;
 
-    public Lockout(LoginSecurity plugin) {
+    public LockoutTask(LoginSecurity plugin) {
         this.plugin = plugin;
     }
 
     @Override
     public void run() {
         Iterator<String> iterator = failList.keySet().iterator();
-        long cycle = Common.currentTime(false);
+        long cycle = CommonRoutines.currentTime(false);
 
         while (iterator.hasNext()) {
             String uuid = iterator.next();
@@ -35,7 +35,7 @@ public class Lockout implements Runnable {
             LockoutData current = failList.get(uuid);
 
             current.failed += 1;
-            current.timeout = Common.currentTime(false);
+            current.timeout = CommonRoutines.currentTime(false);
 
             return failList.replace(uuid, current).failed >= plugin.config.failedCount;
         } else {
@@ -59,7 +59,7 @@ public class Lockout implements Runnable {
 
         LockoutData() {
             this.failed = 1;
-            this.timeout = Common.currentTime(false);
+            this.timeout = CommonRoutines.currentTime(false);
         }
     }
 }

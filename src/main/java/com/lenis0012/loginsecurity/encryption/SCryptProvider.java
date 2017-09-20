@@ -2,7 +2,7 @@ package com.lenis0012.loginsecurity.encryption;
 
 import com.lambdaworks.crypto.SCryptUtil;
 
-public class SCRYPT implements CryptManager {
+public class SCryptProvider implements EncryptionManager {
     @Override
     public String hash(String passwd) {
         return SCryptUtil.scrypt(passwd, 16384, 8, 1);

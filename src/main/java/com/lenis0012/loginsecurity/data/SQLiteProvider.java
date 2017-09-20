@@ -1,16 +1,14 @@
 package com.lenis0012.loginsecurity.data;
 
 import com.lenis0012.loginsecurity.LoginSecurity;
-import com.lenis0012.loginsecurity.util.Common;
+import com.lenis0012.loginsecurity.util.CommonRoutines;
 import com.zaxxer.hikari.HikariConfig;
 
-class SQLite extends SQL {
-    private static final String DB_NAME = "users.db";
-
-    public SQLite(LoginSecurity plugin) {
+class SQLiteProvider extends SQLProvider {
+    SQLiteProvider(LoginSecurity plugin) {
         super(plugin);
 
-        String path = Common.getPath(plugin, DB_NAME).toString();
+        String path = CommonRoutines.getPath(plugin, "users.db").toString();
 
         HikariConfig dbConfig = new HikariConfig();
 

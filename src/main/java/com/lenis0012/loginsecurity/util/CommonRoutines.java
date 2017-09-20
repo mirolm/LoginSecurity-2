@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public final class Common {
+public final class CommonRoutines {
     public static long currentTime(boolean getSeconds) {
         long current = System.currentTimeMillis();
 

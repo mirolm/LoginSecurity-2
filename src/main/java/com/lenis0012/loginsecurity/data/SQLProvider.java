@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public abstract class SQL implements SQLManager {
+public abstract class SQLProvider implements SQLManager {
     private final Logger logger;
     private HikariDataSource dataSource;
 
@@ -24,7 +24,7 @@ public abstract class SQL implements SQLManager {
     private String SELECT_LOGIN = "SELECT unique_user_id, password, encryption FROM <TABLE> WHERE unique_user_id = ?";
     private String SELECT_USERS = "SELECT unique_user_id, password, encryption FROM <TABLE>";
 
-    SQL(Plugin plugin) {
+    SQLProvider(Plugin plugin) {
         this.logger = plugin.getLogger();
     }
 

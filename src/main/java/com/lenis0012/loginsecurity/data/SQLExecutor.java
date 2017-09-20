@@ -2,14 +2,14 @@ package com.lenis0012.loginsecurity.data;
 
 import com.lenis0012.loginsecurity.LoginSecurity;
 
-public class Executor {
+public class SQLExecutor {
     private final SQLManager data;
 
-    public Executor(LoginSecurity plugin) {
-        this.data = plugin.config.useMySQL ? new MySQL(plugin) : new SQLite(plugin);
+    public SQLExecutor(LoginSecurity plugin) {
+        this.data = plugin.config.useMySQL ? new MySQLProvider(plugin) : new SQLiteProvider(plugin);
 
         if (plugin.config.convert) {
-            SQLManager manager = plugin.config.useMySQL ? new SQLite(plugin) : new MySQL(plugin);
+            SQLManager manager = plugin.config.useMySQL ? new SQLiteProvider(plugin) : new MySQLProvider(plugin);
 
             try {
                 data.convertAllLogin(manager);

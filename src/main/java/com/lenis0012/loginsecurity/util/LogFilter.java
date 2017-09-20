@@ -15,7 +15,7 @@ public class LogFilter extends AbstractFilter {
             "/login ", "/log ", "/l ", "/changepassword ", "/changepass ", "/cp ");
 
     private Result handle(String message) {
-        return Common.messageContains(message, FILTERED_COMMANDS) ? Result.DENY : Result.NEUTRAL;
+        return CommonRoutines.messageContains(message, FILTERED_COMMANDS) ? Result.DENY : Result.NEUTRAL;
     }
 
     @Override

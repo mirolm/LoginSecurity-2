@@ -1,19 +1,19 @@
 package com.lenis0012.loginsecurity.encryption;
 
-public enum Encryptor {
-    BCRYPT(7, new BCRYPT()),
-    SCRYPT(21, new SCRYPT());
+public enum EncryptionProvider {
+    BCRYPT(7, new BCryptProvider()),
+    SCRYPT(21, new SCryptProvider());
 
-    private final CryptManager crypt;
+    private final EncryptionManager crypt;
     private final int type;
 
-    Encryptor(int type, CryptManager crypt) {
+    EncryptionProvider(int type, EncryptionManager crypt) {
         this.type = type;
         this.crypt = crypt;
     }
 
-    public static Encryptor getCrypt(String name) {
-        for (Encryptor encryptor : values()) {
+    public static EncryptionProvider getCrypt(String name) {
+        for (EncryptionProvider encryptor : values()) {
             if (name.equalsIgnoreCase(encryptor.name())) {
                 return encryptor;
             }
@@ -22,8 +22,8 @@ public enum Encryptor {
         return BCRYPT;
     }
 
-    public static Encryptor getCrypt(int type) {
-        for (Encryptor encryptor : values()) {
+    public static EncryptionProvider getCrypt(int type) {
+        for (EncryptionProvider encryptor : values()) {
             if (encryptor.type == type) {
                 return encryptor;
             }

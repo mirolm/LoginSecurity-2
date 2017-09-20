@@ -1,20 +1,17 @@
 package com.lenis0012.loginsecurity.data;
 
 import com.lenis0012.loginsecurity.LoginSecurity;
-import com.lenis0012.loginsecurity.util.Config;
 import com.zaxxer.hikari.HikariConfig;
 
-class MySQL extends SQL {
-    public MySQL(LoginSecurity plugin) {
+class MySQLProvider extends SQLProvider {
+    MySQLProvider(LoginSecurity plugin) {
         super(plugin);
-
-        Config config = plugin.config;
 
         HikariConfig dbConfig = new HikariConfig();
 
-        dbConfig.setJdbcUrl("jdbc:mysql:" + "//" + config.host + ":" + config.port + "/" + config.database);
-        dbConfig.setUsername(config.username);
-        dbConfig.setPassword(config.password);
+        dbConfig.setJdbcUrl("jdbc:mysql:" + "//" + plugin.config.host + ":" + plugin.config.port + "/" + plugin.config.database);
+        dbConfig.setUsername(plugin.config.username);
+        dbConfig.setPassword(plugin.config.password);
 
         dbConfig.addDataSourceProperty("cacheResultSetMetadata", "true");
         dbConfig.addDataSourceProperty("maintainTimeStats", "false");
@@ -26,6 +23,6 @@ class MySQL extends SQL {
 
         dbConfig.setMaximumPoolSize(6);
 
-        super.init(config.table, dbConfig);
+        super.init(plugin.config.table, dbConfig);
     }
 }

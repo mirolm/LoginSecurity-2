@@ -6,18 +6,18 @@ import org.bukkit.entity.Player;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Account {
+public class AccountManager {
     private final LoginSecurity plugin;
     private final Logger logger;
 
-    public Account(LoginSecurity plugin) {
+    public AccountManager(LoginSecurity plugin) {
         this.plugin = plugin;
         this.logger = plugin.getLogger();
     }
 
     public void registerPlayer(Player player, String pass) {
-        if (Common.checkPlayer(player)) {
-            String uuid = Common.getUuid(player);
+        if (CommonRoutines.checkPlayer(player)) {
+            String uuid = CommonRoutines.getUuid(player);
 
             if (plugin.cache.checkLogin(uuid)) {
                 player.sendMessage(plugin.lang.get("already_reg"));
@@ -25,7 +25,7 @@ public class Account {
                 return;
             }
 
-            if (Common.invalidPassword(pass)) {
+            if (CommonRoutines.invalidPassword(pass)) {
                 player.sendMessage(plugin.lang.get("verify_psw"));
                 logger.log(Level.WARNING, "{0} failed to register", player.getName());
 
@@ -42,8 +42,8 @@ public class Account {
     }
 
     public void changePassword(Player player, String oldPass, String newPass) {
-        if (Common.checkPlayer(player)) {
-            String uuid = Common.getUuid(player);
+        if (CommonRoutines.checkPlayer(player)) {
+            String uuid = CommonRoutines.getUuid(player);
 
             if (!plugin.cache.checkPassword(uuid, oldPass)) {
                 player.sendMessage(plugin.lang.get("invalid_psw"));
@@ -52,7 +52,7 @@ public class Account {
                 return;
             }
 
-            if (Common.invalidPassword(newPass)) {
+            if (CommonRoutines.invalidPassword(newPass)) {
                 player.sendMessage(plugin.lang.get("verify_psw"));
                 logger.log(Level.WARNING, "{0} failed to change password", player.getName());
 
@@ -67,8 +67,8 @@ public class Account {
     }
 
     public void loginPlayer(Player player, String pass) {
-        if (Common.checkPlayer(player)) {
-            String uuid = Common.getUuid(player);
+        if (CommonRoutines.checkPlayer(player)) {
+            String uuid = CommonRoutines.getUuid(player);
 
             if (!plugin.timeout.check(uuid)) {
                 player.sendMessage(plugin.lang.get("already_login"));
@@ -82,7 +82,7 @@ public class Account {
                 return;
             }
 
-            String fUuid = Common.fullUuid(player);
+            String fUuid = CommonRoutines.fullUuid(player);
 
             if (plugin.cache.checkPassword(uuid, pass)) {
                 plugin.timeout.remove(uuid);
@@ -92,7 +92,7 @@ public class Account {
 
                 player.sendMessage(plugin.lang.get("login"));
 
-                if (Common.invalidPassword(pass)) {
+                if (CommonRoutines.invalidPassword(pass)) {
                     player.sendMessage(plugin.lang.get("weak_psw"));
                     logger.log(Level.INFO, "{0} uses weak password", player.getName());
                 }

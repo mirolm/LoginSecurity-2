@@ -1,11 +1,11 @@
 package com.lenis0012.loginsecurity;
 
-import com.lenis0012.loginsecurity.command.ChangePass;
-import com.lenis0012.loginsecurity.command.Login;
-import com.lenis0012.loginsecurity.command.Register;
-import com.lenis0012.loginsecurity.thread.Cache;
-import com.lenis0012.loginsecurity.thread.Lockout;
-import com.lenis0012.loginsecurity.thread.Timeout;
+import com.lenis0012.loginsecurity.command.ChangeCommand;
+import com.lenis0012.loginsecurity.command.LoginCommand;
+import com.lenis0012.loginsecurity.command.RegisterCommand;
+import com.lenis0012.loginsecurity.thread.CacheTask;
+import com.lenis0012.loginsecurity.thread.LockoutTask;
+import com.lenis0012.loginsecurity.thread.TimeoutTask;
 import com.lenis0012.loginsecurity.util.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
@@ -13,12 +13,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
 public class LoginSecurity extends JavaPlugin {
-    public Account account;
-    public Translation lang;
-    public Config config;
-    public Lockout lockout;
-    public Timeout timeout;
-    public Cache cache;
+    public AccountManager account;
+    public TranslationLoader lang;
+    public ConfigLoader config;
+    public LockoutTask lockout;
+    public TimeoutTask timeout;
+    public CacheTask cache;
 
     private BukkitTask lockTask;
     private BukkitTask timeTask;
@@ -27,24 +27,24 @@ public class LoginSecurity extends JavaPlugin {
     @Override
     public void onEnable() {
         //configuration
-        config = new Config(this);
-        lang = new Translation(this);
+        config = new ConfigLoader(this);
+        lang = new TranslationLoader(this);
 
         //threads
-        timeout = new Timeout(this);
-        lockout = new Lockout(this);
-        cache = new Cache(this);
+        timeout = new TimeoutTask(this);
+        lockout = new LockoutTask(this);
+        cache = new CacheTask(this);
 
         //account
-        account = new Account(this);
+        account = new AccountManager(this);
 
         //events
         getServer().getPluginManager().registerEvents(new EventHook(this), this);
 
         //command
-        getCommand("login").setExecutor(new Login(this));
-        getCommand("register").setExecutor(new Register(this));
-        getCommand("changepass").setExecutor(new ChangePass(this));
+        getCommand("login").setExecutor(new LoginCommand(this));
+        getCommand("register").setExecutor(new RegisterCommand(this));
+        getCommand("changepass").setExecutor(new ChangeCommand(this));
 
         //filter log
         Logger logger = (Logger) LogManager.getRootLogger();

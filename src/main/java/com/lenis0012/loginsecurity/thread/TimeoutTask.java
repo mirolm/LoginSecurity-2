@@ -2,7 +2,7 @@ package com.lenis0012.loginsecurity.thread;
 
 import com.google.common.collect.Maps;
 import com.lenis0012.loginsecurity.LoginSecurity;
-import com.lenis0012.loginsecurity.util.Common;
+import com.lenis0012.loginsecurity.util.CommonRoutines;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -10,18 +10,18 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentMap;
 
-public class Timeout implements Runnable {
+public class TimeoutTask implements Runnable {
     private final ConcurrentMap<String, TimeoutData> authList = Maps.newConcurrentMap();
     private final LoginSecurity plugin;
 
-    public Timeout(LoginSecurity plugin) {
+    public TimeoutTask(LoginSecurity plugin) {
         this.plugin = plugin;
     }
 
     @Override
     public void run() {
         Iterator<String> iterator = authList.keySet().iterator();
-        long cycle = Common.currentTime(true);
+        long cycle = CommonRoutines.currentTime(true);
 
         while (iterator.hasNext()) {
             String uuid = iterator.next();
@@ -32,8 +32,8 @@ public class Timeout implements Runnable {
             } else {
                 iterator.remove();
 
-                Player player = Common.getPlayer(uuid);
-                if (Common.checkPlayer(player)) {
+                Player player = CommonRoutines.getPlayer(uuid);
+                if (CommonRoutines.checkPlayer(player)) {
                     player.kickPlayer(plugin.lang.get("timed_out"));
                 }
             }
@@ -45,8 +45,8 @@ public class Timeout implements Runnable {
 
         notify(current);
 
-        Player player = Common.getPlayer(uuid);
-        if (Common.checkPlayer(player)) {
+        Player player = CommonRoutines.getPlayer(uuid);
+        if (CommonRoutines.checkPlayer(player)) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 1), true);
         }
 
@@ -54,8 +54,8 @@ public class Timeout implements Runnable {
     }
 
     public void remove(String uuid) {
-        Player player = Common.getPlayer(uuid);
-        if (Common.checkPlayer(player)) {
+        Player player = CommonRoutines.getPlayer(uuid);
+        if (CommonRoutines.checkPlayer(player)) {
             player.removePotionEffect(PotionEffectType.BLINDNESS);
 
             // ensure that player does not drown after logging in
@@ -70,8 +70,8 @@ public class Timeout implements Runnable {
     }
 
     private void notify(TimeoutData current) {
-        Player player = Common.getPlayer(current.uuid);
-        if (Common.checkPlayer(player)) {
+        Player player = CommonRoutines.getPlayer(current.uuid);
+        if (CommonRoutines.checkPlayer(player)) {
             String message = current.registered ? plugin.lang.get("log_msg") : plugin.lang.get("reg_msg");
 
             player.sendMessage(message);
@@ -86,7 +86,7 @@ public class Timeout implements Runnable {
         TimeoutData(String uuid, boolean registered) {
             this.uuid = uuid;
             this.registered = registered;
-            this.timeout = Common.currentTime(true);
+            this.timeout = CommonRoutines.currentTime(true);
         }
     }
 }

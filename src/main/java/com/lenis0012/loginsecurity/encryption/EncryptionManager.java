@@ -1,6 +1,6 @@
 package com.lenis0012.loginsecurity.encryption;
 
-interface CryptManager {
+interface EncryptionManager {
     /**
      * Check if passwords mach
      *
