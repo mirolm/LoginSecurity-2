@@ -25,35 +25,25 @@ public class LoginSecurity extends JavaPlugin {
     private BukkitTask cacheTask;
 
     @Override
-    public void onLoad() {
-        // init configuration
+    public void onEnable() {
         config = new ConfigLoader(this);
         lang = new TranslationLoader(this);
 
-        // init threads
         timeout = new TimeoutTask(this);
         lockout = new LockoutTask(this);
         cache = new CacheTask(this);
 
-        // init account
         account = new AccountManager(this);
-    }
 
-    @Override
-    public void onEnable() {
-        // register events
         getServer().getPluginManager().registerEvents(new EventHook(this), this);
 
-        // attach commands
         getCommand("login").setExecutor(new LoginCommand(this));
         getCommand("register").setExecutor(new RegisterCommand(this));
         getCommand("changepass").setExecutor(new ChangeCommand(this));
 
-        // filter log
         Logger logger = (Logger) LogManager.getRootLogger();
         logger.addFilter(new LogFilter());
 
-        // schedule threads
         timeTask = getServer().getScheduler().runTaskTimer(this, timeout, 100L, 200L);
         lockTask = getServer().getScheduler().runTaskTimer(this, lockout, 100L, 1200L);
         cacheTask = getServer().getScheduler().runTaskTimer(this, cache, 100L, 1200L);
@@ -61,10 +51,8 @@ public class LoginSecurity extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // disable cache
         cache.disable();
 
-        // stop threads
         timeTask.cancel();
         lockTask.cancel();
         cacheTask.cancel();
