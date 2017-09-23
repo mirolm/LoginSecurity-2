@@ -42,7 +42,11 @@ public abstract class SQLProvider implements SQLManager {
 
     @Override
     public void close() {
-        closeQuietly(dataSource);
+        try {
+            dataSource.close();
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Failed to close pool.");
+        }
     }
 
     @Override
@@ -50,124 +54,87 @@ public abstract class SQLProvider implements SQLManager {
         try {
             return dataSource.getConnection();
         } catch (Exception e) {
+            logger.log(Level.SEVERE, "Failed to open pool.");
             return null;
         }
     }
 
     private void createTables() {
-        Connection conn = null;
-        PreparedStatement stmt = null;
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(CREATE_TABLE)) {
 
-        try {
-            conn = dataSource.getConnection();
-
-            stmt = conn.prepareStatement(CREATE_TABLE);
             stmt.setQueryTimeout(30);
 
             stmt.executeUpdate();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Failed to create tables");
-        } finally {
-            closeQuietly(stmt);
-            closeQuietly(conn);
+            logger.log(Level.SEVERE, "Failed to create tables.");
         }
     }
 
     @Override
     public void modifyLogin(LoginData login) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(MODIFY_LOGIN)) {
 
-        try {
-            conn = dataSource.getConnection();
-
-            stmt = conn.prepareStatement(MODIFY_LOGIN);
             stmt.setString(1, cleanUUID(login.uuid));
             stmt.setString(2, login.password);
             stmt.setInt(3, login.encryption);
 
             stmt.executeUpdate();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Failed to modify user");
-        } finally {
-            closeQuietly(stmt);
-            closeQuietly(conn);
+            logger.log(Level.SEVERE, "Failed to modify user.");
         }
     }
 
     @Override
     public void updateDate(String uuid) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(UPDATE_DATE)) {
 
-        try {
-            conn = dataSource.getConnection();
-
-            stmt = conn.prepareStatement(UPDATE_DATE);
             stmt.setString(1, cleanUUID(uuid));
 
             stmt.executeUpdate();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Failed to update date");
-        } finally {
-            closeQuietly(stmt);
-            closeQuietly(conn);
+            logger.log(Level.SEVERE, "Failed to update date.");
         }
     }
 
     @Override
     public LoginData getLogin(String uuid) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet result = null;
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(SELECT_LOGIN)) {
 
-        try {
-            conn = dataSource.getConnection();
-
-            stmt = conn.prepareStatement(SELECT_LOGIN);
             stmt.setString(1, cleanUUID(uuid));
 
-            result = stmt.executeQuery();
-            if (result.next()) {
-                return parseLogin(result);
-            } else {
-                return null;
+            try (ResultSet result = stmt.executeQuery()) {
+                if (result.next()) {
+                    return parseLogin(result);
+                } else {
+                    return null;
+                }
             }
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Failed to get user");
+            logger.log(Level.SEVERE, "Failed to get user.");
             return null;
-        } finally {
-            closeQuietly(result);
-            closeQuietly(stmt);
-            closeQuietly(conn);
         }
     }
 
     @Override
     public void convertAllLogin(SQLManager manager) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet result = null;
-
-        try {
-            conn = manager.getConnection();
-
-            stmt = conn.prepareStatement(SELECT_USERS);
-            result = stmt.executeQuery();
+        try (Connection conn = manager.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(SELECT_USERS)) {
 
             logger.log(Level.INFO, "Starting to convert.");
 
-            while (result.next()) {
-                modifyLogin(parseLogin(result));
+            try (ResultSet result = stmt.executeQuery()) {
+                while (result.next()) {
+                    modifyLogin(parseLogin(result));
+                }
             }
 
             logger.log(Level.INFO, "Finished.");
         } catch (Exception e) {
             logger.log(Level.WARNING, "Failed to convert.");
-        } finally {
-            closeQuietly(result);
-            closeQuietly(stmt);
-            closeQuietly(conn);
         }
     }
 
@@ -185,15 +152,5 @@ public abstract class SQLProvider implements SQLManager {
 
     private String cleanUUID(String uuid) {
         return uuid.replaceAll("-", "");
-    }
-
-    private void closeQuietly(AutoCloseable closeable) {
-        try {
-            if (closeable != null) {
-                closeable.close();
-            }
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Failed to close");
-        }
     }
 }
