@@ -1,9 +1,9 @@
 name: ${project.name}
 version: ${project.version}
-main: com.lenis0012.loginsecurity.LoginSecurity
-author: lenis0012, mirolm
+main: ${bukkitplugin.main}
+author: ${bukkitplugin.author}
 description: ${project.description}
-website: ${project.url}
+
 commands:
   login:
     description: Log in to account

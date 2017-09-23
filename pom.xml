@@ -7,9 +7,10 @@
     <packaging>jar</packaging>
     <name>LoginSecurity</name>
     <description>The #1 Auth plugin for Minecraft since 2012</description>
-    <url>http://dev.bukkit.org/server-mods/loginsecurity/</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <bukkitplugin.main>com.lenis0012.loginsecurity.LoginSecurity</bukkitplugin.main>
+        <bukkitplugin.author>lenis0012</bukkitplugin.author>
     </properties>
     <repositories>
         <repository>
