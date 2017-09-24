@@ -35,7 +35,11 @@ public abstract class SQLProvider implements SQLManager {
         SELECT_LOGIN = SELECT_LOGIN.replace("<TABLE>", table);
         SELECT_USERS = SELECT_USERS.replace("<TABLE>", table);
 
-        dataSource = new HikariDataSource(config);
+        try {
+            dataSource = new HikariDataSource(config);
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Failed to create pool.");
+        }
 
         createTables();
     }
@@ -54,7 +58,7 @@ public abstract class SQLProvider implements SQLManager {
         try {
             return dataSource.getConnection();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Failed to open pool.");
+            logger.log(Level.SEVERE, "Failed to get connection.");
             return null;
         }
     }
@@ -82,7 +86,7 @@ public abstract class SQLProvider implements SQLManager {
 
             stmt.executeUpdate();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Failed to modify user.");
+            logger.log(Level.SEVERE, "Failed to modify login.");
         }
     }
 
@@ -95,7 +99,7 @@ public abstract class SQLProvider implements SQLManager {
 
             stmt.executeUpdate();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Failed to update date.");
+            logger.log(Level.SEVERE, "Failed to update login date.");
         }
     }
 
@@ -114,7 +118,7 @@ public abstract class SQLProvider implements SQLManager {
                 }
             }
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Failed to get user.");
+            logger.log(Level.SEVERE, "Failed to get login.");
             return null;
         }
     }
