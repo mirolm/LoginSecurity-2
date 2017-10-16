@@ -11,8 +11,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.bukkit.plugin.java.JavaPlugin;
 
-// CVE-2017-15361 bogus commit
-
 public class LoginSecurity extends JavaPlugin {
     public AccountManager account;
     public TranslationLoader lang;
