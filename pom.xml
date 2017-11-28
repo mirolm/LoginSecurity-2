@@ -154,6 +154,24 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>net.md-5</groupId>
+                <artifactId>scriptus</artifactId>
+                <version>0.3.1</version>
+                <configuration>
+                    <format>%s</format>
+                    <scmDirectory>LoginSecurity/</scmDirectory>
+                    <descriptionProperty>bukkitplugin.desc</descriptionProperty>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>describe</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.7.0</version>
