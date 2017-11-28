@@ -159,7 +159,7 @@
                 <version>0.3.1</version>
                 <configuration>
                     <format>%s</format>
-                    <scmDirectory>LoginSecurity/</scmDirectory>
+                    <scmDirectory>LoginSecurity-2/</scmDirectory>
                     <descriptionProperty>bukkitplugin.desc</descriptionProperty>
                 </configuration>
                 <executions>
