@@ -36,13 +36,7 @@ public final class CommonRoutines {
     }
 
     public static boolean checkPlayer(Player player) {
-        if (player != null) {
-            if (player.isOnline() && !player.hasMetadata("NPC")) {
-                return true;
-            }
-        }
-
-        return false;
+        return player != null && player.isOnline() && !player.hasMetadata("NPC");
     }
 
     public static Player getPlayer(String uuid) {
