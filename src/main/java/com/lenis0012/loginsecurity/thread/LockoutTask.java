@@ -37,7 +37,9 @@ public class LockoutTask implements Runnable {
             current.failed += 1;
             current.timeout = CommonRoutines.currentTime(false);
 
-            return failList.replace(uuid, current).failed >= plugin.config.failedCount;
+            failList.replace(uuid, current);
+
+            return current.failed > plugin.config.failedCount;
         } else {
             failList.putIfAbsent(uuid, new LockoutData());
 
