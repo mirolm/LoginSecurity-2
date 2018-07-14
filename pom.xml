@@ -97,7 +97,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.1.1</version>
                 <configuration>
                     <minimizeJar>true</minimizeJar>
                     <shadedArtifactAttached>false</shadedArtifactAttached>
@@ -183,7 +183,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.0.2</version>
+                <version>3.1.0</version>
                 <configuration>
                     <archive>
                         <manifest>
