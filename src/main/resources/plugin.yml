@@ -3,6 +3,7 @@ version: ${project.version}-${bukkitplugin.desc}
 main: ${bukkitplugin.main}
 author: ${bukkitplugin.author}
 description: ${project.description}
+api-version: 1.13
 
 commands:
   login:
