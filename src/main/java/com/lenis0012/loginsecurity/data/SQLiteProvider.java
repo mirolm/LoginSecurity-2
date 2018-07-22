@@ -12,6 +12,8 @@ class SQLiteProvider extends SQLProvider {
 
         HikariConfig dbConfig = new HikariConfig();
 
+        dbConfig.setPoolName(plugin.getName());
+
         dbConfig.setJdbcUrl("jdbc:sqlite:" + path);
 
         dbConfig.setMaximumPoolSize(1);

@@ -9,6 +9,8 @@ class MySQLProvider extends SQLProvider {
 
         HikariConfig dbConfig = new HikariConfig();
 
+        dbConfig.setPoolName(plugin.getName());
+
         dbConfig.setJdbcUrl("jdbc:mysql:" + "//" + plugin.config.host + ":" + plugin.config.port + "/" + plugin.config.database);
         dbConfig.setUsername(plugin.config.username);
         dbConfig.setPassword(plugin.config.password);
