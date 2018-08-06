@@ -21,8 +21,8 @@
     </repositories>
     <dependencies>
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
+            <groupId>org.bukkit</groupId>
+            <artifactId>bukkit</artifactId>
             <version>1.13-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
             <exclusions>
@@ -41,10 +41,6 @@
                 <exclusion>
                     <groupId>org.yaml</groupId>
                     <artifactId>snakeyaml</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>net.md-5</groupId>
-                    <artifactId>bungeecord-chat</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
