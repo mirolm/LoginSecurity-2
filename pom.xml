@@ -9,6 +9,8 @@
     <description>The #1 Auth plugin for Minecraft since 2012</description>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <bukkitplugin.main>com.lenis0012.loginsecurity.LoginSecurity</bukkitplugin.main>
         <bukkitplugin.author>lenis0012</bukkitplugin.author>
         <bukkitplugin.api>1.13</bukkitplugin.api>
@@ -170,11 +172,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.7.0</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
+                <version>3.8.0</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
