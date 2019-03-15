@@ -1,7 +1,7 @@
-name: ${project.name}
+name: LoginSecurity
 version: ${project.version}-${bukkitplugin.desc}
-main: ${bukkitplugin.main}
-author: ${bukkitplugin.author}
+main: com.lenis0012.loginsecurity.LoginSecurity
+author: lenis0012
 description: ${project.description}
 api-version: ${bukkitplugin.api}
 
@@ -10,16 +10,16 @@ commands:
     description: Log in to account
     usage: /login [password]
     aliases:
-    - l
-    - log
+      - l
+      - log
   register:
     description: Register an account
     usage: /register [password]
     aliases:
-    - reg
+      - reg
   changepassword:
     description: Change password of an account
     usage: /changepass [old] [new]
     aliases:
-    - cp
-    - changepass
+      - cp
+      - changepass
