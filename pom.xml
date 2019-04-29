@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.lenis0012</groupId>
     <artifactId>loginsecurity</artifactId>
-    <version>2.0.29</version>
+    <version>2.0.30</version>
     <packaging>jar</packaging>
     <name>LoginSecurity</name>
     <description>The #1 Auth plugin for Minecraft since 2012</description>
@@ -11,7 +11,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <bukkitplugin.api>1.13</bukkitplugin.api>
+        <bukkitplugin.api>1.14</bukkitplugin.api>
     </properties>
     <repositories>
         <repository>
