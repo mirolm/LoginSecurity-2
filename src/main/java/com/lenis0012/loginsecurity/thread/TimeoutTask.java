@@ -47,7 +47,7 @@ public class TimeoutTask implements Runnable {
 
         Player player = CommonRoutines.getPlayer(uuid);
         if (CommonRoutines.checkPlayer(player)) {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 1), true);
+            player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 1));
         }
 
         authList.putIfAbsent(uuid, current);
