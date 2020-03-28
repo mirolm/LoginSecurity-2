@@ -78,7 +78,7 @@ public class TimeoutTask implements Runnable {
         }
     }
 
-    class TimeoutData {
+    static class TimeoutData {
         final String uuid;
         final boolean registered;
         final long timeout;

@@ -105,7 +105,7 @@ public class CacheTask implements Runnable {
         return false;
     }
 
-    class CacheData {
+    static class CacheData {
         LoginData login;
         long timeout;
 

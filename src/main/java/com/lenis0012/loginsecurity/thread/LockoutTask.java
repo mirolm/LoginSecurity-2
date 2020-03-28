@@ -55,7 +55,7 @@ public class LockoutTask implements Runnable {
         failList.remove(uuid);
     }
 
-    class LockoutData {
+    static class LockoutData {
         int failed;
         long timeout;
 
