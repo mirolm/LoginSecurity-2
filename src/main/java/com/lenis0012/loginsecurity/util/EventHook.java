@@ -41,7 +41,6 @@ public class EventHook implements Listener {
 
     //////////////////////////////////////////////////////////////////////
 
-    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
         String pName = event.getName();
@@ -71,7 +70,6 @@ public class EventHook implements Listener {
         }
     }
 
-    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
@@ -80,7 +78,6 @@ public class EventHook implements Listener {
         plugin.timeout.add(uuid, plugin.cache.checkLogin(uuid));
     }
 
-    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
@@ -91,7 +88,6 @@ public class EventHook implements Listener {
 
     //////////////////////////// BLOCK ///////////////////////////////////
 
-    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
@@ -100,7 +96,6 @@ public class EventHook implements Listener {
         }
     }
 
-    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
@@ -111,7 +106,6 @@ public class EventHook implements Listener {
 
     //////////////////////// INVENTORY ////////////////////////////////////
 
-    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent event) {
         Entity entity = event.getWhoClicked();
@@ -122,7 +116,6 @@ public class EventHook implements Listener {
 
     ///////////////////////////////// ENTITY //////////////////////////////
 
-    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
         Entity entity = event.getEntity();
@@ -131,7 +124,6 @@ public class EventHook implements Listener {
         }
     }
 
-    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerAirChange(EntityAirChangeEvent event) {
         Entity entity = event.getEntity();
@@ -140,7 +132,6 @@ public class EventHook implements Listener {
         }
     }
 
-    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         Entity defender = event.getEntity();
@@ -151,7 +142,6 @@ public class EventHook implements Listener {
         }
     }
 
-    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onEntityPickupItem(EntityPickupItemEvent event) {
         Entity entity = event.getEntity();
@@ -160,7 +150,6 @@ public class EventHook implements Listener {
         }
     }
 
-    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onEntityTarget(EntityTargetEvent event) {
         Entity entity = event.getTarget();
@@ -169,7 +158,6 @@ public class EventHook implements Listener {
         }
     }
 
-    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onEntityShootBow(EntityShootBowEvent event) {
         Entity entity = event.getEntity();
@@ -178,7 +166,6 @@ public class EventHook implements Listener {
         }
     }
 
-    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPotionSplash(PotionSplashEvent event) {
         for (Entity entity : event.getAffectedEntities()) {
@@ -190,7 +177,6 @@ public class EventHook implements Listener {
 
     //////////////////////////////// PLAYER ///////////////////////////////
 
-    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerChat(AsyncPlayerChatEvent chat) {
         Player player = chat.getPlayer();
@@ -199,7 +185,6 @@ public class EventHook implements Listener {
         }
     }
 
-    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
@@ -215,7 +200,6 @@ public class EventHook implements Listener {
 
     //////////////////////////////////////////////////////////////////////
 
-    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
@@ -229,7 +213,6 @@ public class EventHook implements Listener {
         }
     }
 
-    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
@@ -238,7 +221,6 @@ public class EventHook implements Listener {
         }
     }
 
-    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
@@ -247,7 +229,6 @@ public class EventHook implements Listener {
         }
     }
 
-    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerDropItem(PlayerDropItemEvent event) {
         Player player = event.getPlayer();
@@ -256,7 +237,6 @@ public class EventHook implements Listener {
         }
     }
 
-    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerItemConsume(PlayerItemConsumeEvent event) {
         Player player = event.getPlayer();
@@ -265,7 +245,6 @@ public class EventHook implements Listener {
         }
     }
 
-    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerSwapHandItems(PlayerSwapHandItemsEvent event) {
         Player player = event.getPlayer();
@@ -274,7 +253,6 @@ public class EventHook implements Listener {
         }
     }
 
-    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerEditBook(PlayerEditBookEvent event) {
         Player player = event.getPlayer();
@@ -283,7 +261,6 @@ public class EventHook implements Listener {
         }
     }
 
-    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerFish(PlayerFishEvent event) {
         Player player = event.getPlayer();
