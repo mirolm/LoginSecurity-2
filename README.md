@@ -1,4 +1,4 @@
-LoginSecurity 2 [![Build Status](https://travis-ci.com/mirolm/LoginSecurity-2.svg?branch=master)](https://travis-ci.com/mirolm/LoginSecurity-2)
+LoginSecurity 2
 ==============
 The #1 Auth plugin for minecraft, since 1.2.5. Worlds must-known plugin for security & control
 
