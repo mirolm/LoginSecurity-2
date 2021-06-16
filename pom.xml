@@ -31,12 +31,12 @@
             <artifactId>HikariCP</artifactId>
             <version>4.0.3</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-jdk14</artifactId>
-            <version>1.7.30</version>
-            <scope>runtime</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.mindrot</groupId>
@@ -77,8 +77,6 @@
                     <artifactSet>
                         <includes>
                             <include>com.zaxxer:HikariCP</include>
-                            <include>org.slf4j:slf4j-api</include>
-                            <include>org.slf4j:slf4j-jdk14</include>
                             <include>org.mindrot:jbcrypt</include>
                             <include>com.lambdaworks:scrypt</include>
                         </includes>
@@ -97,10 +95,6 @@
                         <relocation>
                             <pattern>com.zaxxer.hikari</pattern>
                             <shadedPattern>com.lenis0012.shade.hikari</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>org.slf4j</pattern>
-                            <shadedPattern>com.lenis0012.shade.slf4j</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>org.mindrot.jbcrypt</pattern>
