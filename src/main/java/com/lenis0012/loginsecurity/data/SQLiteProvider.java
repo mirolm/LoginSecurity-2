@@ -16,7 +16,11 @@ class SQLiteProvider extends SQLProvider {
 
         dbConfig.setJdbcUrl("jdbc:sqlite:" + path);
 
-        dbConfig.setMaximumPoolSize(1);
+        dbConfig.addDataSourceProperty("journal_mode", "WAL");
+        dbConfig.addDataSourceProperty("synchronous", "normal");
+        dbConfig.addDataSourceProperty("temp_store", "memory");
+
+        dbConfig.setMaximumPoolSize(3);
 
         super.init(plugin.config.table, dbConfig);
     }
