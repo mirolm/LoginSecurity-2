@@ -19,6 +19,11 @@ class SQLiteProvider extends SQLProvider {
         dbConfig.addDataSourceProperty("journal_mode", "WAL");
         dbConfig.addDataSourceProperty("synchronous", "NORMAL");
         dbConfig.addDataSourceProperty("temp_store", "MEMORY");
+        dbConfig.addDataSourceProperty("cache_size", 8192);
+        dbConfig.addDataSourceProperty("mmap_size", 268435456);
+        dbConfig.addDataSourceProperty("wal_autocheckpoint", 64);
+        dbConfig.addDataSourceProperty("journal_size_limit", 1048576);
+        dbConfig.addDataSourceProperty("foreign_keys", "ON");
 
         dbConfig.setMaximumPoolSize(3);
 
