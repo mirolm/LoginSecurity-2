@@ -17,6 +17,7 @@ class SQLiteProvider extends SQLProvider {
         dbConfig.setJdbcUrl("jdbc:sqlite:" + path);
 
         dbConfig.addDataSourceProperty("journal_mode", "WAL");
+        dbConfig.addDataSourceProperty("busy_timeout", 5000);
         dbConfig.addDataSourceProperty("synchronous", "NORMAL");
         dbConfig.addDataSourceProperty("temp_store", "MEMORY");
         dbConfig.addDataSourceProperty("cache_size", 8192);
